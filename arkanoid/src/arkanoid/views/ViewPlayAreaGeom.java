@@ -26,7 +26,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 
-
 /**
  *
  * @author sPeC
@@ -41,9 +40,7 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         mPlayArea = _playArea;
 
         // Cria a fonte para apresentar o texto
-       /* Font font = new Font("Seriff", Font.BOLD, 24);
-        mGenericFont = new UnicodeFont(font);*/
-         mGenericFont = new UnicodeFont("fonts\\Comiccity.ttf", 24, false, false);
+        mGenericFont = new UnicodeFont("fonts\\Comiccity.ttf", 24, false, false);
         mGenericFont.addAsciiGlyphs();
         mGenericFont.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
         mGenericFont.loadGlyphs();
@@ -51,7 +48,7 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         // Fonte para o gameover
         mGameOverFont = new UnicodeFont("fonts\\JerseyLetters.ttf", 100, false, false);
         mGameOverFont.addGlyphs("GAME OVR!");
-        mGameOverFont.getEffects().add( new ColorEffect(java.awt.Color.WHITE));
+        mGameOverFont.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
         mGameOverFont.loadGlyphs();
     }
 
@@ -75,12 +72,12 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         drawBall();
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        
+
         if (GameState.currentState() == GameStateType.GAME_OVER) {
             DrawGameOver();
         }
 
-        
+
 
         drawHeaderText();
     }
@@ -95,17 +92,17 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         drawQuad(new BoundingBox(x, y, width, height), new BaseColor(0.0f, 0.0f, 0.0f, 0.90f));
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        
-        x += (width /2) - mGameOverFont.getWidth("GAME OVER!")/2;
-        y += (height/2) - mGameOverFont.getHeight("GAME OVER!");
-        
-        mGameOverFont.drawString(x , y , "GAME OVER!", Color.red);
+
+        x += (width / 2) - mGameOverFont.getWidth("GAME OVER!") / 2;
+        y += (height / 2) - mGameOverFont.getHeight("GAME OVER!");
+
+        mGameOverFont.drawString(x, y, "GAME OVER!", Color.red);
     }
 
     private void drawHeaderText() {
-        float y = (Settings.PLAY_AREA_START_Y / 2) - (mGenericFont.getHeight("P")/ 2);
+        float y = (Settings.PLAY_AREA_START_Y / 2) - (mGenericFont.getHeight("P") / 2);
         float x = Settings.PLAY_AREA_START_X;
-        
+
         // Pontos
         mGenericFont.drawString(x, y, "Pontos: " + mPlayArea.getPlayer().getScore(), Color.black);
 
@@ -114,11 +111,11 @@ public class ViewPlayAreaGeom extends ArkanoidView {
                 + " - '" + mPlayArea.getLoadedLevel().getName() + "'";
         x = (Settings.DISPLAY_WIDTH / 2) - (mGenericFont.getWidth(tmpString) / 2);
         mGenericFont.drawString(x, y, tmpString, Color.black);
-        
+
         // Vidas
         tmpString = "Vidas: " + mPlayArea.getPlayer().getLifes();
         x = (Settings.DISPLAY_WIDTH - Settings.PLAY_AREA_START_X) - mGenericFont.getWidth(tmpString);
-        mGenericFont.drawString( x, y, tmpString, Color.black);
+        mGenericFont.drawString(x, y, tmpString, Color.black);
     }
 
     private void drawWalls() {
