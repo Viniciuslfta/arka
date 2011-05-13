@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package arkanoid;
 
 import arkanoid.controllers.ArkanoidController;
@@ -32,7 +28,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.SlickException;
 
-/**
+/** Classe que representa o motor do jogo.
  *
  * @author sPeC
  */
@@ -53,7 +49,7 @@ public class GameEngine implements Runnable {
     private ArkanoidView mCurrentView;
     private Menu mCurrentMenu;
 
-    /**
+    /** Constructor da classe.
      * 
      * @param _displayHeight Altura do ecrã
      * @param _displayWidth Largura do ecrã
@@ -70,6 +66,10 @@ public class GameEngine implements Runnable {
         }
     }
 
+    /** Configurações base.
+     * 
+     * @throws LWJGLException 
+     */
     private void setup() throws LWJGLException {
         // Display
         Display.setDisplayMode(new DisplayMode(Settings.DISPLAY_WIDTH, Settings.DISPLAY_HEIGHT));
@@ -89,6 +89,8 @@ public class GameEngine implements Runnable {
         initGL();
     }
 
+    /** Inicializa sistema gráfico 2D
+     */
     private void initGL() {
         // Inicialização 2D
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -117,6 +119,8 @@ public class GameEngine implements Runnable {
         Display.destroy();
     }
 
+    /** Instancia Area de Jogo e corre o jogo.
+     */
     @Override
     public void run() {
         PlayArea area = new PlayArea("level1.txt");
@@ -152,6 +156,8 @@ public class GameEngine implements Runnable {
 
     } // Run()
 
+    /** Verifica estado do jogo e aplica configurações necessárias específicas a certos estados.
+     */
     private void checkGameState() {
         if (!GameState.hasStateChanged()) {
             return;

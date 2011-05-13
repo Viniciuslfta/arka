@@ -4,8 +4,8 @@
  */
 package arkanoid;
 
-/**
- *
+/** Classe onde estão definidos os valores globais das configurações internas
+ *  
  * @author sPeC
  */
 public abstract class Settings {

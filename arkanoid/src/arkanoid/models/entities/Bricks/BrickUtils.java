@@ -4,7 +4,7 @@
  */
 package arkanoid.models.entities.Bricks;
 
-/**
+/** Classe 
  *
  * @author sPeC
  */
