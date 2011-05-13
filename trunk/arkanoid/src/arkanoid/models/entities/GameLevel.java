@@ -17,8 +17,10 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
+/** Classe que representa um nível.
+ * È composta pelo  numero do nivel e nome nivel,
+ * numero de vidas e pontuação inicial do jogador,
+ * velocidade a atribuir à bola e  tijolos.
  * @author sPeC
  */
 public class GameLevel {
@@ -36,38 +38,65 @@ public class GameLevel {
     private long mInitalPlayerScore;
     private int mLevelNumber;
 
+    /** Devolve número do nível.
+     * @return número do nível
+     */
     public int getLevelNumber() {
         return mLevelNumber;
     }
+
     private String mName;
 
+    /** Devolve nome do nível.
+     * @return nome do nível
+     */
     public String getName() {
         return mName;
     }
+    
     private String mNextLevelFilename;
-
+    
+    /** Devolve nome do ficheiro do nível seguinte.
+     * @return nome do ficheiro do nível seguinte 
+     */
     public String getNextLevelFilename() {
         return mNextLevelFilename;
     }
+    
     private float mBallVelocity;
 
+    /** Devolve velocidade da bola no nível actual.
+     * @return velocidade da bola
+     */
     public float getBallVelocity() {
         return mBallVelocity;
     }
+    
     private int mNumberOfBricks;
     private int mNumberDestroyedBricks;
 
+    /** Aumenta quantidade de Tijolos destruidos
+     */
     public void incNumberOfDestroyedBricks() {
         mNumberDestroyedBricks++;
     }
 
+    /** Verifica se todos os tijolos estão destruídos.
+     * @return true caso todos os tijolos estejam destruídos, false caso contrário
+     */
     public boolean isClear() {
         return mNumberDestroyedBricks == mNumberOfBricks;
     }
-    //
-    //
+
+    
     private Brick[][] mBricks = new Brick[Settings.MAX_BRICK_ROWS][Settings.MAX_BRICK_COLUMNS];
 
+    /** Devolve um tijolo que se encontre na posição pretendida.
+     * 
+     * @param _l linha pretendida
+     * @param _c coluna pretendida
+     * @return  Tijolo que se encontra na posição pretendida
+     */
     public Brick getBrick(int _l, int _c) {
         if (_l < 0 || _c < 0) {
             return null;
@@ -82,13 +111,20 @@ public class GameLevel {
     //
     // Indica se o nível foi carregado para memória ou não
     private boolean mIsLoaded;
-
+    
+    /** Devolve boolean que indica se o nível foi carregado para memória ou não.
+     * @return  true se nivel foi carregado para memória, false caso contrário
+     */
     public boolean isLoaded() {
         return mIsLoaded;
     }
 
-    //
-    //
+    /** Constructor da classe.
+     * 
+     * @param _filename nome do ficheiro do nivel a carregar
+     * @param _ball Bola
+     * @param _player Jogador
+     */
     public GameLevel(String _filename, Ball _ball, Player _player) {
         mIsLoaded = readLevelFile(_filename);
 
@@ -98,8 +134,11 @@ public class GameLevel {
         }
     }
 
-    //
-    //
+    /** Lê ficheiro de nível.
+     * 
+     * @param _filename nome do ficheiro
+     * @return true se ficheiro lido com sucesso, false caso contrário
+     */
     private boolean readLevelFile(String _filename) {
 
         String path = System.getProperty("user.dir") + "\\levels\\" + _filename;
@@ -113,8 +152,11 @@ public class GameLevel {
         return true;
     }
 
-    //
-    //
+    /** Processa ficheiro de nível linha a linha.
+     * 
+     * @param _file nome do ficheiro a processar
+     * @throws FileNotFoundException 
+     */
     public final void processLevelFileLineByLine(File _file) throws FileNotFoundException {
 
         // Usamos o FileReader em vez do File, porque não possivel fechar um File
@@ -140,8 +182,11 @@ public class GameLevel {
         }
     }
 
-    //
-    //
+    /** Processa linha de texto do ficheiro com informação acerca dos Tijolos e instancia-os.
+     * 
+     * @param aLine texto da linha a processar
+     * @param _curBricksLine linha a que pertencem o tijolos que vao ser instanciados
+     */
     private void processBricksLine(String aLine, int _curBricksLine) {
 
         int posX = Settings.BRICK_INTERVAL + Settings.PLAY_AREA_START_X;
@@ -151,6 +196,7 @@ public class GameLevel {
 
 
         for (int i = 0; i < Settings.MAX_BRICK_COLUMNS && i < aLine.length(); i++) {
+            //instancia Tijolo:
             this.mBricks[_curBricksLine][i] = BrickUtils.getBrickFromType(aLine.charAt(i), posX, posY);
             if (mBricks[_curBricksLine][i] != null) {
                 mBricks[_curBricksLine][i].setLocationOnPlayArea(_curBricksLine, i);
@@ -161,6 +207,11 @@ public class GameLevel {
         }
     }
 
+    /** Restablece nivel.
+     *  Restablece Tijolos, velocidade da bola e informação do jogador
+     * @param _ball Bola
+     * @param _player Jogador
+     */
     public final void reset(Ball _ball, Player _player) {
         for (int l = 0; l < Settings.MAX_BRICK_ROWS; l++) {
             for (int c = 0; c < Settings.MAX_BRICK_COLUMNS; c++) {
@@ -177,6 +228,11 @@ public class GameLevel {
 
     }
 
+    /** Extrai informação relevante de uma linha de informação do ficheiro. 
+     * 
+     * @param aLine linha de texto a processar
+     * @return texto extraído
+     */
     private String processInfoLine(String aLine) {
         Scanner scanner = new Scanner(aLine);
         scanner.useDelimiter("=");
@@ -189,11 +245,17 @@ public class GameLevel {
         return null;
     }
 
+    /** Restablece velocidade da bola.
+     * @param _ball Bola
+     */
     public void resetBallSpeed(Ball _ball) {
         _ball.setVelocityX(mBallVelocity);
         _ball.setVelocityY(-mBallVelocity);
     }
 
+    /** Restablece informação do jogador.
+     * @param _player Jogador
+     */
     public void resetPlayerInfo(Player _player) {
         _player.setScore(mInitalPlayerScore);
         _player.setLifes(mInitalLives);

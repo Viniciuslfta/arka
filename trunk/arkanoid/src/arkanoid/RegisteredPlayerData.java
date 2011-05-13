@@ -1,10 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package arkanoid;
 
-/**
+/** Classe que representa a informação de um Jogador Registado
+ *  É composta por um username a pelos níveis que já completou
  *
  * @author sPeC
  */

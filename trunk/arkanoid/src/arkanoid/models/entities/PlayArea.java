@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package arkanoid.models.entities;
 
 import arkanoid.GameState;
@@ -10,43 +6,73 @@ import arkanoid.Settings;
 import arkanoid.models.entities.Bricks.Brick;
 import arkanoid.models.entities.Wall.WallType;
 
-/**
- *
+/** Classe que representa Àrea de Jogo.
+ * É composta essencialmente pela Bola, Raquete , Paredes e Tijolos
  * @author sPeC
  */
 public class PlayArea {
 
     Wall mWalls[] = new Wall[3];
-
+    
+    /** Devolve o conjunto de paredes
+     * 
+     * @return array de paresdes 
+     */
     public Wall[] getWalls() {
         return mWalls;
     }
     Ball mBall;
 
+    /** Devolve Bola
+     * 
+     * @return Bola
+     */
     public Ball getBall() {
         return mBall;
     }
     Club mClub;
-
+    
+    /** Devolve Raquete
+     * 
+     * @return Raquete
+     */
     public Club getClub() {
         return mClub;
 
     }
     GameLevel mCurrentLevel;
 
+    /** Devolve Nivel actual
+     * 
+     * @return Nivel actual
+     */
     public GameLevel getCurrentLevel() {
         return mCurrentLevel;
     }
     private Player mPlayer;
-
+    
+    /** Devolve Jogador
+     * 
+     * @return Jogador
+     */
     public Player getPlayer() {
         return mPlayer;
     }
+    
 
+    /** Devolve centro da Area de Jogo (em X)
+     * 
+     * @return centro da area de jogo (em X)
+     */
     private int getPlayAreaCenterX() {
         return (Settings.DISPLAY_WIDTH - Settings.PLAY_AREA_START_X * 2) / 2;
     }
 
+    /** Constructor da classe
+     * Instancia paredes, bola, raquete e tijolos(GameLevel)
+     * 
+     * @param _firstLevel nome do ficheiro do primeiro nível
+     */
     public PlayArea(String _firstLevel) {
 
         //
@@ -77,6 +103,9 @@ public class PlayArea {
 
     }
 
+    /** Define comportamento tomado pelo jogo
+     * quando detecta que a Bola está fora dos limites do ecrã
+     */
     private void handleBallOutOfBounds() {
 
         mPlayer.removeLifes(1);
@@ -91,6 +120,8 @@ public class PlayArea {
         mCurrentLevel.resetBallSpeed(mBall);
     }
 
+    /** Define comportamento tomado pelo Jogo a cada iteração sua
+     */
     public void tick() {
 
         if (GameState.currentState() == GameStateType.RESTARTING_LEVEL) {
@@ -129,7 +160,11 @@ public class PlayArea {
             }
         }
     }
-
+    
+    /** Verifica colisões entre bola e tijolos e define o comportamento resultant.
+     * 
+     * @return true se existe colisão, false caso contrário
+     */
     private boolean checkBallBricksCollisions() {
 
         for (int l = 0; l < Settings.MAX_BRICK_ROWS; l++) {
@@ -167,7 +202,11 @@ public class PlayArea {
         }
         return false;
     }
-
+    
+    /** Verifica colisões entre Raquete e Paredes e define o comportamento resultante.
+     * 
+     * @return true se existe colisão, false caso contrário 
+     */
     private boolean checkClubWallsCollisions() {
         for (Wall w : mWalls) {
             if (w.isCollidingWith(mClub)) {
@@ -177,7 +216,9 @@ public class PlayArea {
         }
         return false;
     }
-
+    
+    /** Verifica colisões entre Paredes e Bola e define o comportamento resultante.
+     */
     private void checkBallWallsCollisions() {
         for (Wall w : mWalls) {
             if (w.isCollidingWith(mBall)) {
@@ -186,7 +227,11 @@ public class PlayArea {
             }
         }
     }
-
+    
+    /** Verifica colisões entre Bola e Raquete e define o comportamento resultante.
+     * 
+     * @return true se existe colisão, false caso contrário
+     */
     private boolean checkBallClubCollision() {
         // Taco e bola
         if (mClub.isCollidingWith(mBall) && !mBall.isGluedToClub()) {
@@ -206,6 +251,11 @@ public class PlayArea {
         return false;
     }
 
+    /** Analisa eventos do rato e actualiza raquete
+     * 
+     * @param _x posição do rato
+     * @param _clicked booleano que indica se o jogador clicou no rato
+     */
     public void parseMouse(float _x, boolean _clicked) {
 
         if (_clicked && mBall.isGluedToClub()) {
@@ -215,7 +265,7 @@ public class PlayArea {
         updateClubPos(_x);
     }
 
-    /**
+    /** Actualiza posição da Raquete
      * 
      * @param _x Posição do centro do taco
      */
@@ -234,12 +284,19 @@ public class PlayArea {
         }
     }
 
+    /** Permite alterar o nível em que o jogo se encontra
+     * 
+     * @param _filename nome do ficheiro do novo nível 
+     */
     public final void changeLevel(String _filename) {
         mCurrentLevel = new GameLevel(_filename, mBall, mPlayer);
 
         resetLevel();
     }
 
+    /** Restablece nível.
+     * Coloca a bola colada à raquete, centra raquete e restablece tijolos do nível 
+     */
     public final void resetLevel() {
 
         mBall.setIsGluedToClub(true);

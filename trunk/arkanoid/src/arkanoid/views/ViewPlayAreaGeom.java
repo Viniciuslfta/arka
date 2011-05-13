@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package arkanoid.views;
 
 import arkanoid.BoundingBox;
@@ -26,7 +22,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 
-/**
+/** Classe que define a Vista da Àrea de Jogo.
  *
  * @author sPeC
  */
@@ -36,6 +32,11 @@ public class ViewPlayAreaGeom extends ArkanoidView {
     UnicodeFont mGenericFont;
     UnicodeFont mGameOverFont;
 
+    /** Constructor da classe.
+     * 
+     * @param _playArea Modelo de Àrea de Jogo
+     * @throws SlickException 
+     */
     public ViewPlayAreaGeom(ModelPlayArea _playArea) throws SlickException {
         mPlayArea = _playArea;
 
@@ -47,16 +48,19 @@ public class ViewPlayAreaGeom extends ArkanoidView {
 
         // Fonte para o gameover
         mGameOverFont = new UnicodeFont("fonts\\JerseyLetters.ttf", 100, false, false);
-        mGameOverFont.addGlyphs("GAME OVR!");
+        mGameOverFont.addGlyphs("GAME OVER!");
         mGameOverFont.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
         mGameOverFont.loadGlyphs();
     }
+
 
     @Override
     public void update(Observable o, Object o1) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
+    
+    /** Renderiza entidades no ecrã.
+     */
     @Override
     public void render() {
 
@@ -82,6 +86,8 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         drawHeaderText();
     }
 
+    /** Desenha ecrã de Game Over.
+     */
     private void DrawGameOver() {
         float x = Settings.PLAY_AREA_START_X;
         float y = Settings.PLAY_AREA_START_Y;
@@ -99,6 +105,8 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         mGameOverFont.drawString(x, y, "GAME OVER!", Color.red);
     }
 
+    /** Desenha texto no cabeçalho (pontos, nivel, vidas).
+     */
     private void drawHeaderText() {
         float y = (Settings.PLAY_AREA_START_Y / 2) - (mGenericFont.getHeight("P") / 2);
         float x = Settings.PLAY_AREA_START_X;
@@ -118,6 +126,8 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         mGenericFont.drawString(x, y, tmpString, Color.black);
     }
 
+    /** Desenha paredes no ecrã.
+     */
     private void drawWalls() {
         Wall[] tmpWalls = mPlayArea.getWalls();
 
@@ -126,6 +136,8 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         }
     }
 
+    /** Desenha Tijolos no ecrã.
+     */
     private void drawBricks() {
 
         for (int l = 0; l < Settings.MAX_BRICK_ROWS; l++) {
@@ -139,7 +151,9 @@ public class ViewPlayAreaGeom extends ArkanoidView {
             }
         }
     }
-
+    
+    /** Desenha Raquete no ecrã.
+     */
     private void drawClub() {
 
         Club tmpClub = mPlayArea.getClub();
@@ -147,12 +161,19 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         drawQuad(tmpClub.getBoundingBox(), tmpClub.getColor());
     }
 
+    /** Desenha Bola no ecrã.
+     */
     private void drawBall() {
         Ball tmpBall = mPlayArea.getBall();
 
         drawQuad(tmpBall.getBoundingBox(), tmpBall.getColor());
     }
 
+    /**Desenha Poligono no ecrã.
+     * 
+     * @param _quad BoundingBox do elemento a desenhar
+     * @param _color Cor do poligono
+     */
     private void drawQuad(BoundingBox _quad, BaseColor _color) {
 
 
