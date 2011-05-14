@@ -8,9 +8,11 @@ import arkanoid.Settings;
 
 import arkanoid.models.ModelPlayArea;
 import arkanoid.models.entities.Ball;
+import arkanoid.models.entities.Bonus;
 import arkanoid.models.entities.Bricks.Brick;
 import arkanoid.models.entities.Club;
 import arkanoid.models.entities.Wall;
+import java.util.List;
 
 
 
@@ -74,11 +76,12 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         drawBricks();
         drawClub();
         drawBall();
-
+        drawBonus();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         if (GameState.currentState() == GameStateType.GAME_OVER) {
             DrawGameOver();
+            mPlayArea.getBonus().clear();
         }
 
 
@@ -189,5 +192,14 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         GL11.glEnd();
 
 
+    }
+    
+    private void drawBonus() {
+        List<Bonus> tmpBonus = mPlayArea.getBonus();
+        
+        for(Bonus bonus: tmpBonus){
+            drawQuad(bonus.getBoundingBox(),bonus.getColor() );
+        }
+        
     }
 }

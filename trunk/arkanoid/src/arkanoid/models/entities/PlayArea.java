@@ -6,6 +6,10 @@ import arkanoid.Settings;
 import arkanoid.models.entities.Bricks.Brick;
 import arkanoid.models.entities.Wall.WallType;
 
+import java.util.ArrayList;
+import java.util.List;
+import arkanoid.models.entities.Bonus;
+
 /** Classe que representa Àrea de Jogo.
  * É composta essencialmente pela Bola, Raquete , Paredes e Tijolos
  * @author sPeC
@@ -159,6 +163,16 @@ public class PlayArea {
                 mBall.updatePosition();
             }
         }
+        
+        //Bonus
+        if(mBonus.size()>0) {
+            for(Bonus bonus : mBonus) {
+                bonus.updatePosition();
+            }
+            handleBonusOutOfBounds();
+            checkClubBonusCollision();
+            
+        }
     }
     
     /** Verifica colisões entre bola e tijolos e define o comportamento resultant.
@@ -306,8 +320,44 @@ public class PlayArea {
         updateClubPos(x);
         // Coloca a bola centrada no taco
         mClub.placeBallAtCenter(mBall);
-
+        // Restablece largura 
+        mClub.setWidth(Settings.CLUB_WIDTH);
         // Reinicia o nível
         mCurrentLevel.reset(mBall, mPlayer);
+    }
+    
+    List<Bonus> mBonus = new ArrayList<Bonus>();
+
+    public List<Bonus> getBonus(){
+        return mBonus;
+    }
+    
+    public void addBonus(Bonus _bonus) {
+        mBonus.add(_bonus);
+    }
+
+    private boolean checkClubBonusCollision() {
+        boolean ret = false;
+        
+        for (Bonus bonus : mBonus) {
+            if (bonus.isCollidingWith(getClub())) {
+                bonus.onClubCollision(this);
+                mBonus.remove(bonus);
+                ret = true;
+                break;
+            }
+        }
+        
+        return ret;
+    }
+
+    private void handleBonusOutOfBounds() {
+        for (Bonus bonus : mBonus) {
+            if (bonus.isCollidingWith(getClub())) {
+                if (bonus.getY() > Settings.DISPLAY_HEIGHT) {
+                    mBonus.remove(bonus);
+                }
+            }
+        }
     }
 }

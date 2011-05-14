@@ -11,6 +11,8 @@ import arkanoid.models.entities.PlayArea;
 import arkanoid.models.entities.Player;
 import arkanoid.models.entities.Wall;
 
+import java.util.List;
+import arkanoid.models.entities.Bonus;
 /**
  *
  * @author sPeC
@@ -53,4 +55,9 @@ public class ModelPlayArea {
     {
         return mArea.getPlayer();
     }
+    
+    public List<Bonus> getBonus(){
+        return mArea.getBonus();
+    }
+    
 }

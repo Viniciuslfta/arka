@@ -3,6 +3,7 @@ package arkanoid.models.entities.Bricks;
 import arkanoid.BaseColor;
 import arkanoid.models.entities.PlayArea;
 
+import arkanoid.models.entities.Bonus;
 /** Representa um tijolo azul ( extensão de Brick )
  *
  * @author sPeC
@@ -19,6 +20,7 @@ public class BlueBrick extends Brick {
 
         if (!this.isActive()) {
             _area.getPlayer().addScorePoints(100);
+            _area.addBonus(new Bonus(getX(),getY()));
         }
 
     }
