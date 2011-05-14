@@ -34,4 +34,7 @@ public abstract class Settings {
     
     public static final int MENU_BTN_WIDTH = 200;
     public static final int MENU_BTN_HEIGHT = 50;
+    
+    public static final int BONUS_SIZE = 20;
+    public static final float BONUS_VELOCITY = 0.5f;
 }
