@@ -12,7 +12,7 @@ import arkanoid.models.entities.Player;
 import arkanoid.models.entities.Wall;
 
 import java.util.List;
-import arkanoid.models.entities.Bonus;
+import arkanoid.models.entities.Bonus.Bonus;
 /**
  *
  * @author sPeC
@@ -58,6 +58,10 @@ public class ModelPlayArea {
     
     public List<Bonus> getBonus(){
         return mArea.getBonus();
+    }
+    
+    public Bonus getActiveBonus() {
+        return mArea.getActiveBonus();
     }
     
 }
