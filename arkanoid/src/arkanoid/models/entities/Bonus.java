@@ -6,11 +6,14 @@ package arkanoid.models.entities;
 import arkanoid.Collidable;
 import arkanoid.Settings;
 import arkanoid.BaseColor;
+import arkanoid.ElapsedTime;
 /**
  *
  * @author sPeC
  */
 public class Bonus extends Collidable {
+    
+    private long mLastUpdate;
     
     private BaseColor mColor;
     
@@ -19,6 +22,7 @@ public class Bonus extends Collidable {
     public Bonus( float _x, float _y) {
         super(_x,_y,Settings.BONUS_SIZE,Settings.BONUS_SIZE);
         mColor = new BaseColor(1,1,1);
+        mLastUpdate = System.nanoTime();
     };
     
         
@@ -30,8 +34,13 @@ public class Bonus extends Collidable {
     }
     
     public void updatePosition() {
-        float y = (float) (getY() + Settings.BONUS_VELOCITY);
+           
+        double time = ElapsedTime.microsecondsSince(mLastUpdate);
+        
+        float y = (float) (getY() + (Settings.BONUS_VELOCITY * ElapsedTime.microsecondsSince(mLastUpdate)));
         super.updatePosition(this.getX(), y);
+        
+        mLastUpdate = System.nanoTime();
     }
     
     public void onClubCollision(PlayArea _area) {
