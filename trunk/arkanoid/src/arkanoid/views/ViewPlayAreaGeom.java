@@ -190,8 +190,6 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         GL11.glVertex2f(_quad.getX() + _quad.getWidth(), _quad.getY() + _quad.getHeight());
         GL11.glVertex2f(_quad.getX(), _quad.getY() + _quad.getHeight());
         GL11.glEnd();
-
-
     }
     
     private void drawBonus() {
