@@ -123,5 +123,16 @@ public class Ball extends Collidable {
 
         mLastUpdate = System.nanoTime();
         mColor = new BaseColor(1.0f, 1.0f, 0.0f);
+        mSticky = false;
+    }
+    
+    boolean mSticky;
+    
+    public boolean isSticky() {
+        return mSticky;
+    }
+    
+    public void setSticky(boolean _val) {
+        mSticky = _val;
     }
 }

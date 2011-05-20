@@ -8,7 +8,7 @@ import arkanoid.models.entities.Wall.WallType;
 
 import java.util.ArrayList;
 import java.util.List;
-import arkanoid.models.entities.Bonus;
+import arkanoid.models.entities.Bonus.Bonus;
 
 /** Classe que representa Àrea de Jogo.
  * É composta essencialmente pela Bola, Raquete , Paredes e Tijolos
@@ -249,6 +249,9 @@ public class PlayArea {
     private boolean checkBallClubCollision() {
         // Taco e bola
         if (mClub.isCollidingWith(mBall) && !mBall.isGluedToClub()) {
+            
+
+            
             float tmpVel = mBall.getVelocityX() + mClub.getDeltaX() * Settings.CLUB_SPEED_INC;
 
             if (tmpVel > mBall.getVelocityX()) {
@@ -259,6 +262,13 @@ public class PlayArea {
             mBall.setVelocityY(tmpVel);
 
             mBall.setY(mClub.getY() - Settings.BALL_SIZE);
+            
+            
+            if(mBall.isSticky()) {
+                mBall.setIsGluedToClub(true);
+            }
+                        
+                        
             return true;
         }
 
@@ -318,16 +328,18 @@ public class PlayArea {
         // Centra o taco no centro da área de jogo
         float x = getPlayAreaCenterX() - Settings.CLUB_WIDTH / 2;
         updateClubPos(x);
-        // Coloca a bola centrada no taco
-        mClub.placeBallAtCenter(mBall);
         // Restablece largura 
         mClub.setWidth(Settings.CLUB_WIDTH);
+        // Coloca a bola centrada no taco
+        mClub.placeBallAtCenter(mBall);
+
         // Reinicia o nível
         mCurrentLevel.reset(mBall, mPlayer);
     }
     
     List<Bonus> mBonus = new ArrayList<Bonus>();
 
+    
     public List<Bonus> getBonus(){
         return mBonus;
     }
@@ -341,6 +353,7 @@ public class PlayArea {
         
         for (Bonus bonus : mBonus) {
             if (bonus.isCollidingWith(getClub())) {
+              
                 bonus.onClubCollision(this);
                 mBonus.remove(bonus);
                 ret = true;
@@ -359,5 +372,16 @@ public class PlayArea {
                 }
             }
         }
+    }
+    
+    
+    Bonus mActiveBonus;  
+    
+    public void setActiveBonus(Bonus _bonus) {
+        mActiveBonus = _bonus;
+    }
+
+    public Bonus getActiveBonus() {
+        return mActiveBonus;
     }
 }

@@ -8,7 +8,7 @@ import arkanoid.Settings;
 
 import arkanoid.models.ModelPlayArea;
 import arkanoid.models.entities.Ball;
-import arkanoid.models.entities.Bonus;
+import arkanoid.models.entities.Bonus.Bonus;
 import arkanoid.models.entities.Bricks.Brick;
 import arkanoid.models.entities.Club;
 import arkanoid.models.entities.Wall;
