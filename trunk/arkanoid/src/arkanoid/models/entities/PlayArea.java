@@ -17,7 +17,7 @@ import arkanoid.models.entities.Bonus.Bonus;
 public class PlayArea {
 
     Wall mWalls[] = new Wall[3];
-    
+
     /** Devolve o conjunto de paredes
      * 
      * @return array de paresdes 
@@ -35,7 +35,7 @@ public class PlayArea {
         return mBall;
     }
     Club mClub;
-    
+
     /** Devolve Raquete
      * 
      * @return Raquete
@@ -54,7 +54,7 @@ public class PlayArea {
         return mCurrentLevel;
     }
     private Player mPlayer;
-    
+
     /** Devolve Jogador
      * 
      * @return Jogador
@@ -62,7 +62,6 @@ public class PlayArea {
     public Player getPlayer() {
         return mPlayer;
     }
-    
 
     /** Devolve centro da Area de Jogo (em X)
      * 
@@ -70,6 +69,16 @@ public class PlayArea {
      */
     private int getPlayAreaCenterX() {
         return (Settings.DISPLAY_WIDTH - Settings.PLAY_AREA_START_X * 2) / 2;
+    }
+    Bonus mCurrentBonus;
+    List<Bonus> mBonus = new ArrayList<Bonus>();
+
+    public List<Bonus> getBonus() {
+        return mBonus;
+    }
+
+    public void addBonus(Bonus _bonus) {
+        mBonus.add(_bonus);
     }
 
     /** Constructor da classe
@@ -163,18 +172,13 @@ public class PlayArea {
                 mBall.updatePosition();
             }
         }
-        
+
         //Bonus
-        if(mBonus.size()>0) {
-            for(Bonus bonus : mBonus) {
-                bonus.updatePosition();
-            }
-            handleBonusOutOfBounds();
-            checkClubBonusCollision();
-            
-        }
+        checkClubBonusCollision();
+        checkBonusOutOfBounds();
+
     }
-    
+
     /** Verifica colisões entre bola e tijolos e define o comportamento resultant.
      * 
      * @return true se existe colisão, false caso contrário
@@ -216,7 +220,7 @@ public class PlayArea {
         }
         return false;
     }
-    
+
     /** Verifica colisões entre Raquete e Paredes e define o comportamento resultante.
      * 
      * @return true se existe colisão, false caso contrário 
@@ -230,7 +234,7 @@ public class PlayArea {
         }
         return false;
     }
-    
+
     /** Verifica colisões entre Paredes e Bola e define o comportamento resultante.
      */
     private void checkBallWallsCollisions() {
@@ -241,7 +245,7 @@ public class PlayArea {
             }
         }
     }
-    
+
     /** Verifica colisões entre Bola e Raquete e define o comportamento resultante.
      * 
      * @return true se existe colisão, false caso contrário
@@ -336,41 +340,42 @@ public class PlayArea {
         // Reinicia o nível
         mCurrentLevel.reset(mBall, mPlayer);
     }
-    
-    List<Bonus> mBonus = new ArrayList<Bonus>();
 
-    
-    public List<Bonus> getBonus(){
-        return mBonus;
-    }
-    
-    public void addBonus(Bonus _bonus) {
-        mBonus.add(_bonus);
-    }
 
-    private boolean checkClubBonusCollision() {
-        boolean ret = false;
-        
+    private void checkClubBonusCollision() {
+        List<Bonus> removeList = new ArrayList<Bonus>();
+
         for (Bonus bonus : mBonus) {
-            if (bonus.isCollidingWith(getClub())) {
+            bonus.updatePosition();
+            if (bonus.isCollidingWith(mClub)) {
               
                 bonus.onClubCollision(this);
-                mBonus.remove(bonus);
-                ret = true;
-                break;
+                
+                if( mCurrentBonus != null){
+                    mCurrentBonus.undoEffect(this);   
+                }
+                
+                mCurrentBonus = bonus;
+                removeList.add(bonus);
             }
         }
-        
-        return ret;
+
+        for (Bonus bonus : removeList) {
+            mBonus.remove(bonus);
+        }
     }
 
-    private void handleBonusOutOfBounds() {
+    private void checkBonusOutOfBounds() {
+        List<Bonus> removeList = new ArrayList<Bonus>();
+
         for (Bonus bonus : mBonus) {
-            if (bonus.isCollidingWith(getClub())) {
-                if (bonus.getY() > Settings.DISPLAY_HEIGHT) {
-                    mBonus.remove(bonus);
-                }
+            if (bonus.getY() > Settings.DISPLAY_HEIGHT) {
+                removeList.add(bonus);
             }
+        }
+
+        for (Bonus bonus : removeList) {
+            mBonus.remove(bonus);
         }
     }
     

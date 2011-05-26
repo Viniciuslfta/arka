@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package arkanoid.models.entities.Bonus;
 
 import arkanoid.BaseColor;
@@ -5,24 +9,17 @@ import arkanoid.models.entities.PlayArea;
 
 /**
  *
- * @author Filipe
+ * @author sPeC
  */
+public class BonusGlue extends Bonus{
 
-
-public class BonusGlue extends Bonus {
-    
-    public BonusGlue(float _x, float _y){
-        super(_x, _y, new BaseColor(0.0f,0.0f,1.0f));
+    public BonusGlue(float _x, float _y) {
+        super(_x, _y, new BaseColor(0,0,1));
     }
-    
-    
+
     @Override
     public void onClubCollision(PlayArea _area) {
-        _area.getBall().setSticky(true);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
-    @Override
-    public void undo(PlayArea _area) {
-        _area.getBall().setSticky(false);
-    }
 }
