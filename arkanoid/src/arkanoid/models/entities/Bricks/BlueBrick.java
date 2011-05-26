@@ -1,11 +1,9 @@
 package arkanoid.models.entities.Bricks;
 
 import arkanoid.BaseColor;
-import arkanoid.models.entities.Bonus.BonusCalm;
-import arkanoid.models.entities.Bonus.BonusExpand;
-import arkanoid.models.entities.Bonus.BonusGlue;
-import arkanoid.models.entities.Bonus.BonusLife;
+
 import arkanoid.models.entities.PlayArea;
+import arkanoid.models.entities.Bonus.BonusUtils;
 
 /** Representa um tijolo azul ( extensão de Brick )
  *
@@ -23,23 +21,7 @@ public class BlueBrick extends Brick {
 
         if (!this.isActive()) {
             _area.getPlayer().addScorePoints(100);
-            
-            //gera bonus
-            int random = (int)(Math.random()*3);
-            switch (random) {
-                case 0: //bonus cola
-                    _area.addBonus(new BonusGlue(getX(),getY()));
-                    break;
-                case 1: //bonus expansao
-                    _area.addBonus(new BonusExpand(getX(),getY()));
-                    break;
-                case 2: //bonus vida
-                    _area.addBonus(new BonusLife(getX(),getY()));
-                    break;
-                case 3: //bonus calma
-                    _area.addBonus(new BonusCalm(getX(),getY()));
-                    break;
-            } 
+            _area.addBonus(BonusUtils.getRandomBonus(getX(),getY()));
         }
     }
 
