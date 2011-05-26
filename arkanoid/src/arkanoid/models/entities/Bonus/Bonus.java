@@ -41,5 +41,8 @@ public abstract class Bonus extends Collidable {
 
     abstract public void onClubCollision(PlayArea _area);
 
-    abstract public void undo(PlayArea _Area);
+    public void undoEffect(PlayArea _Area)
+    {
+        
+    }
 }
