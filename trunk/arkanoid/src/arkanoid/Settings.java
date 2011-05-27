@@ -30,6 +30,7 @@ public abstract class Settings {
     public static final int CLUB_LOC_Y = DISPLAY_HEIGHT - 100;
     public static final int CLUB_WIDTH = 100;
     public static final int CLUB_HEIGHT = 20;
+    public static final float CLUB_KEY_MOVE_SPEED = 1.0f;
     public static final float CLUB_SPEED_INC = 0.05f;
     
     public static final int MENU_BTN_WIDTH = 200;
