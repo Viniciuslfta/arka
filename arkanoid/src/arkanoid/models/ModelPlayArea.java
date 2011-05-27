@@ -29,6 +29,10 @@ public class ModelPlayArea {
         mArea.tick();
     }
 
+    public void parseKey(int _key) {
+        mArea.parseKey(_key);
+    }
+        
     public void parseMouse(int _x, int _y, boolean _clicked) {
         mArea.parseMouse(_x, _clicked);
     }

@@ -1,5 +1,6 @@
 package arkanoid.models.entities;
 
+import arkanoid.ElapsedTime;
 import arkanoid.GameState;
 import arkanoid.GameState.GameStateType;
 import arkanoid.Settings;
@@ -9,6 +10,8 @@ import arkanoid.models.entities.Wall.WallType;
 import java.util.ArrayList;
 import java.util.List;
 import arkanoid.models.entities.Bonus.Bonus;
+
+import org.lwjgl.input.Keyboard;
 
 /** Classe que representa Àrea de Jogo.
  * É composta essencialmente pela Bola, Raquete , Paredes e Tijolos
@@ -253,9 +256,9 @@ public class PlayArea {
     private boolean checkBallClubCollision() {
         // Taco e bola
         if (mClub.isCollidingWith(mBall) && !mBall.isGluedToClub()) {
-            
 
-            
+
+
             float tmpVel = mBall.getVelocityX() + mClub.getDeltaX() * Settings.CLUB_SPEED_INC;
 
             if (tmpVel > mBall.getVelocityX()) {
@@ -266,17 +269,41 @@ public class PlayArea {
             mBall.setVelocityY(tmpVel);
 
             mBall.setY(mClub.getY() - Settings.BALL_SIZE);
-            
-            
-            if(mBall.isSticky()) {
+
+
+            if (mBall.isSticky()) {
                 mBall.setIsGluedToClub(true);
             }
-                        
-                        
+
+
             return true;
         }
 
         return false;
+    }
+
+    public void parseKey(int _key) {
+        switch (_key) {
+            case Keyboard.KEY_LEFT:
+            case Keyboard.KEY_RIGHT: {
+                float x = mClub.getX() + mClub.getWidth() / 2;
+
+                if (Keyboard.KEY_LEFT == _key) {
+                    x -= Settings.CLUB_KEY_MOVE_SPEED;
+                } else {
+                    x += Settings.CLUB_KEY_MOVE_SPEED;
+                }
+                updateClubPos(x);
+            }
+            break;
+
+            case Keyboard.KEY_SPACE: {
+                if (mBall.isGluedToClub()) {
+                    mBall.setIsGluedToClub(false);
+                }
+            }
+            break;
+        }
     }
 
     /** Analisa eventos do rato e actualiza raquete
@@ -341,20 +368,19 @@ public class PlayArea {
         mCurrentLevel.reset(mBall, mPlayer);
     }
 
-
     private void checkClubBonusCollision() {
         List<Bonus> removeList = new ArrayList<Bonus>();
 
         for (Bonus bonus : mBonus) {
             bonus.updatePosition();
             if (bonus.isCollidingWith(mClub)) {
-              
+
                 bonus.onClubCollision(this);
-                
-                if( mCurrentBonus != null){
-                    mCurrentBonus.undoEffect(this);   
+
+                if (mCurrentBonus != null) {
+                    mCurrentBonus.undoEffect(this);
                 }
-                
+
                 mCurrentBonus = bonus;
                 removeList.add(bonus);
             }
@@ -378,10 +404,8 @@ public class PlayArea {
             mBonus.remove(bonus);
         }
     }
-    
-    
-    Bonus mActiveBonus;  
-    
+    Bonus mActiveBonus;
+
     public void setActiveBonus(Bonus _bonus) {
         mActiveBonus = _bonus;
     }
