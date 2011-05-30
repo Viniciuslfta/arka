@@ -60,11 +60,12 @@ public class GameAreaController implements ArkanoidController {
 
     private void processMouse() {
 
-        if (MouseLastX != Mouse.getX() || MouseLastY != Mouse.getY()) {
+        if (MouseLastX != Mouse.getX() || MouseLastY != Mouse.getY() ||Mouse.isButtonDown(0)) {
             mModel.parseMouse(Mouse.getX(), Mouse.getY(), Mouse.isButtonDown(0));
             MouseLastX = Mouse.getX();
             MouseLastY = Mouse.getY();
         }
+        
 
     }
 

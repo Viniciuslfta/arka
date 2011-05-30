@@ -375,11 +375,13 @@ public class PlayArea {
             bonus.updatePosition();
             if (bonus.isCollidingWith(mClub)) {
 
-                bonus.onClubCollision(this);
+                
 
                 if (mCurrentBonus != null) {
                     mCurrentBonus.undoEffect(this);
                 }
+
+                bonus.onClubCollision(this);
 
                 mCurrentBonus = bonus;
                 removeList.add(bonus);

@@ -19,7 +19,7 @@ public class BonusGlue extends Bonus{
 
     @Override
     public void onClubCollision(PlayArea _area) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }
