@@ -3,27 +3,29 @@
  * and open the template in the editor.
  */
 package arkanoid.models.entities.Bonus;
-
 import arkanoid.BaseColor;
+import arkanoid.Settings;
 import arkanoid.models.entities.PlayArea;
 
 /**
  *
- * @author sPeC
+ * @author Filipe
  */
-public class BonusGlue extends Bonus{
-
-    public BonusGlue(float _x, float _y) {
-        super(_x, _y, new BaseColor(0,0,1));
+public class BonusInvert extends Bonus {
+ 
+    
+    public BonusInvert(float _x, float _y) {
+        super(_x, _y, new BaseColor(0.5f,0.5f,0.5f));
     }
 
     @Override
     public void onClubCollision(PlayArea _area) {
-        _area.getBall().setSticky(true);
+        _area.setClubKeyMoveSpeed(Settings.CLUB_KEY_MOVE_SPEED*(-1));
     }
+    
     
     @Override
     public void undoEffect(PlayArea _area) {
-        _area.getBall().setSticky(false);
+        _area.setClubKeyMoveSpeed(Settings.CLUB_KEY_MOVE_SPEED);
     }
 }

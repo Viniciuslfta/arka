@@ -6,6 +6,7 @@ package arkanoid.models.entities.Bricks;
 
 import arkanoid.BaseColor;
 import arkanoid.models.entities.PlayArea;
+import java.awt.Point;
 
 /** Representa um tijolo vermelho ( extensão de Brick )
  *
@@ -32,6 +33,27 @@ public class RedBrick extends Brick {
 
         if (!this.isActive()) {
             _area.getPlayer().addScorePoints(100);
+            
+            Point tempLocation = getLocationOnPlayArea();
+            
+            int linhaActual = tempLocation.x-1;
+            int colunaActual = tempLocation.y-1;
+            
+            linhaActual = linhaActual >=0 ? linhaActual : 0;
+           colunaActual = colunaActual >=0 ? colunaActual : 0;
+            
+            mIsActive=false;
+            for(int i=0;i<3;i++) {
+                for(int j=0;j<3;j++) {
+                    Brick tempBrick = _area.getCurrentLevel().getBrick(linhaActual+i, colunaActual+j);
+                    
+                    if(tempBrick!=null && tempBrick.isActive()) {
+                        tempBrick.onBallCollision(_area);
+                    }
+                    
+                }
+            }        
+    
         }
     }
 }

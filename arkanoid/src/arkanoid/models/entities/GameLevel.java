@@ -108,7 +108,8 @@ public class GameLevel {
 
         return mBricks[_l][_c];
     }
-    //
+    
+    
     // Indica se o nível foi carregado para memória ou não
     private boolean mIsLoaded;
     
