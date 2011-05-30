@@ -13,7 +13,7 @@ public class BonusUtils {
     public static Bonus getRandomBonus(float _posX, float _posY) {
 
         // TODO: Adicionar o bonus nosso
-        int num = (int) (Math.random() * 4);
+        int num = (int) (Math.random() * 5);
 
         switch (num) {
             case 0:
@@ -25,7 +25,7 @@ public class BonusUtils {
             case 3:
                 return new BonusSlowDown(_posX, _posY);
             default:
-                return new BonusSlowDown(_posX, _posY);
+                return new BonusInvert(_posX, _posY);
         }
     }
 }

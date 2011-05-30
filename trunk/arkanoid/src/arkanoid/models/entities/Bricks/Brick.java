@@ -31,7 +31,7 @@ public abstract class Brick extends Collidable {
     public BaseColor getColor() {
         return mColor;
     }
-    private boolean mIsActive;
+    protected boolean mIsActive;
 
     /** Retorna um booleano que indica se o tijolo está activo ou não.
      * 
@@ -66,6 +66,9 @@ public abstract class Brick extends Collidable {
         mLocationOnPlayArea = new Point(_linha, _col);
     }
     
+    public Point getLocationOnPlayArea() {
+        return mLocationOnPlayArea;
+    }
     /** Função abstracta onde será definido o efeito da colisão da Bola com o tijolo.
      * 
      * @param _area Area de jogo a que pertence o tijolo

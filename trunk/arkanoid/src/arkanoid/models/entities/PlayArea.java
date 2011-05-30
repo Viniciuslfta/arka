@@ -1,6 +1,5 @@
 package arkanoid.models.entities;
 
-import arkanoid.ElapsedTime;
 import arkanoid.GameState;
 import arkanoid.GameState.GameStateType;
 import arkanoid.Settings;
@@ -10,6 +9,7 @@ import arkanoid.models.entities.Wall.WallType;
 import java.util.ArrayList;
 import java.util.List;
 import arkanoid.models.entities.Bonus.Bonus;
+import arkanoid.models.entities.Bonus.BonusInvert;
 
 import org.lwjgl.input.Keyboard;
 
@@ -18,6 +18,15 @@ import org.lwjgl.input.Keyboard;
  * @author sPeC
  */
 public class PlayArea {
+    float mClubKeyMoveSpeed = Settings.CLUB_KEY_MOVE_SPEED;
+
+    public float getClubKeyMoveSpeed() {
+        return mClubKeyMoveSpeed;
+    }
+
+    public void setClubKeyMoveSpeed(float _ClubKeyMoveSpeed) {
+        this.mClubKeyMoveSpeed = _ClubKeyMoveSpeed;
+    }
 
     Wall mWalls[] = new Wall[3];
 
@@ -37,6 +46,8 @@ public class PlayArea {
     public Ball getBall() {
         return mBall;
     }
+
+    
     Club mClub;
 
     /** Devolve Raquete
@@ -286,12 +297,13 @@ public class PlayArea {
         switch (_key) {
             case Keyboard.KEY_LEFT:
             case Keyboard.KEY_RIGHT: {
+                
                 float x = mClub.getX() + mClub.getWidth() / 2;
 
-                if (Keyboard.KEY_LEFT == _key) {
-                    x -= Settings.CLUB_KEY_MOVE_SPEED;
+                if (Keyboard.KEY_LEFT == _key ) {
+                    x -= mClubKeyMoveSpeed;
                 } else {
-                    x += Settings.CLUB_KEY_MOVE_SPEED;
+                    x += mClubKeyMoveSpeed;
                 }
                 updateClubPos(x);
             }
@@ -316,7 +328,13 @@ public class PlayArea {
         if (_clicked && mBall.isGluedToClub()) {
             mBall.setIsGluedToClub(false);
         }
-
+        if(mCurrentBonus instanceof BonusInvert)
+        {
+            _x =_x - Settings.DISPLAY_WIDTH /2 ;
+            _x = _x * (-1);
+            _x += Settings.DISPLAY_WIDTH/2;
+            
+        }
         updateClubPos(_x);
     }
 
