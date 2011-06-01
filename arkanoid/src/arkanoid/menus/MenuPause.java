@@ -43,7 +43,6 @@ public class MenuPause extends Menu {
 
         tmpOption = new JButton("Sair");
         tmpOption.addActionListener(new ExitListener());
-        tmpOption.setEnabled(false);
         this.addOption(tmpOption);
 
         
@@ -86,11 +85,10 @@ public class MenuPause extends Menu {
     }
     
         class ExitListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Sair"
-           
+           System.exit(0);
         }
     }
 }

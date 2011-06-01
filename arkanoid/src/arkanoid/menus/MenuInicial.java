@@ -32,6 +32,14 @@ public class MenuInicial extends Menu {
         tmpOption.setEnabled(false);
         this.addOption(tmpOption);
 
+        tmpOption = new JButton("Criar Registo");
+        tmpOption.addActionListener(new FastRestarListener());
+        this.addOption(tmpOption);
+        
+        tmpOption = new JButton("Login");
+        tmpOption.addActionListener(new FastRestarListener());
+        this.addOption(tmpOption);
+        
         tmpOption = new JButton("Reinicio Rápido");
         tmpOption.addActionListener(new FastRestarListener());
         this.addOption(tmpOption);
@@ -72,22 +80,42 @@ public class MenuInicial extends Menu {
             // reacção associada ao botão "Ler Jogo"
         }
     }
-
-    class ShowScoreListener implements ActionListener {
+    
+    class CreateAccountListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            // reacção associada ao botão "Ver Pontuação"
+            // reacção associada ao botão "Criar Registo"
+        }
+    }
+
+    class LoginListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // reacção associada ao botão "Login"
            
 
         }
     }
 
+        class ShowScoreListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // reacção associada ao botão "Mostrar Pontuação"
+           
+
+        }
+    }
+        
     class ExitListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Sair"
+            
+            System.exit(0);
         }
     }
 }

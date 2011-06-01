@@ -21,7 +21,7 @@ public class WhiteBrick extends Brick {
     public WhiteBrick(int _x, int _y) {
         super(_x, _y, 1, new BaseColor(1.0f, 1.0f, 1.0f));
     }
-    
+
     /** Implementa função que define efeito provocado pela colisão da Bola no Tijolo
      * 
      * @param _area Area de jogo a que pertence o Tijolo 
@@ -30,9 +30,8 @@ public class WhiteBrick extends Brick {
     public void onBallCollision(PlayArea _area) {
         super.onBallCollision(_area.getBall());
 
-        if (!this.isActive()) {
-            _area.getPlayer().addScorePoints(100);
-        }
+        _area.getPlayer().addScorePoints(100);
+
 
     }
 }
