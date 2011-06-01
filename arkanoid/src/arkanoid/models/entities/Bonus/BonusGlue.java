@@ -19,9 +19,9 @@ public class BonusGlue extends Bonus{
 
     @Override
     public void onClubCollision(PlayArea _area) {
+
         _area.getBall().setSticky(true);
     }
-    
     @Override
     public void undoEffect(PlayArea _area) {
         _area.getBall().setSticky(false);
