@@ -18,6 +18,7 @@ import org.lwjgl.input.Keyboard;
  * @author sPeC
  */
 public class PlayArea {
+
     float mClubKeyMoveSpeed = Settings.CLUB_KEY_MOVE_SPEED;
 
     public float getClubKeyMoveSpeed() {
@@ -27,7 +28,6 @@ public class PlayArea {
     public void setClubKeyMoveSpeed(float _ClubKeyMoveSpeed) {
         this.mClubKeyMoveSpeed = _ClubKeyMoveSpeed;
     }
-
     Wall mWalls[] = new Wall[3];
 
     /** Devolve o conjunto de paredes
@@ -46,8 +46,6 @@ public class PlayArea {
     public Ball getBall() {
         return mBall;
     }
-
-    
     Club mClub;
 
     /** Devolve Raquete
@@ -134,6 +132,9 @@ public class PlayArea {
      * quando detecta que a Bola está fora dos limites do ecrã
      */
     private void handleBallOutOfBounds() {
+
+        mCurrentBonus.undoEffect(this);
+        mCurrentBonus = null;
 
         mPlayer.removeLifes(1);
         if (mPlayer.getLifes() == 0) {
@@ -297,10 +298,10 @@ public class PlayArea {
         switch (_key) {
             case Keyboard.KEY_LEFT:
             case Keyboard.KEY_RIGHT: {
-                
+
                 float x = mClub.getX() + mClub.getWidth() / 2;
 
-                if (Keyboard.KEY_LEFT == _key ) {
+                if (Keyboard.KEY_LEFT == _key) {
                     x -= mClubKeyMoveSpeed;
                 } else {
                     x += mClubKeyMoveSpeed;
@@ -328,12 +329,11 @@ public class PlayArea {
         if (_clicked && mBall.isGluedToClub()) {
             mBall.setIsGluedToClub(false);
         }
-        if(mCurrentBonus instanceof BonusInvert)
-        {
-            _x =_x - Settings.DISPLAY_WIDTH /2 ;
+        if (mCurrentBonus instanceof BonusInvert) {
+            _x = _x - Settings.DISPLAY_WIDTH / 2;
             _x = _x * (-1);
-            _x += Settings.DISPLAY_WIDTH/2;
-            
+            _x += Settings.DISPLAY_WIDTH / 2;
+
         }
         updateClubPos(_x);
     }
@@ -393,7 +393,7 @@ public class PlayArea {
             bonus.updatePosition();
             if (bonus.isCollidingWith(mClub)) {
 
-                
+
 
                 if (mCurrentBonus != null) {
                     mCurrentBonus.undoEffect(this);

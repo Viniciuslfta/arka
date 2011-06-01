@@ -19,10 +19,9 @@ public class BlueBrick extends Brick {
     public void onBallCollision(PlayArea _area) {
         super.onBallCollision(_area.getBall());
 
-        if (!this.isActive()) {
-            _area.getPlayer().addScorePoints(100);
-            _area.addBonus(BonusUtils.getRandomBonus(getX(),getY()));
-        }
+        _area.getPlayer().addScorePoints(100);
+        _area.addBonus(BonusUtils.getRandomBonus(getX(), getY()));
+
     }
 
     /** Constructor da classe.
