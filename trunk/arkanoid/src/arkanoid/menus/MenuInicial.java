@@ -6,6 +6,8 @@ package arkanoid.menus;
 
 import arkanoid.GameState;
 import arkanoid.GameState.GameStateType;
+import arkanoid.menus.MenuPause.ResumeListener;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -14,56 +16,52 @@ import javax.swing.JButton;
  *
  * @author sPeC
  */
-public class MenuPause extends Menu {
+public class MenuInicial extends Menu {
 
-    public MenuPause(String _title) {
-        super(_title);
+    public MenuInicial(String string) throws HeadlessException {
+        super(string);
 
         JButton tmpOption;
 
-        if (GameState.currentState() != GameStateType.GAME_OVER) {
-
-            tmpOption = new JButton("Resumir");
-            tmpOption.addActionListener(new ResumeListener());
-            this.addOption(tmpOption);
-
-            tmpOption = new JButton("Guardar Jogo");
-            tmpOption.addActionListener(new SaveGameListener());
-            this.addOption(tmpOption);
-        }
+        tmpOption = new JButton("Novo Jogo");
+        tmpOption.addActionListener(new NewGameListener());
+        this.addOption(tmpOption);
 
         tmpOption = new JButton("Ler Jogo");
         tmpOption.addActionListener(new LoadGameListener());
         tmpOption.setEnabled(false);
         this.addOption(tmpOption);
 
-        tmpOption = new JButton("Reiniciar Nivel");
-        tmpOption.addActionListener(new ResetLevelListener());
+        tmpOption = new JButton("Reinicio Rápido");
+        tmpOption.addActionListener(new FastRestarListener());
         this.addOption(tmpOption);
 
+        tmpOption = new JButton("Pontuação");
+        tmpOption.addActionListener(new ShowScoreListener());
+        this.addOption(tmpOption);
+        
         tmpOption = new JButton("Sair");
         tmpOption.addActionListener(new ExitListener());
-        tmpOption.setEnabled(false);
         this.addOption(tmpOption);
 
-        
+
         this.presentOptions(250);
     }
 
-
-    class ResumeListener implements ActionListener {
+    class FastRestarListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            // reacção associada ao botão "Resumir"
+            // reacção associada ao botão "Reinicio Rápido"
         }
     }
 
-    class SaveGameListener implements ActionListener {
+    class NewGameListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            // reacção associada ao botão "Guardar Jogo"
+            // reacção associada ao botão "Novo Jogo"
+            GameState.changeState(GameStateType.PLAYING);
         }
     }
 
@@ -75,22 +73,21 @@ public class MenuPause extends Menu {
         }
     }
 
-    class ResetLevelListener implements ActionListener {
+    class ShowScoreListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            // reacção associada ao botão "Reiniciar Nivel"
-             GameState.changeState(GameStateType.RESTARTING_LEVEL);
-            
+            // reacção associada ao botão "Ver Pontuação"
+           
+
         }
     }
-    
-        class ExitListener implements ActionListener {
+
+    class ExitListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Sair"
-           
         }
     }
 }

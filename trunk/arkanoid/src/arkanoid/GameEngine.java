@@ -2,11 +2,14 @@ package arkanoid;
 
 import arkanoid.controllers.ArkanoidController;
 import arkanoid.controllers.GameAreaController;
+import arkanoid.controllers.MainMenuController;
 import arkanoid.menus.Menu;
+import arkanoid.menus.MenuInicial;
 import arkanoid.menus.MenuPause;
 import arkanoid.models.ModelPlayArea;
 import arkanoid.models.entities.PlayArea;
 import arkanoid.views.ArkanoidView;
+import arkanoid.views.ViewMainMenu;
 import arkanoid.views.ViewPlayAreaGeom;
 
 
@@ -123,16 +126,8 @@ public class GameEngine implements Runnable {
      */
     @Override
     public void run() {
-        PlayArea area = new PlayArea("level1.txt");
-        ModelPlayArea mArea = new ModelPlayArea(area);
 
-        mCurrentController = new GameAreaController(mArea);
-        try {
-            mCurrentView = new ViewPlayAreaGeom(mArea);
-        } catch (SlickException ex) {
-            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-            mErrorsOnInit = true;
-        }
+        GameState.changeState(GameState.GameStateType.MAIN_MENU);
 
         if (this.mErrorsOnInit) {
             return;
@@ -176,6 +171,29 @@ public class GameEngine implements Runnable {
                     mCurrentMenu.dispose();
                     mCurrentMenu = null;
                     Mouse.setGrabbed(true);
+                }
+                break;
+
+            case MAIN_MENU:
+                mCurrentMenu = new MenuInicial("Menu Inicial");
+                mCurrentController = new MainMenuController();
+                mCurrentView = new ViewMainMenu();
+                Mouse.setGrabbed(false);
+                break;
+
+            case PLAYING:
+                if (mCurrentMenu != null) {
+                    mCurrentMenu.dispose();
+                    mCurrentMenu = null;
+                    Mouse.setGrabbed(true);
+
+                    ModelPlayArea mArea = new ModelPlayArea(new PlayArea("level1.txt"));
+                    mCurrentController = new GameAreaController(mArea);
+                    try {
+                        mCurrentView = new ViewPlayAreaGeom(mArea);
+                    } catch (SlickException ex) {
+                        Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 break;
         }
