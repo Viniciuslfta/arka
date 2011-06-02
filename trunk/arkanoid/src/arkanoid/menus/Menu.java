@@ -24,11 +24,14 @@ import org.lwjgl.opengl.Display;
  */
 public abstract class Menu extends JFrame {
 
-    public void setPlayArea(ModelPlayArea m) {
+    public ModelPlayArea getModelPlayArea() {
+        return mPlayArea;
+    }
+
+    public void setModelPlayArea(ModelPlayArea m) {
         mPlayArea = m;
     }
     ModelPlayArea mPlayArea;
-    
     List<JButton> mOptions = new ArrayList<JButton>();
     private static Font mFont = new Font("Verdana", Font.PLAIN, 12);
 
