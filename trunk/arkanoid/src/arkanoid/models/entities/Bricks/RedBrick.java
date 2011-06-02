@@ -32,6 +32,7 @@ public class RedBrick extends Brick {
     public void onBallCollision(PlayArea _area) {
         super.onBallCollision(_area.getBall());
 
+
         _area.getPlayer().addScorePoints(100);
 
         Point tempLocation = getLocationOnPlayArea();

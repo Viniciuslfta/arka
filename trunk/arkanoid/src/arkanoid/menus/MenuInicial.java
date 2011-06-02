@@ -32,7 +32,7 @@ public class MenuInicial extends Menu {
         this.addOption(tmpOption);
 
         tmpOption = new JButton("Criar Registo");
-        tmpOption.addActionListener(new FastRestarListener());
+        tmpOption.addActionListener(new CreateAccountListener());
         this.addOption(tmpOption);
         
         tmpOption = new JButton("Login");
@@ -85,6 +85,8 @@ public class MenuInicial extends Menu {
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Criar Registo"
+            GameState.changeState(GameStateType.CREATING_ACCOUNT);
+           
         }
     }
 

@@ -3,7 +3,7 @@ package arkanoid;
 import arkanoid.controllers.ArkanoidController;
 import arkanoid.controllers.GameAreaController;
 import arkanoid.controllers.MainMenuController;
-import arkanoid.menus.Menu;
+import arkanoid.menus.DialogCreateAccount;
 import arkanoid.menus.MenuInicial;
 import arkanoid.menus.MenuPause;
 import arkanoid.models.ModelPlayArea;
@@ -24,6 +24,7 @@ import java.util.logging.FileHandler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -50,7 +51,7 @@ public class GameEngine implements Runnable {
     private List<ArkanoidController> mControllersList = new ArrayList<ArkanoidController>(); // Para guardar os controladores não activos
     private ArkanoidController mCurrentController;   // O controlador activo
     private ArkanoidView mCurrentView;
-    private Menu mCurrentMenu;
+    private JFrame mCurrentMenu;
 
     /** Constructor da classe.
      * 
@@ -183,17 +184,25 @@ public class GameEngine implements Runnable {
                 break;
 
             case MAIN_MENU:
+                 if (mCurrentMenu != null) {
+                    mCurrentMenu.dispose();
+                    mCurrentMenu = null;
+                 }
+                                 
+                
                 mCurrentMenu = new MenuInicial("Menu Inicial");
                 mCurrentController = new MainMenuController();
                 mCurrentView = new ViewMainMenu();
+                mCurrentMenu.setAlwaysOnTop(true);
                 Mouse.setGrabbed(false);
                 break;
 
             case PLAYING:
+                
                 if (mCurrentMenu != null) {
                     mCurrentMenu.dispose();
                     mCurrentMenu = null;
-                    Mouse.setGrabbed(true);
+                    Mouse.setGrabbed(false);
 
                     ModelPlayArea mArea = new ModelPlayArea(new PlayArea("level1.txt"));
                     mCurrentController = new GameAreaController(mArea);
@@ -205,6 +214,19 @@ public class GameEngine implements Runnable {
                 }
                 break;
 
+                
+            case CREATING_ACCOUNT:
+                 if (mCurrentMenu != null) {
+                    mCurrentMenu.dispose();
+                    mCurrentMenu = null;
+                 }
+                 
+                 mCurrentMenu = new DialogCreateAccount(0,0,300,175);
+                 mCurrentMenu.setAlwaysOnTop(true);
+                 Mouse.setGrabbed(false);
+                break;
+
+
             case RESUME_GAME:
                 if (mCurrentMenu != null) {
                     mCurrentMenu.dispose();
@@ -215,6 +237,7 @@ public class GameEngine implements Runnable {
                 ModelPlayArea tmpModel = ((GameAreaController)mCurrentController).getModelPlayArea();
                 tmpModel.getBall().setLastUpdate(System.nanoTime());
                 break;
+
         }
 
         GameState.setHasStateChanged(false);

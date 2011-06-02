@@ -21,6 +21,8 @@ public  class BrickUtils {
                 return new RedBrick(_posX, _posY);
             case 'G':
                 return new GreenBrick(_posX, _posY);
+            case 'I':
+                return new InvisibleBrick(_posX,_posY);
             default:
                 return null;
 
