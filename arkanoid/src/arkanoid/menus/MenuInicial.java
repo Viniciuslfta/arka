@@ -8,6 +8,8 @@ import arkanoid.GameState;
 import arkanoid.GameState.GameStateType;
 import arkanoid.RegisteredPlayerData;
 import arkanoid.Settings;
+import arkanoid.models.ModelPlayArea;
+import arkanoid.models.entities.PlayArea;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +23,7 @@ import javax.swing.filechooser.FileFilter;
  * @author sPeC
  */
 public class MenuInicial extends Menu {
+
     public MenuInicial(String string) throws HeadlessException {
         super(string);
 
@@ -33,18 +36,18 @@ public class MenuInicial extends Menu {
         tmpOption = new JButton("Ler Jogo");
         tmpOption.addActionListener(new LoadGameListener());
         this.addOption(tmpOption);
-        
-        if(RegisteredPlayerData.getInstance().getUsername()=="") {
+
+        if ("".equals(RegisteredPlayerData.getInstance().getUsername())) {
             tmpOption = new JButton("Criar Registo");
             tmpOption.addActionListener(new CreateAccountListener());
-            this.addOption(tmpOption);        
-        
+            this.addOption(tmpOption);
+
             tmpOption = new JButton("Login");
             tmpOption.addActionListener(new LoginListener());
             this.addOption(tmpOption);
         }
-        
-        if(RegisteredPlayerData.getInstance().getUsername()!="") {
+
+        if (!"".equals(RegisteredPlayerData.getInstance().getUsername())) {
             tmpOption = new JButton("Reinicio Rápido");
             tmpOption.addActionListener(new FastRestarListener());
             this.addOption(tmpOption);
@@ -54,13 +57,13 @@ public class MenuInicial extends Menu {
         tmpOption = new JButton("Pontuação");
         tmpOption.addActionListener(new ShowScoreListener());
         this.addOption(tmpOption);
-        
-        if(RegisteredPlayerData.getInstance().getUsername()!="") {
+
+        if (!"".equals(RegisteredPlayerData.getInstance().getUsername())) {
             tmpOption = new JButton("Logout");
             tmpOption.addActionListener(new LogoutListener());
             this.addOption(tmpOption);
         }
-        
+
         tmpOption = new JButton("Sair");
         tmpOption.addActionListener(new ExitListener());
         this.addOption(tmpOption);
@@ -91,7 +94,7 @@ public class MenuInicial extends Menu {
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Ler Jogo"
-              JFileChooser fileChooser = new JFileChooser(Settings.SAVE_PATH);
+            JFileChooser fileChooser = new JFileChooser(Settings.SAVE_PATH);
 
             FileFilter filter = new SaveFilesFilter();
             fileChooser.setFileFilter(filter);
@@ -100,20 +103,22 @@ public class MenuInicial extends Menu {
             if (fileChooser.showOpenDialog(MenuInicial.this) == JFileChooser.APPROVE_OPTION) {
                 File myFile = fileChooser.getSelectedFile();
 
-                String path = myFile.getAbsolutePath();
-                mPlayArea.loadGame(path);
-
-                GameState.changeState(GameStateType.RESUME_GAME);
+                mPlayArea = new ModelPlayArea(new PlayArea(null));
+                if (mPlayArea.loadGame(myFile.getAbsolutePath())) {
+                    GameState.changeState(GameStateType.LOADED_GAME_FROM_MAIN_MENU);
+                }else{
+                    mPlayArea = null;
+                }
             }
         }
     }
-    
+
     class CreateAccountListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Criar Registo"
-            GameState.changeState(GameStateType.CREATING_ACCOUNT);           
+            GameState.changeState(GameStateType.CREATING_ACCOUNT);
         }
     }
 
@@ -122,39 +127,36 @@ public class MenuInicial extends Menu {
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Login"
-             GameState.changeState(GameStateType.LOGIN);
+            GameState.changeState(GameStateType.LOGIN);
         }
     }
 
-        class ShowScoreListener implements ActionListener {
+    class ShowScoreListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Mostrar Pontuação"
-           
-
         }
     }
-        
-    
+
     class LogoutListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Sair"
-            
+
             RegisteredPlayerData.getInstance().setUsername("");
             GameState.changeState(GameState.GameStateType.MAIN_MENU);
- 
+
         }
-    }    
-        
+    }
+
     class ExitListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Sair"
-            
+
             System.exit(0);
         }
     }

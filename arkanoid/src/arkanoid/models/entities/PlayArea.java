@@ -19,6 +19,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 import org.lwjgl.input.Keyboard;
 
@@ -27,7 +28,10 @@ import org.lwjgl.input.Keyboard;
  * @author sPeC
  */
 public class PlayArea implements Serializable {
-    RegisteredPlayerData mPlayerData;
+    RegisteredPlayerData mPlayerData = RegisteredPlayerData.getInstance();
+    RegisteredPlayerData getPlayerData(){
+        return mPlayerData;
+    }
     
     float mClubKeyMoveSpeed = Settings.CLUB_KEY_MOVE_SPEED;
 
@@ -486,7 +490,15 @@ public class PlayArea implements Serializable {
             fis = new FileInputStream(_path);
             in = new ObjectInputStream(fis);
             PlayArea tmpArea = (PlayArea) in.readObject();
-            in.close();            
+            in.close();
+            
+            // Verifica se o savegame pertence ao utilizador que está logado
+            if( !RegisteredPlayerData.getInstance().getUsername().equals(tmpArea.getPlayerData().getUsername()))
+            {
+                JOptionPane.showMessageDialog(null, "Não permissões para aceder a este savegame.");
+                return null;
+            }
+            
             return tmpArea;
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -494,6 +506,7 @@ public class PlayArea implements Serializable {
             Logger.getLogger(PlayArea.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        JOptionPane.showMessageDialog(null, "Não foi possivel ler o ficheiro.");
        return null;
     }
 }

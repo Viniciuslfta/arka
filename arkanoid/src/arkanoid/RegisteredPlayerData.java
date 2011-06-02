@@ -9,11 +9,13 @@ import java.io.Serializable;
  */
 public class RegisteredPlayerData implements Serializable {
     
-    private static RegisteredPlayerData singletonObj = new RegisteredPlayerData("",""); 
+    
     private String mUsername;
     private String mPassword;
     private int[] mCompletedLevels;
 
+    private static RegisteredPlayerData singletonObj = new RegisteredPlayerData("",""); 
+    
     public static RegisteredPlayerData getInstance() {
         return singletonObj;
     }

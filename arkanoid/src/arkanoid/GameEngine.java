@@ -164,14 +164,14 @@ public class GameEngine implements Runnable {
         switch (GameState.currentState()) {
             case GAME_OVER:
                 mCurrentMenu = new MenuPause("Game Over!");
-                ((MenuPause) mCurrentMenu).setPlayArea(((ViewPlayAreaGeom) mCurrentView).getPlayAreaModel());
+                ((MenuPause) mCurrentMenu).setModelPlayArea(((ViewPlayAreaGeom) mCurrentView).getPlayAreaModel());
                 Mouse.setGrabbed(false);
 
                 //
                 break;
             case PAUSED:
                 mCurrentMenu = new MenuPause("Pausa");
-                ((MenuPause) mCurrentMenu).setPlayArea(((ViewPlayAreaGeom) mCurrentView).getPlayAreaModel());
+                ((MenuPause) mCurrentMenu).setModelPlayArea(((ViewPlayAreaGeom) mCurrentView).getPlayAreaModel());
                 Mouse.setGrabbed(false);
 
                 //
@@ -189,14 +189,31 @@ public class GameEngine implements Runnable {
                     mCurrentMenu.dispose();
                     mCurrentMenu = null;
                 }
-
-
                 mCurrentMenu = new MenuInicial("Menu Inicial");
-                
+
                 mCurrentController = new MainMenuController();
                 mCurrentView = new ViewMainMenu();
                 Mouse.setGrabbed(false);
                 break;
+
+            case LOADED_GAME_FROM_MAIN_MENU: {
+                ModelPlayArea mArea = ((MenuInicial) mCurrentMenu).getModelPlayArea();
+                mArea.ResetElapsedTime();
+                mCurrentController = new GameAreaController(mArea);
+                try {
+                    mCurrentView = new ViewPlayAreaGeom(mArea);
+                } catch (SlickException ex) {
+                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                mCurrentMenu.dispose();
+                mCurrentMenu = null;
+                Mouse.setGrabbed(true);
+                
+                GameState.changeState(GameState.GameStateType.PLAYING);
+                
+            }
+            break;
 
             case PLAYING:
 
@@ -215,17 +232,15 @@ public class GameEngine implements Runnable {
                 }
                 break;
 
-
             case CREATING_ACCOUNT:
                 if (mCurrentMenu != null) {
                     mCurrentMenu.dispose();
                     mCurrentMenu = null;
-                 }
-                 
-                 mCurrentMenu = new DialogCreateAccount();
+                }
 
-
+                mCurrentMenu = new DialogCreateAccount();
                 break;
+
             case LOGIN:
                 if (mCurrentMenu != null) {
                     mCurrentMenu.dispose();
@@ -235,6 +250,7 @@ public class GameEngine implements Runnable {
                 mCurrentMenu = new DialogLogin();
 
                 break;
+
             case RESUME_GAME:
                 if (mCurrentMenu != null) {
                     mCurrentMenu.dispose();

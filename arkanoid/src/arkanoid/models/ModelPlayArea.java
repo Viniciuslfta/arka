@@ -70,8 +70,13 @@ public class ModelPlayArea {
         mArea.SaveGame(_path);
     }
 
-    public void loadGame(String _path) {
-        mArea =  PlayArea.LoadGame(_path);
+    public boolean loadGame(String _path) {
+        PlayArea tmpArea = PlayArea.LoadGame(_path);
+       
+        if( tmpArea != null)
+            mArea = tmpArea;
+        
+        return tmpArea != null;
     }
     
     public void ResetElapsedTime(){
