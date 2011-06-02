@@ -73,4 +73,8 @@ public class ModelPlayArea {
     public void loadGame(String _path) {
         mArea =  PlayArea.LoadGame(_path);
     }
+    
+    public void ResetElapsedTime(){
+        mArea.ResetElapsedTime();
+    }
 }

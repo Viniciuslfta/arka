@@ -5,6 +5,7 @@
 package arkanoid.menus;
 
 import arkanoid.Settings;
+import arkanoid.models.ModelPlayArea;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -23,6 +24,11 @@ import org.lwjgl.opengl.Display;
  */
 public abstract class Menu extends JFrame {
 
+    public void setPlayArea(ModelPlayArea m) {
+        mPlayArea = m;
+    }
+    ModelPlayArea mPlayArea;
+    
     List<JButton> mOptions = new ArrayList<JButton>();
     private static Font mFont = new Font("Verdana", Font.PLAIN, 12);
 
@@ -55,11 +61,10 @@ public abstract class Menu extends JFrame {
         cp.add(jp, BorderLayout.CENTER);
 
         // Loclização do Frame e tamanho do frame
-        int height = (mOptions.size() + 1) * Settings.MENU_BTN_HEIGHT + mOptions.size()*4;
+        int height = (mOptions.size() + 1) * Settings.MENU_BTN_HEIGHT + mOptions.size() * 4;
         setSize(_width, height);
-        this.setLocation(Display.getDesktopDisplayMode().getWidth()/2 - _width / 2, Display.getDesktopDisplayMode().getHeight()/2 - height/2);
-        //setLocation(Display.getDisplayMode().getWidth(), 100);
-        
+        this.setLocation(Display.getDesktopDisplayMode().getWidth() / 2 - _width / 2, Display.getDesktopDisplayMode().getHeight() / 2 - height / 2);
+        setAlwaysOnTop(true);
         setVisible(true);
 
         // Termina a aplicação quando a frame fechar

@@ -9,19 +9,17 @@ import arkanoid.GameState.GameStateType;
 import arkanoid.models.ModelPlayArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 /**
  *
  * @author sPeC
  */
 public class MenuPause extends Menu {
-
-    ModelPlayArea mPlayArea;
-
-    public void setPlayArea(ModelPlayArea m) {
-        mPlayArea = m;
-    }
 
     public MenuPause(String _title) {
         super(_title);
@@ -69,8 +67,17 @@ public class MenuPause extends Menu {
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Guardar Jogo"
-            
-            mPlayArea.saveGame("teste.bin");
+
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new SaveFilesFilter());
+
+            setAlwaysOnTop(false);
+            if (fileChooser.showSaveDialog(MenuPause.this) == JFileChooser.APPROVE_OPTION) {
+                File myFile = fileChooser.getSelectedFile();
+
+                String path = myFile.getAbsolutePath().concat(".ark");
+                mPlayArea.saveGame(path);
+            }
         }
     }
 
@@ -79,7 +86,19 @@ public class MenuPause extends Menu {
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Ler Jogo"
-            mPlayArea.loadGame("teste.bin");
+            JFileChooser fileChooser = new JFileChooser();
+            FileFilter filter = new SaveFilesFilter();
+            fileChooser.setFileFilter(filter);
+
+            setAlwaysOnTop(false);
+            if (fileChooser.showOpenDialog(MenuPause.this) == JFileChooser.APPROVE_OPTION) {
+                File myFile = fileChooser.getSelectedFile();
+
+                String path = myFile.getAbsolutePath();
+                mPlayArea.loadGame(path);
+
+                GameState.changeState(GameStateType.RESUME_GAME);
+            }
         }
     }
 

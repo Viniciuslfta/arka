@@ -163,6 +163,7 @@ public class GameEngine implements Runnable {
         switch (GameState.currentState()) {
             case GAME_OVER:
                 mCurrentMenu = new MenuPause("Game Over!");
+                ((MenuPause) mCurrentMenu).setPlayArea(((ViewPlayAreaGeom) mCurrentView).getPlayAreaModel());
                 Mouse.setGrabbed(false);
 
                 //
@@ -170,7 +171,6 @@ public class GameEngine implements Runnable {
             case PAUSED:
                 mCurrentMenu = new MenuPause("Pausa");
                 ((MenuPause) mCurrentMenu).setPlayArea(((ViewPlayAreaGeom) mCurrentView).getPlayAreaModel());
-
                 Mouse.setGrabbed(false);
 
                 //
@@ -184,13 +184,14 @@ public class GameEngine implements Runnable {
                 break;
 
             case MAIN_MENU:
-                 if (mCurrentMenu != null) {
+                if (mCurrentMenu != null) {
                     mCurrentMenu.dispose();
                     mCurrentMenu = null;
-                 }
-                                 
-                
+                }
+
+
                 mCurrentMenu = new MenuInicial("Menu Inicial");
+                
                 mCurrentController = new MainMenuController();
                 mCurrentView = new ViewMainMenu();
                 mCurrentMenu.setAlwaysOnTop(true);
@@ -198,11 +199,11 @@ public class GameEngine implements Runnable {
                 break;
 
             case PLAYING:
-                
+
                 if (mCurrentMenu != null) {
                     mCurrentMenu.dispose();
                     mCurrentMenu = null;
-                    Mouse.setGrabbed(false);
+                    Mouse.setGrabbed(true);
 
                     ModelPlayArea mArea = new ModelPlayArea(new PlayArea("level1.txt"));
                     mCurrentController = new GameAreaController(mArea);
@@ -214,16 +215,16 @@ public class GameEngine implements Runnable {
                 }
                 break;
 
-                
+
             case CREATING_ACCOUNT:
-                 if (mCurrentMenu != null) {
+                if (mCurrentMenu != null) {
                     mCurrentMenu.dispose();
                     mCurrentMenu = null;
-                 }
-                 
-                 mCurrentMenu = new DialogCreateAccount(0,0,300,175);
-                 mCurrentMenu.setAlwaysOnTop(true);
-                 Mouse.setGrabbed(false);
+                }
+
+                mCurrentMenu = new DialogCreateAccount(0, 0, 300, 175);
+                mCurrentMenu.setAlwaysOnTop(true);
+                Mouse.setGrabbed(false);
                 break;
 
 
@@ -234,8 +235,9 @@ public class GameEngine implements Runnable {
                     Mouse.setGrabbed(true);
                 }
                 GameState.changeState(GameState.GameStateType.PLAYING);
-                ModelPlayArea tmpModel = ((GameAreaController)mCurrentController).getModelPlayArea();
-                tmpModel.getBall().setLastUpdate(System.nanoTime());
+                ModelPlayArea tmpModel = ((GameAreaController) mCurrentController).getModelPlayArea();
+                tmpModel.ResetElapsedTime();
+                Mouse.setGrabbed(true);
                 break;
 
         }

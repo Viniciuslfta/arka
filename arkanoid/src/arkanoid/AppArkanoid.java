@@ -9,7 +9,5 @@ public class AppArkanoid {
       GameEngine game = new GameEngine();
       game.run();
   }
-
- 
 }
 

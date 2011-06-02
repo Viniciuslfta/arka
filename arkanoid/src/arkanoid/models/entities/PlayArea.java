@@ -453,6 +453,14 @@ public class PlayArea implements Serializable {
         return mActiveBonus;
     }
 
+    public void ResetElapsedTime(){
+        mBall.setLastUpdate(System.nanoTime());
+        
+         for (Bonus bonus : mBonus) {
+             bonus.setLastUpdate(System.nanoTime());
+        }
+    }
+    
     public void SaveGame(String _path) {
 
         FileOutputStream fos = null;
