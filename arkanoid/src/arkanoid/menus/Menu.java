@@ -55,9 +55,11 @@ public abstract class Menu extends JFrame {
         cp.add(jp, BorderLayout.CENTER);
 
         // Loclização do Frame e tamanho do frame
-        this.setLocation(Display.getDesktopDisplayMode().getWidth()/2, Display.getDesktopDisplayMode().getHeight()/2);
+        int height = (mOptions.size() + 1) * Settings.MENU_BTN_HEIGHT + mOptions.size()*4;
+        setSize(_width, height);
+        this.setLocation(Display.getDesktopDisplayMode().getWidth()/2 - _width / 2, Display.getDesktopDisplayMode().getHeight()/2 - height/2);
         //setLocation(Display.getDisplayMode().getWidth(), 100);
-        setSize(_width, (mOptions.size() + 1) * Settings.MENU_BTN_HEIGHT + mOptions.size()*4);
+        
         setVisible(true);
 
         // Termina a aplicação quando a frame fechar
