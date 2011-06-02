@@ -16,6 +16,10 @@ public class Ball extends Collidable {
      * Indica tempo em que foi efectuada a última alteração
      */
     private long mLastUpdate;
+
+    public void setLastUpdate(long _lastUpdate) {
+        this.mLastUpdate = _lastUpdate;
+    }
     /**
      * Define se bola está colada à raquete
      */

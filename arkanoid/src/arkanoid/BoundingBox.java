@@ -1,6 +1,7 @@
 package arkanoid;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 
 /** Classe que representa uma caixa/rectangulo delimitador. 
@@ -8,7 +9,7 @@ import java.awt.Rectangle;
  * 
  * @author sPeC
  */
-public class BoundingBox {
+public class BoundingBox implements Serializable {
 
     private float mX;
     private float mY;

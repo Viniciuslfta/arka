@@ -13,6 +13,7 @@ import arkanoid.models.entities.Wall;
 
 import java.util.List;
 import arkanoid.models.entities.Bonus.Bonus;
+
 /**
  *
  * @author sPeC
@@ -32,7 +33,7 @@ public class ModelPlayArea {
     public void parseKey(int _key) {
         mArea.parseKey(_key);
     }
-        
+
     public void parseMouse(int _x, int _y, boolean _clicked) {
         mArea.parseMouse(_x, _clicked);
     }
@@ -44,28 +45,32 @@ public class ModelPlayArea {
     public Club getClub() {
         return mArea.getClub();
     }
-    
-    public Ball getBall()
-    {
+
+    public Ball getBall() {
         return mArea.getBall();
     }
-    
-    public Wall[] getWalls()
-    {
+
+    public Wall[] getWalls() {
         return mArea.getWalls();
     }
-    
-    public Player getPlayer()
-    {
+
+    public Player getPlayer() {
         return mArea.getPlayer();
     }
-    
-    public List<Bonus> getBonus(){
+
+    public List<Bonus> getBonus() {
         return mArea.getBonus();
     }
-    
+
     public Bonus getActiveBonus() {
         return mArea.getActiveBonus();
     }
-    
+
+    public void saveGame(String _path) {
+        mArea.SaveGame(_path);
+    }
+
+    public void loadGame(String _path) {
+        mArea =  PlayArea.LoadGame(_path);
+    }
 }

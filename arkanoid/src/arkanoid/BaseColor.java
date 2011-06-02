@@ -1,12 +1,14 @@
 package arkanoid;
 
+import java.io.Serializable;
+
 /** Classe que permite representar uma cor.
  *  através das suas componentes Vermelha, Verde, Azul e Opacidade (RGBA)
  *
  * @author sPeC
  */
 
-public class BaseColor {
+public class BaseColor implements Serializable {
 
     private float mRed;
     private float mGreen;

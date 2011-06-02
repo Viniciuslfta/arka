@@ -34,6 +34,10 @@ public class ViewPlayAreaGeom extends ArkanoidView {
     UnicodeFont mGenericFont;
     UnicodeFont mGameOverFont;
 
+    public ModelPlayArea getPlayAreaModel(){
+        return mPlayArea;
+    }
+    
     /** Constructor da classe.
      * 
      * @param _playArea Modelo de Àrea de Jogo
