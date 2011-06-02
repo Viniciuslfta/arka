@@ -13,6 +13,10 @@ import arkanoid.models.entities.PlayArea;
 public abstract class Bonus extends Collidable {
 
     private long mLastUpdate;
+
+    public void setLastUpdate(long _lastUpdate) {
+        this.mLastUpdate = _lastUpdate;
+    }
     private BaseColor mColor;
 
     public Bonus(float _x, float _y, BaseColor _color) {
@@ -20,8 +24,7 @@ public abstract class Bonus extends Collidable {
         mColor = _color;
         mLastUpdate = System.nanoTime();
     }
-  
-        
+
     /** Retorna objecto BaseColor que indica cor do bonus
      * @return objecto BaseColor que indica cor do bonus
      */
@@ -41,8 +44,6 @@ public abstract class Bonus extends Collidable {
 
     abstract public void onClubCollision(PlayArea _area);
 
-    public void undoEffect(PlayArea _Area)
-    {
-        
+    public void undoEffect(PlayArea _Area) {
     }
 }

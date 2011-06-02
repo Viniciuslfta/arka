@@ -9,14 +9,16 @@ import arkanoid.GameState.GameStateType;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 /**
  *
  * @author sPeC
  */
 public class MenuInicial extends Menu {
-
     public MenuInicial(String string) throws HeadlessException {
         super(string);
 
@@ -28,7 +30,6 @@ public class MenuInicial extends Menu {
 
         tmpOption = new JButton("Ler Jogo");
         tmpOption.addActionListener(new LoadGameListener());
-        tmpOption.setEnabled(false);
         this.addOption(tmpOption);
 
         tmpOption = new JButton("Criar Registo");
@@ -77,6 +78,19 @@ public class MenuInicial extends Menu {
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Ler Jogo"
+              JFileChooser fileChooser = new JFileChooser();
+            FileFilter filter = new SaveFilesFilter();
+            fileChooser.setFileFilter(filter);
+
+            setAlwaysOnTop(false);
+            if (fileChooser.showOpenDialog(MenuInicial.this) == JFileChooser.APPROVE_OPTION) {
+                File myFile = fileChooser.getSelectedFile();
+
+                String path = myFile.getAbsolutePath();
+                mPlayArea.loadGame(path);
+
+                GameState.changeState(GameStateType.RESUME_GAME);
+            }
         }
     }
     

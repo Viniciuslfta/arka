@@ -5,6 +5,7 @@
 package arkanoid.models.entities.Bonus;
 
 import arkanoid.BaseColor;
+import arkanoid.Settings;
 import arkanoid.models.entities.PlayArea;
 
 /**
@@ -19,8 +20,8 @@ public class BonusSlowDown extends Bonus{
 
     @Override
     public void onClubCollision(PlayArea _area) {
-        _area.getBall().setVelocityX(_area.getBall().getVelocityX()/2);
-        _area.getBall().setVelocityY(_area.getBall().getVelocityY()/2);
+        _area.getBall().setVelocityX(Settings.BALL_MIN_VEL);
+        _area.getBall().setVelocityY(Settings.BALL_MIN_VEL);
     }
     
     @Override
