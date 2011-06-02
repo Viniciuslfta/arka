@@ -4,13 +4,15 @@
  */
 package arkanoid;
 
+import java.io.Serializable;
+
 /** Classe que representa um elemento com capacidade de colisão.
  *  É composta por duas BoundingBox: uma para a posição actual (mBoundingBox)
  *  e outra para a posição anterior (mLastBoundingBox).
  * @see BoundingBox
  * @author sPeC
  */
-public class Collidable {
+public class Collidable implements Serializable{
 
     BoundingBox mLastBoundingBox;
     BoundingBox mBoundingBox;

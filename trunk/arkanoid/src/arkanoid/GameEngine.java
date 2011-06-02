@@ -135,6 +135,7 @@ public class GameEngine implements Runnable {
 
         while (!Display.isCloseRequested()) {
             if (Display.isVisible()) {
+
                 checkGameState();
                 mCurrentController.parseInput();
                 mCurrentController.update();
@@ -165,7 +166,14 @@ public class GameEngine implements Runnable {
 
                 //
                 break;
+            case PAUSED:
+                mCurrentMenu = new MenuPause("Pausa");
+                ((MenuPause) mCurrentMenu).setPlayArea(((ViewPlayAreaGeom) mCurrentView).getPlayAreaModel());
 
+                Mouse.setGrabbed(false);
+
+                //
+                break;
             case RESTARTING_LEVEL:
                 if (mCurrentMenu != null) {
                     mCurrentMenu.dispose();
@@ -195,6 +203,17 @@ public class GameEngine implements Runnable {
                         Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+                break;
+
+            case RESUME_GAME:
+                if (mCurrentMenu != null) {
+                    mCurrentMenu.dispose();
+                    mCurrentMenu = null;
+                    Mouse.setGrabbed(true);
+                }
+                GameState.changeState(GameState.GameStateType.PLAYING);
+                ModelPlayArea tmpModel = ((GameAreaController)mCurrentController).getModelPlayArea();
+                tmpModel.getBall().setLastUpdate(System.nanoTime());
                 break;
         }
 

@@ -5,13 +5,14 @@
 package arkanoid.models.entities;
 
 import arkanoid.RegisteredPlayerData;
+import java.io.Serializable;
 import java.util.Observable;
 
 /** Classe que representa o Jogador
  * É composta pelo seu numero de vidas, pontuação e atributo que indica se o Jogador está loggado
  * @author sPeC
  */
-public class Player extends Observable {
+public class Player extends Observable implements Serializable{
 
     private boolean mIsLoggedIn;
     // Vidas

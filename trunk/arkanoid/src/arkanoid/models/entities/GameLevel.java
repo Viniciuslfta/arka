@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Scanner;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -23,7 +24,7 @@ import java.util.logging.Logger;
  * velocidade a atribuir à bola e  tijolos.
  * @author sPeC
  */
-public class GameLevel {
+public class GameLevel implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(GameLevel.class.getName());
 

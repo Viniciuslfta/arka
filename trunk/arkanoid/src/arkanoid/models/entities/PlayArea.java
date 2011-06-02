@@ -10,6 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import arkanoid.models.entities.Bonus.Bonus;
 import arkanoid.models.entities.Bonus.BonusInvert;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.lwjgl.input.Keyboard;
 
@@ -17,7 +25,7 @@ import org.lwjgl.input.Keyboard;
  * É composta essencialmente pela Bola, Raquete , Paredes e Tijolos
  * @author sPeC
  */
-public class PlayArea {
+public class PlayArea implements Serializable {
 
     float mClubKeyMoveSpeed = Settings.CLUB_KEY_MOVE_SPEED;
 
@@ -133,8 +141,10 @@ public class PlayArea {
      */
     private void handleBallOutOfBounds() {
 
-        mCurrentBonus.undoEffect(this);
-        mCurrentBonus = null;
+        if (mCurrentBonus != null) {
+            mCurrentBonus.undoEffect(this);
+            mCurrentBonus = null;
+        }
 
         mPlayer.removeLifes(1);
         if (mPlayer.getLifes() == 0) {
@@ -432,5 +442,37 @@ public class PlayArea {
 
     public Bonus getActiveBonus() {
         return mActiveBonus;
+    }
+
+    public void SaveGame(String _path) {
+
+        FileOutputStream fos = null;
+        ObjectOutputStream out = null;
+        try {
+            fos = new FileOutputStream(_path, false);
+            out = new ObjectOutputStream(fos);
+            out.writeObject(this);
+            out.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static PlayArea LoadGame(String _path) {
+        FileInputStream fis = null;
+        ObjectInputStream in = null;
+        try {
+            fis = new FileInputStream(_path);
+            in = new ObjectInputStream(fis);
+            PlayArea tmpArea = (PlayArea) in.readObject();
+            in.close();            
+            return tmpArea;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PlayArea.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       return null;
     }
 }
