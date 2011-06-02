@@ -7,6 +7,7 @@ import java.util.Observable;
  * @author sPeC
  * @see http://www.javabeginner.com/learn-java/java-singleton-design-pattern
  */
+
 public class GameState extends Observable {
 
     private static GameState singletonObj = new GameState();
@@ -38,7 +39,6 @@ public class GameState extends Observable {
     }
 
     public enum GameStateType {
-
         INTRO,
         MAIN_MENU,
         SAVING,
@@ -49,6 +49,7 @@ public class GameState extends Observable {
         PAUSED,
         GAME_OVER,
         CREATING_ACCOUNT,
-        RESUME_GAME
+        RESUME_GAME,
+        LOGIN
     }
 }

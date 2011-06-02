@@ -8,10 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,11 +16,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import org.lwjgl.opengl.Display;
 
-/** Dialogo de Registo
+/** Dialogo de Login
  *
  * @author Filipe
  */
+
 public class DialogLogin extends JFrame {
 
     private Container cp = getContentPane(); // referência para o contentor desta frame
@@ -35,16 +34,14 @@ public class DialogLogin extends JFrame {
     private JButton submitButton = new JButton("Login");
     private JButton cancelButton = new JButton("Cancelar");
     
-    public DialogLogin(int x, int y, int largura, int altura) {
-        super("Formulário de Registo"); // define o titulo da frame
+    public DialogLogin() {
+        super("Formulário de Login"); // define o titulo da frame
         
         
         disporVista();  // faz a montagem visual dos objectos gráficos deste exemplo
         registarListeners(); // liga os objectos gráficos aos listeners associados
 
-        
-        setLocation(x, y); // define a localização deste componente (frame)
-        setSize(largura, altura); // define as dimensões
+
         setVisible(true); // torna visivel
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//termina a aplicação
         // quando a frame fechar
@@ -54,6 +51,13 @@ public class DialogLogin extends JFrame {
     /*Faz a montagem visual dos objectos gráficos desta caixa de diálogo
      */
     protected void disporVista() {
+        
+        int height = 175;
+        int width = 300;
+        this.setSize(width, height);
+        this.setLocation(Display.getDesktopDisplayMode().getWidth()/2 - width / 2, Display.getDesktopDisplayMode().getHeight()/2 - height/2);
+        this.setAlwaysOnTop(true);     
+             
         // dispoe os objectos gráficos
         cp.setLayout(new FlowLayout());
         cp.add(usernameLabel);
@@ -62,6 +66,7 @@ public class DialogLogin extends JFrame {
         cp.add(passwordText);
         cp.add(submitButton);
         cp.add(cancelButton);
+        
     }
 
     /* Liga os objectos gráficos aos listeners associados permitindo que
@@ -87,13 +92,15 @@ public class DialogLogin extends JFrame {
             List<RegisteredPlayerData> readPlayers = null;
             ObjectInputStream in = null;
 
+            setAlwaysOnTop(false);
+
             if (username.length() < 3 || password.length() < 3) {
                 JOptionPane.showMessageDialog(null, "Username e Password com mais de 3 digitos!");
             }
 
             File file = new File("players");
             int found = 0;
-
+            int i=0;
             if (file.exists()) {
 
                 try {
@@ -102,7 +109,7 @@ public class DialogLogin extends JFrame {
 
                   
                     readPlayers = (List<RegisteredPlayerData>) in.readObject();
-                    for (int i = 0; i < readPlayers.size(); i++) {
+                    for (i = 0; i < readPlayers.size(); i++) {
                         if (readPlayers.get(i).getUsername().equalsIgnoreCase(username)) {
                             found++;
                             break;
@@ -127,21 +134,23 @@ public class DialogLogin extends JFrame {
                 }
             }
 
-                if (found < 0) {
+                if (found == 0) {
                     JOptionPane.showMessageDialog(null, "Não foi encontrado o jogador pretendido.");
                     return;
                 }
-
-
-          
-
-
-
+                    
+                //actualiza info do jogador loggado
+                RegisteredPlayerData.getInstance().setUsername(readPlayers.get(i).getUsername());
+                RegisteredPlayerData.getInstance().setCompletedLevels(readPlayers.get(i).getmCompletedLevels());
+                
+                dispose();                
+                JOptionPane.showMessageDialog(null, "Login efectuado com sucesso.");    
+                GameState.changeState(GameState.GameStateType.MAIN_MENU);
         }
     }
 
     
-    
+                    
 }
 
 

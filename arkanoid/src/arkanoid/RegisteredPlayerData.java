@@ -8,11 +8,19 @@ import java.io.Serializable;
  * @author sPeC
  */
 public class RegisteredPlayerData implements Serializable {
-
+    
+    private static RegisteredPlayerData singletonObj = new RegisteredPlayerData("",""); 
     private String mUsername;
     private String mPassword;
     private int[] mCompletedLevels;
 
+    public static RegisteredPlayerData getInstance() {
+        return singletonObj;
+    }
+
+    private RegisteredPlayerData() {
+    }
+    
     public RegisteredPlayerData(String _user, String _pass, int[] _completed) {
         mUsername = _user;
         mPassword = _pass;
@@ -25,11 +33,8 @@ public class RegisteredPlayerData implements Serializable {
         mCompletedLevels = null;
     }
     
-    public RegisteredPlayerData() {
-        mUsername = "";
-        mPassword = "";
-        mCompletedLevels = null;
-    }
+
+    
     public int[] getmCompletedLevels() {
         return mCompletedLevels;
     }

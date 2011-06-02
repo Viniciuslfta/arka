@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import org.lwjgl.opengl.Display;
 
 /** Dialogo de Registo
  *
@@ -35,16 +36,14 @@ public class DialogCreateAccount extends JFrame {
     private JButton submitButton = new JButton("Submeter");
     private JButton cancelButton = new JButton("Cancelar");
     
-    public DialogCreateAccount(int x, int y, int largura, int altura) {
+    
+    public DialogCreateAccount() {
         super("Formulário de Registo"); // define o titulo da frame
-        
-        
+
         disporVista();  // faz a montagem visual dos objectos gráficos deste exemplo
         registarListeners(); // liga os objectos gráficos aos listeners associados
-
+ 
         
-        setLocation(x, y); // define a localização deste componente (frame)
-        setSize(largura, altura); // define as dimensões
         setVisible(true); // torna visivel
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//termina a aplicação
         // quando a frame fechar
@@ -54,6 +53,13 @@ public class DialogCreateAccount extends JFrame {
     /*Faz a montagem visual dos objectos gráficos desta caixa de diálogo
      */
     protected void disporVista() {
+        
+        int height = 175;
+        int width = 300;
+        this.setSize(width, height);
+        this.setLocation(Display.getDesktopDisplayMode().getWidth()/2 - width / 2, Display.getDesktopDisplayMode().getHeight()/2 - height/2);
+        this.setAlwaysOnTop(true);
+        
         // dispoe os objectos gráficos
         cp.setLayout(new FlowLayout());
         cp.add(usernameLabel);
@@ -62,6 +68,8 @@ public class DialogCreateAccount extends JFrame {
         cp.add(passwordText);
         cp.add(submitButton);
         cp.add(cancelButton);
+        usernameText.requestFocus();
+
     }
 
     /* Liga os objectos gráficos aos listeners associados permitindo que
@@ -86,7 +94,8 @@ public class DialogCreateAccount extends JFrame {
             String password = passwordText.getText().trim();
             List<RegisteredPlayerData> readPlayers = null;
             ObjectInputStream in = null;
-
+            
+            setAlwaysOnTop(false);
             if (username.length() < 3 || password.length() < 3) {
                 JOptionPane.showMessageDialog(null, "Username e Password com mais de 3 digitos!");
             }
@@ -162,13 +171,12 @@ public class DialogCreateAccount extends JFrame {
                 }
 
             }
-
-
-
+            
+        dispose();
+        JOptionPane.showMessageDialog(null, "Registo efectuado com sucesso.");
+        GameState.changeState(GameState.GameStateType.MAIN_MENU);
         }
-    }
-
-    
+    }   
     
 }
 

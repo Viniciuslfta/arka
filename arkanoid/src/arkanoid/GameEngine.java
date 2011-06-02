@@ -4,6 +4,7 @@ import arkanoid.controllers.ArkanoidController;
 import arkanoid.controllers.GameAreaController;
 import arkanoid.controllers.MainMenuController;
 import arkanoid.menus.DialogCreateAccount;
+import arkanoid.menus.DialogLogin;
 import arkanoid.menus.MenuInicial;
 import arkanoid.menus.MenuPause;
 import arkanoid.models.ModelPlayArea;
@@ -194,7 +195,6 @@ public class GameEngine implements Runnable {
                 
                 mCurrentController = new MainMenuController();
                 mCurrentView = new ViewMainMenu();
-                mCurrentMenu.setAlwaysOnTop(true);
                 Mouse.setGrabbed(false);
                 break;
 
@@ -220,14 +220,21 @@ public class GameEngine implements Runnable {
                 if (mCurrentMenu != null) {
                     mCurrentMenu.dispose();
                     mCurrentMenu = null;
+                 }
+                 
+                 mCurrentMenu = new DialogCreateAccount();
+
+
+                break;
+            case LOGIN:
+                if (mCurrentMenu != null) {
+                    mCurrentMenu.dispose();
+                    mCurrentMenu = null;
                 }
 
-                mCurrentMenu = new DialogCreateAccount(0, 0, 300, 175);
-                mCurrentMenu.setAlwaysOnTop(true);
-                Mouse.setGrabbed(false);
+                mCurrentMenu = new DialogLogin();
+
                 break;
-
-
             case RESUME_GAME:
                 if (mCurrentMenu != null) {
                     mCurrentMenu.dispose();
