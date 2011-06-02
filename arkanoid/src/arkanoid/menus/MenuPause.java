@@ -6,6 +6,7 @@ package arkanoid.menus;
 
 import arkanoid.GameState;
 import arkanoid.GameState.GameStateType;
+import arkanoid.Settings;
 import arkanoid.models.ModelPlayArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -68,7 +69,7 @@ public class MenuPause extends Menu {
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Guardar Jogo"
 
-            JFileChooser fileChooser = new JFileChooser();
+            JFileChooser fileChooser = new JFileChooser(Settings.SAVE_PATH);
             fileChooser.setFileFilter(new SaveFilesFilter());
 
             setAlwaysOnTop(false);
@@ -86,7 +87,7 @@ public class MenuPause extends Menu {
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Ler Jogo"
-            JFileChooser fileChooser = new JFileChooser();
+            JFileChooser fileChooser = new JFileChooser(Settings.SAVE_PATH);
             FileFilter filter = new SaveFilesFilter();
             fileChooser.setFileFilter(filter);
 

@@ -6,6 +6,7 @@ package arkanoid.menus;
 
 import arkanoid.GameState;
 import arkanoid.GameState.GameStateType;
+import arkanoid.Settings;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -78,7 +79,8 @@ public class MenuInicial extends Menu {
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Ler Jogo"
-              JFileChooser fileChooser = new JFileChooser();
+              JFileChooser fileChooser = new JFileChooser(Settings.SAVE_PATH);
+
             FileFilter filter = new SaveFilesFilter();
             fileChooser.setFileFilter(filter);
 
