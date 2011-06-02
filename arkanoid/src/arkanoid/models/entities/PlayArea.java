@@ -141,6 +141,7 @@ public class PlayArea implements Serializable {
      */
     private void handleBallOutOfBounds() {
 
+
         if (mCurrentBonus != null) {
             mCurrentBonus.undoEffect(this);
             mCurrentBonus = null;
@@ -168,8 +169,16 @@ public class PlayArea implements Serializable {
         }
 
         if (GameState.currentState() == GameStateType.LEVEL_COMPLETE) {
+            
             changeLevel(mCurrentLevel.getNextLevelFilename());
             GameState.changeState(GameStateType.PLAYING);
+            
+            if(mCurrentBonus!=null) {
+                mCurrentBonus.undoEffect(this);
+            }        
+            
+            mBonus.clear();
+            
         }
 
         if (GameState.currentState() != GameStateType.PLAYING) {

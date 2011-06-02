@@ -48,6 +48,7 @@ public class GameState extends Observable {
         RESTARTING_LEVEL,
         PAUSED,
         GAME_OVER,
+        CREATING_ACCOUNT,
         RESUME_GAME
     }
 }
