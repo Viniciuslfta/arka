@@ -2,6 +2,7 @@ package arkanoid.models.entities;
 
 import arkanoid.GameState;
 import arkanoid.GameState.GameStateType;
+import arkanoid.RegisteredPlayerData;
 import arkanoid.Settings;
 import arkanoid.models.entities.Bricks.Brick;
 import arkanoid.models.entities.Wall.WallType;
@@ -26,7 +27,8 @@ import org.lwjgl.input.Keyboard;
  * @author sPeC
  */
 public class PlayArea implements Serializable {
-
+    RegisteredPlayerData mPlayerData;
+    
     float mClubKeyMoveSpeed = Settings.CLUB_KEY_MOVE_SPEED;
 
     public float getClubKeyMoveSpeed() {
@@ -178,6 +180,8 @@ public class PlayArea implements Serializable {
             }        
             
             mBonus.clear();
+            mCurrentBonus = null;
+            
             
         }
 
