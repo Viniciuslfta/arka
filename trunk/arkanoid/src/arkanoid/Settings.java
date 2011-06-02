@@ -38,4 +38,6 @@ public abstract class Settings {
     
     public static final int BONUS_SIZE = 20;
     public static final float BONUS_VELOCITY = 0.2f;
+    
+    public static final String SAVE_PATH = ".\\Saves";
 }
