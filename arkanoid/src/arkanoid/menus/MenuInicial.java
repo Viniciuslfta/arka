@@ -136,6 +136,7 @@ public class MenuInicial extends Menu {
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Mostrar Pontuação"
+            GameState.changeState(GameStateType.SHOW_TOP10);
         }
     }
 

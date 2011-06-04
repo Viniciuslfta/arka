@@ -5,6 +5,7 @@ import arkanoid.controllers.GameAreaController;
 import arkanoid.controllers.MainMenuController;
 import arkanoid.menus.DialogCreateAccount;
 import arkanoid.menus.DialogLogin;
+import arkanoid.menus.DialogTop10;
 import arkanoid.menus.MenuInicial;
 import arkanoid.menus.MenuPause;
 import arkanoid.models.ModelPlayArea;
@@ -64,6 +65,7 @@ public class GameEngine implements Runnable {
 
         try {
             setup();
+
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, ex.toString(), ex);
             destroy();
@@ -209,9 +211,9 @@ public class GameEngine implements Runnable {
                 mCurrentMenu.dispose();
                 mCurrentMenu = null;
                 Mouse.setGrabbed(true);
-                
+
                 GameState.changeState(GameState.GameStateType.PLAYING);
-                
+
             }
             break;
 
@@ -261,6 +263,16 @@ public class GameEngine implements Runnable {
                 ModelPlayArea tmpModel = ((GameAreaController) mCurrentController).getModelPlayArea();
                 tmpModel.ResetElapsedTime();
                 Mouse.setGrabbed(true);
+                break;
+
+            case SHOW_TOP10:
+                if (mCurrentMenu != null) {
+                    mCurrentMenu.dispose();
+                    mCurrentMenu = null;
+                }
+
+                mCurrentMenu = new DialogTop10();
+
                 break;
 
         }

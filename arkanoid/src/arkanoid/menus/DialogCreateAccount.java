@@ -25,9 +25,10 @@ import org.lwjgl.opengl.Display;
  *
  * @author Filipe
  */
-public class DialogCreateAccount extends JFrame {
+public final class DialogCreateAccount extends JFrame {
 
     private Container cp = getContentPane(); // referência para o contentor desta frame
+    
     // referências para os objectos gráficos a colocar
     private JLabel usernameLabel = new JLabel("Username:");
     private JLabel passwordLabel = new JLabel("Password:");
@@ -45,8 +46,8 @@ public class DialogCreateAccount extends JFrame {
  
         
         setVisible(true); // torna visivel
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//termina a aplicação
-        // quando a frame fechar
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//termina a aplicação quando a frame fechar
+        
         validate();// dispoe de novo os seus subcomponentes
     }
 
@@ -82,6 +83,7 @@ public class DialogCreateAccount extends JFrame {
 
     class CancelListener implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             GameState.changeState(GameState.GameStateType.MAIN_MENU);
         }
@@ -89,6 +91,7 @@ public class DialogCreateAccount extends JFrame {
 
     class SubmitListener implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             String username = usernameText.getText().trim(); //trim remove espaços
             String password = passwordText.getText().trim();
@@ -169,7 +172,6 @@ public class DialogCreateAccount extends JFrame {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex);
                 }
-
             }
             
         dispose();

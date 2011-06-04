@@ -45,6 +45,10 @@ public class MenuPause extends Menu {
         tmpOption.addActionListener(new ResetLevelListener());
         this.addOption(tmpOption);
 
+        tmpOption = new JButton("Voltar ao Menu Inicial");
+        tmpOption.addActionListener(new ReturnToMainMenuListener());
+        this.addOption(tmpOption);
+
         tmpOption = new JButton("Sair");
         tmpOption.addActionListener(new ExitListener());
         this.addOption(tmpOption);
@@ -73,7 +77,7 @@ public class MenuPause extends Menu {
             setAlwaysOnTop(false);
             if (fileChooser.showSaveDialog(MenuPause.this) == JFileChooser.APPROVE_OPTION) {
                 File myFile = fileChooser.getSelectedFile();
-         
+
                 mPlayArea.saveGame(SaveFilesFilter.addExtension(myFile));
             }
         }
@@ -92,8 +96,9 @@ public class MenuPause extends Menu {
             if (fileChooser.showOpenDialog(MenuPause.this) == JFileChooser.APPROVE_OPTION) {
                 File myFile = fileChooser.getSelectedFile();
 
-                if(mPlayArea.loadGame(myFile.getAbsolutePath()))
+                if (mPlayArea.loadGame(myFile.getAbsolutePath())) {
                     GameState.changeState(GameStateType.RESUME_GAME);
+                }
             }
         }
     }
@@ -104,6 +109,15 @@ public class MenuPause extends Menu {
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Reiniciar Nivel"
             GameState.changeState(GameStateType.RESTARTING_LEVEL);
+        }
+    }
+
+    class ReturnToMainMenuListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // reacção associada ao botão "Resumir"
+            GameState.changeState(GameStateType.MAIN_MENU);
         }
     }
 
