@@ -8,7 +8,6 @@ import arkanoid.Settings;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.lwjgl.opengl.GL11;
 
 import org.newdawn.slick.Color;
@@ -37,15 +36,15 @@ public class ViewMainMenu extends ArkanoidView {
 
     @Override
     public void render() {
+
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        GL11.glLoadIdentity();
+
         float x = Settings.PLAY_AREA_START_X;
         float y = Settings.PLAY_AREA_START_Y;
 
         float width = Settings.DISPLAY_WIDTH - Settings.PLAY_AREA_START_X * 2;
         float height = Settings.DISPLAY_HEIGHT - Settings.PLAY_AREA_START_Y;
-
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        //drawQuad(new BoundingBox(x, y, width, height), new BaseColor(0.0f, 0.0f, 0.0f, 0.90f));
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         x += (width / 2) - mBigFont.getWidth("GAME OVER!") / 2;
         y += (height / 2) - mBigFont.getHeight("GAME OVER!");

@@ -5,6 +5,7 @@
 package arkanoid.models.entities;
 
 import arkanoid.RegisteredPlayerData;
+import arkanoid.Top10;
 import java.io.Serializable;
 import java.util.Observable;
 
@@ -12,7 +13,7 @@ import java.util.Observable;
  * É composta pelo seu numero de vidas, pontuação e atributo que indica se o Jogador está loggado
  * @author sPeC
  */
-public class Player extends Observable implements Serializable{
+public class Player extends Observable implements Serializable {
 
     private boolean mIsLoggedIn;
     // Vidas
@@ -74,7 +75,10 @@ public class Player extends Observable implements Serializable{
      */
     public void addScorePoints(int _quant) {
         this.mScore += _quant;
+
+        if (!"".equals(RegisteredPlayerData.getInstance().getUsername())) {
+            Top10.getInstance().update(RegisteredPlayerData.getInstance().getUsername(), mScore);
+        }
     }
-    
     RegisteredPlayerData mRegData;
 }

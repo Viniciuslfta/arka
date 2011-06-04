@@ -51,6 +51,7 @@ public class GameState extends Observable {
         CREATING_ACCOUNT,
         RESUME_GAME,
         LOGIN,
-        LOADED_GAME_FROM_MAIN_MENU
+        LOADED_GAME_FROM_MAIN_MENU,
+        SHOW_TOP10
     }
 }
