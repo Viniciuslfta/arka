@@ -14,14 +14,23 @@ import arkanoid.models.entities.PlayArea;
  */
 public class BonusSlowDown extends Bonus{
 
+    float mOldSpeedX;
+    float mOldSpeedY;
+    
     public BonusSlowDown(float _x, float _y) {
         super(_x, _y, new BaseColor(0,1,0));
     }
 
     @Override
     public void onClubCollision(PlayArea _area) {
-        _area.getBall().setVelocityX(Settings.BALL_MIN_VEL);
-        _area.getBall().setVelocityY(Settings.BALL_MIN_VEL);
+        mOldSpeedX = _area.getBall().getVelocityX();
+        mOldSpeedY = _area.getBall().getVelocityY();
+        
+        float speedX = mOldSpeedX > 0 ? Settings.BALL_MIN_VEL : -Settings.BALL_MIN_VEL;
+        float speedY = mOldSpeedY > 0 ? Settings.BALL_MIN_VEL : -Settings.BALL_MIN_VEL;
+        
+        _area.getBall().setVelocityX(speedX);
+        _area.getBall().setVelocityY(speedY);
     }
     
     @Override

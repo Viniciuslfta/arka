@@ -135,6 +135,12 @@ public class GameLevel implements Serializable {
             reset(_ball, _player);
         }
     }
+    
+    public GameLevel(String _filename) {
+        mIsLoaded = readLevelFile(_filename);
+
+    }
+    
 
     /** Lê ficheiro de nível.
      * 

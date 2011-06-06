@@ -16,7 +16,6 @@ import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 
 /**
- *
  * @author sPeC
  */
 public class ViewMainMenu extends ArkanoidView {
