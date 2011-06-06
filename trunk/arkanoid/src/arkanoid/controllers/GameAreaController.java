@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
+
 
 /**
  *
@@ -43,13 +43,15 @@ public class GameAreaController implements ArkanoidController {
 
 
         Keyboard.poll();
+        
         if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            GameState.changeState(GameStateType.PAUSED);
 
+            GameState.changeState(GameStateType.PAUSED);
+            
             try {
                 Thread.sleep(250);
             } catch (InterruptedException ex) {
-                Logger.getLogger(GameAreaController.class.getName()).log(Level.SEVERE, null, ex);
+                   Logger.getLogger(GameAreaController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

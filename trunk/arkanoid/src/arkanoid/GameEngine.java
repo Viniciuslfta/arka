@@ -4,6 +4,7 @@ import arkanoid.controllers.ArkanoidController;
 import arkanoid.controllers.GameAreaController;
 import arkanoid.controllers.MainMenuController;
 import arkanoid.menus.DialogCreateAccount;
+import arkanoid.menus.DialogFastRestart;
 import arkanoid.menus.DialogLogin;
 import arkanoid.menus.DialogTop10;
 import arkanoid.menus.MenuInicial;
@@ -165,6 +166,7 @@ public class GameEngine implements Runnable {
 
         switch (GameState.currentState()) {
             case GAME_OVER:
+                
                 mCurrentMenu = new MenuPause("Game Over!");
                 ((MenuPause) mCurrentMenu).setModelPlayArea(((ViewPlayAreaGeom) mCurrentView).getPlayAreaModel());
                 Mouse.setGrabbed(false);
@@ -175,7 +177,7 @@ public class GameEngine implements Runnable {
                 mCurrentMenu = new MenuPause("Pausa");
                 ((MenuPause) mCurrentMenu).setModelPlayArea(((ViewPlayAreaGeom) mCurrentView).getPlayAreaModel());
                 Mouse.setGrabbed(false);
-
+                
                 //
                 break;
             case RESTARTING_LEVEL:
@@ -202,6 +204,7 @@ public class GameEngine implements Runnable {
                 ModelPlayArea mArea = ((MenuInicial) mCurrentMenu).getModelPlayArea();
                 mArea.ResetElapsedTime();
                 mCurrentController = new GameAreaController(mArea);
+                
                 try {
                     mCurrentView = new ViewPlayAreaGeom(mArea);
                 } catch (SlickException ex) {
@@ -224,7 +227,7 @@ public class GameEngine implements Runnable {
                     mCurrentMenu = null;
                     Mouse.setGrabbed(true);
 
-                    ModelPlayArea mArea = new ModelPlayArea(new PlayArea("level1.txt"));
+                    ModelPlayArea mArea = new ModelPlayArea(new PlayArea(RegisteredPlayerData.getInstance().getStartingLevel()));
                     mCurrentController = new GameAreaController(mArea);
                     try {
                         mCurrentView = new ViewPlayAreaGeom(mArea);
@@ -264,6 +267,16 @@ public class GameEngine implements Runnable {
                 tmpModel.ResetElapsedTime();
                 Mouse.setGrabbed(true);
                 break;
+            case FAST_RESTART:
+                
+                if (mCurrentMenu != null) {
+                    mCurrentMenu.dispose();
+                    mCurrentMenu = null;
+                }
+
+
+                mCurrentMenu = new DialogFastRestart();
+                break;
 
             case SHOW_TOP10:
                 if (mCurrentMenu != null) {
@@ -274,6 +287,7 @@ public class GameEngine implements Runnable {
                 mCurrentMenu = new DialogTop10();
 
                 break;
+
 
         }
 

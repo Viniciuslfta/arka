@@ -32,19 +32,18 @@ public final class DialogCreateAccount extends JFrame {
     // referências para os objectos gráficos a colocar
     private JLabel usernameLabel = new JLabel("Username:");
     private JLabel passwordLabel = new JLabel("Password:");
-    private JTextField usernameText = new JTextField(20);    
+    private JTextField usernameText = new JTextField(20);
     private JPasswordField passwordText = new JPasswordField(20);
     private JButton submitButton = new JButton("Submeter");
     private JButton cancelButton = new JButton("Cancelar");
-    
-    
-    public DialogCreateAccount() {
-        super("Formulário de Registo"); // define o titulo da frame
 
-        disporVista();  // faz a montagem visual dos objectos gráficos deste exemplo
-        registarListeners(); // liga os objectos gráficos aos listeners associados
- 
-        
+    public DialogCreateAccount() {
+        super("Register"); // define o titulo da frame
+
+        layView();  // faz a montagem visual dos objectos gráficos deste exemplo
+        registerListeners(); // liga os objectos gráficos aos listeners associados
+
+
         setVisible(true); // torna visivel
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//termina a aplicação quando a frame fechar
         
@@ -53,14 +52,14 @@ public final class DialogCreateAccount extends JFrame {
 
     /*Faz a montagem visual dos objectos gráficos desta caixa de diálogo
      */
-    protected void disporVista() {
-        
+    protected void layView() {
+
         int height = 175;
         int width = 300;
         this.setSize(width, height);
-        this.setLocation(Display.getDesktopDisplayMode().getWidth()/2 - width / 2, Display.getDesktopDisplayMode().getHeight()/2 - height/2);
+        this.setLocation(Display.getDesktopDisplayMode().getWidth() / 2 - width / 2, Display.getDesktopDisplayMode().getHeight() / 2 - height / 2);
         this.setAlwaysOnTop(true);
-        
+
         // dispoe os objectos gráficos
         cp.setLayout(new FlowLayout());
         cp.add(usernameLabel);
@@ -76,7 +75,7 @@ public final class DialogCreateAccount extends JFrame {
     /* Liga os objectos gráficos aos listeners associados permitindo que
      * interajam com o utilizador 
      */
-    protected void registarListeners() {
+    protected void registerListeners() {
         submitButton.addActionListener(new SubmitListener());
         cancelButton.addActionListener(new CancelListener());
     }
@@ -97,13 +96,13 @@ public final class DialogCreateAccount extends JFrame {
             String password = passwordText.getText().trim();
             List<RegisteredPlayerData> readPlayers = null;
             ObjectInputStream in = null;
-            
+
             setAlwaysOnTop(false);
             if (username.length() < 3 || password.length() < 3) {
                 JOptionPane.showMessageDialog(null, "Username e Password com mais de 3 digitos!");
             }
 
-            File file = new File("players");
+            File file = new File("players.ark");
             int found = 0;
 
             if (file.exists()) {
@@ -112,7 +111,7 @@ public final class DialogCreateAccount extends JFrame {
 
                     in = new ObjectInputStream(new FileInputStream(file));
 
-                  
+
                     readPlayers = (List<RegisteredPlayerData>) in.readObject();
                     for (int i = 0; i < readPlayers.size(); i++) {
                         if (readPlayers.get(i).getUsername().equalsIgnoreCase(username)) {
@@ -123,7 +122,7 @@ public final class DialogCreateAccount extends JFrame {
 
                     in.close();
 
-                }catch (Exception ex) {
+                } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex);
                     ex.printStackTrace();
                 } finally {
@@ -148,39 +147,19 @@ public final class DialogCreateAccount extends JFrame {
             }
 
             List<RegisteredPlayerData> newPlayers = new ArrayList<RegisteredPlayerData>();
-            if(readPlayers!=null){
+            if (readPlayers != null) {
                 newPlayers.addAll(readPlayers);
             }
-            
+
             newPlayers.add(new RegisteredPlayerData(username, password));
 
 
-            ObjectOutputStream out = null;
+            RegisteredPlayerData.getInstance().writePlayersFile(newPlayers);
 
-            try {//abre outputstream
-                out = new ObjectOutputStream(new FileOutputStream(file, false));
-                out.writeObject(newPlayers);
-                out.close();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            } finally {
-                //Close the ObjectInputStream
-                try {
-                    if (out != null) {
-                        out.close();
-                    }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex);
-                }
-            }
-            
-        dispose();
-        JOptionPane.showMessageDialog(null, "Registo efectuado com sucesso.");
-        GameState.changeState(GameState.GameStateType.MAIN_MENU);
+            dispose();
+            JOptionPane.showMessageDialog(null, "Registo efectuado com sucesso.");
+            GameState.changeState(GameState.GameStateType.MAIN_MENU);
+
         }
-    }   
-    
+    }
 }
-
-
-

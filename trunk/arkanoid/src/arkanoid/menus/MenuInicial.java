@@ -47,7 +47,7 @@ public class MenuInicial extends Menu {
             this.addOption(tmpOption);
         }
 
-        if (!"".equals(RegisteredPlayerData.getInstance().getUsername())) {
+        if (!"".equals(RegisteredPlayerData.getInstance().getUsername()) && RegisteredPlayerData.getInstance().getCompletedLevels()>1) {
             tmpOption = new JButton("Reinicio Rápido");
             tmpOption.addActionListener(new FastRestarListener());
             this.addOption(tmpOption);
@@ -77,6 +77,7 @@ public class MenuInicial extends Menu {
         @Override
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Reinicio Rápido"
+            GameState.changeState(GameStateType.FAST_RESTART);
         }
     }
 

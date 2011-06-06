@@ -186,6 +186,17 @@ public class PlayArea implements Serializable {
             mBonus.clear();
             mCurrentBonus = null;
             
+            //se o jogador não é visitante, actualiza o nº de niveis completos
+            if(!"".equals(RegisteredPlayerData.getInstance().getUsername())) {
+               if(mCurrentLevel.getLevelNumber() > RegisteredPlayerData.getInstance().getCompletedLevels()) {
+                  //se o nivel actual é maior que o nº de niveis completos do jogador
+                   
+                   RegisteredPlayerData.getInstance().setCompletedLevels(mCurrentLevel.getLevelNumber());
+                   RegisteredPlayerData toAdd = RegisteredPlayerData.getInstance();
+                   RegisteredPlayerData.getInstance().updatePlayersFile(toAdd.getUsername(),toAdd.getPassword(),toAdd.getCompletedLevels());
+               }
+               
+            }
             
         }
 
