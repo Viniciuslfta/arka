@@ -3,6 +3,7 @@ nome=Fuzz
 next=level3.txt
 vidas=3
 velocidade=0.5f
+background=backgnd6.png
 @@@@@G@@@@@@@
 @@@@@@@@@@@@@
 @@@@@@@@@@@@@

@@ -2,7 +2,6 @@ package arkanoid.models.entities;
 
 import arkanoid.Collidable;
 import arkanoid.BaseColor;
-import arkanoid.ElapsedTime;
 import arkanoid.Settings;
 import arkanoid.Textures;
 import org.newdawn.slick.opengl.Texture;
@@ -14,19 +13,19 @@ import org.newdawn.slick.opengl.Texture;
  * @author sPeC
  */
 public class Ball extends Collidable {
-    
-   private Texture mTexture;
+
+    transient private Texture mTexture;
 
     public Texture getTexture() {
+        if (mTexture == null) {
+            mTexture = Textures.getInstance().getBall();
+        }
         return mTexture;
     }
-    
+
     public void setTexture(Texture _Texture) {
         this.mTexture = _Texture;
     }
-    
-    
-    
     /**
      * Indica tempo em que foi efectuada a última alteração
      */
@@ -57,7 +56,6 @@ public class Ball extends Collidable {
         this.mIsGluedToClub = _value;
         mLastUpdate = System.nanoTime();
     }
-    
     private float mVelocityX;
 
     /** Devolve valor da Velocidade em X.
@@ -81,8 +79,6 @@ public class Ball extends Collidable {
             mVelocityX = _velocityX;
         }
     }
-    
-    
     private float mVelocityY;
 
     /** Devolve valor da velocidade em Y.
@@ -99,14 +95,22 @@ public class Ball extends Collidable {
      */
     public void setVelocityY(float _velocityY) {
         if (Settings.BALL_MAX_VEL < Math.abs(_velocityY)) {
-            mVelocityY = Settings.BALL_MAX_VEL;
+            if (_velocityY < 0) {
+                mVelocityY = -Settings.BALL_MAX_VEL;
+            } else {
+                mVelocityY = Settings.BALL_MAX_VEL;
+            }
+
         } else if (Settings.BALL_MIN_VEL > Math.abs(_velocityY)) {
-            mVelocityY = Settings.BALL_MIN_VEL;
+            if (_velocityY < 0) {
+                mVelocityY = -Settings.BALL_MIN_VEL;
+            } else {
+                mVelocityY = Settings.BALL_MIN_VEL;
+            }
         } else {
             mVelocityY = _velocityY;
         }
     }
-    
     private BaseColor mColor;
 
     /** Retorna objecto BaseColor que indica a cor da bola.
@@ -122,14 +126,18 @@ public class Ball extends Collidable {
      *  da bola ( atributos herdados de Collidable )
      */
     public void updatePosition() {
-        double time = ElapsedTime.microsecondsSince(mLastUpdate);
-        mLastUpdate = System.nanoTime();
-
-        float x = (float) (getX() + mVelocityX * time);
-        float y = (float) (getY() + mVelocityY * time);
+        float x = (float) (getX() + mVelocityX);
+        float y = (float) (getY() + mVelocityY);
 
         super.updatePosition(x, y);
+    }
 
+    public float getNextX() {
+        return (float) (getX() + mVelocityX);
+    }
+
+    public float getNextY() {
+        return (float) (getY() + mVelocityY);
     }
 
     /** Constructor da classe
@@ -143,15 +151,14 @@ public class Ball extends Collidable {
         mLastUpdate = System.nanoTime();
         mColor = new BaseColor(1.0f, 1.0f, 0.0f);
         mSticky = false;
-                
+
     }
-    
     boolean mSticky;
-    
+
     public boolean isSticky() {
         return mSticky;
     }
-    
+
     public void setSticky(boolean _val) {
         mSticky = _val;
     }

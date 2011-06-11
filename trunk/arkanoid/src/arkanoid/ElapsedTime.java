@@ -9,11 +9,17 @@ package arkanoid;
  * @author sPeC
  */
 public class ElapsedTime {
-    public static double microsecondsSince(long _start)
-    {
+
+    public static double milisecondsSince(long _start) {
         long total = System.nanoTime() - _start;
-        
-        return (double)total / 1000000;
-        
+
+        return ((double) total / 1000000);
+    }
+
+    public static double milisecondsSince(long _start, double _clampValue) {
+        double total = milisecondsSince(_start);
+        total = total > _clampValue ? _clampValue : total;
+
+        return total;
     }
 }

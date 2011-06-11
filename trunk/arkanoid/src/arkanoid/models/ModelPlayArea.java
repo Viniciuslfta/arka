@@ -72,14 +72,19 @@ public class ModelPlayArea {
 
     public boolean loadGame(String _path) {
         PlayArea tmpArea = PlayArea.LoadGame(_path);
-       
-        if( tmpArea != null)
+
+        if (tmpArea != null) {
             mArea = tmpArea;
-        
+        }
+
         return tmpArea != null;
     }
-    
-    public void ResetElapsedTime(){
+
+    public void ResetElapsedTime() {
         mArea.ResetElapsedTime();
+    }
+
+    public void changeLevel(String _lvlName) {
+        mArea.changeLevel(_lvlName);
     }
 }

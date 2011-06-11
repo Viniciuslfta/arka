@@ -68,6 +68,7 @@ public abstract class Menu extends JFrame {
         setSize(_width, height);
         this.setLocation(Display.getDesktopDisplayMode().getWidth() / 2 - _width / 2, Display.getDesktopDisplayMode().getHeight() / 2 - height / 2);
         setAlwaysOnTop(true);
+        setResizable(false);
         setVisible(true);
 
         // Termina a aplicação quando a frame fechar

@@ -7,6 +7,7 @@ package arkanoid.models.entities.Bricks;
 import arkanoid.BaseColor;
 import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
+import org.newdawn.slick.opengl.Texture;
 
 /** Representa um tijolo branco ( extensão de Brick )
  *
@@ -20,7 +21,15 @@ public class WhiteBrick extends Brick {
      * @param _y valor da posição em Y com o qual será instanciado o objecto
      */
     public WhiteBrick(int _x, int _y) {
-        super(_x, _y, 1, new BaseColor(1.0f, 1.0f, 1.0f),Textures.getInstance().getWhiteBrick());
+        super(_x, _y, 1, new BaseColor(1.0f, 1.0f, 1.0f), Textures.getInstance().getWhiteBrick());
+    }
+
+    @Override
+    public Texture getTexture() {
+        if (mTexture == null) {
+            mTexture = Textures.getInstance().getWhiteBrick();
+        }
+        return mTexture;
     }
 
     /** Implementa função que define efeito provocado pela colisão da Bola no Tijolo

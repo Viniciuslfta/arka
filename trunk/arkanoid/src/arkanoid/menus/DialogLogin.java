@@ -6,9 +6,6 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -57,7 +54,8 @@ public class DialogLogin extends JFrame {
         this.setSize(width, height);
         this.setLocation(Display.getDesktopDisplayMode().getWidth() / 2 - width / 2, Display.getDesktopDisplayMode().getHeight() / 2 - height / 2);
         this.setAlwaysOnTop(true);
-
+        this.setResizable(false);
+        
         // dispoe os objectos gráficos
         cp.setLayout(new FlowLayout());
         cp.add(usernameLabel);
@@ -101,6 +99,7 @@ public class DialogLogin extends JFrame {
                 if (readPlayers.get(i).getUsername().equalsIgnoreCase(username) && readPlayers.get(i).getPassword().equals(password)) {
                     found++;
                     RegisteredPlayerData.getInstance().setInstance(readPlayers.get(i));
+                    RegisteredPlayerData.getInstance().setIsLoggedIn(true);
                     break;
                 }
             }
@@ -114,6 +113,7 @@ public class DialogLogin extends JFrame {
             dispose();
             JOptionPane.showMessageDialog(null, "Login efectuado com sucesso.");
             GameState.changeState(GameState.GameStateType.MAIN_MENU);
+
         }
     }
 }

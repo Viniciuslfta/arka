@@ -5,7 +5,10 @@
 package arkanoid;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
@@ -19,29 +22,25 @@ public class Textures {
     Texture mRedBrick;
     Texture mBlueBrick;
     Texture mWhiteBrick;
-    Texture mGreenBrick;   
-    Texture mGreenBrickBroken;   
+    Texture mGreenBrick;
+    Texture mGreenBrickBroken;
     Texture mInvisibleBrick;
     Texture mClub;
     Texture mBall;
-    Texture mBonusExpansion;  
+    Texture mBonusExpansion;
     Texture mBonusGlue;
     Texture mBonusInvert;
     Texture mBonusLife;
-    Texture mBonusSlowDown;   
+    Texture mBonusSlowDown;
     Texture mWallSide;
     Texture mWallTop;
-    
-
-
-    
     private static Textures singletonObj = new Textures();
 
     public static Textures getInstance() {
         return singletonObj;
     }
-    private Textures() {
-        
+
+    public void load() {
         try {
             mRedBrick = TextureLoader.getTexture("PNG", new FileInputStream("textures/redbrick.png"));
             mBlueBrick = TextureLoader.getTexture("PNG", new FileInputStream("textures/bluebrick.png"));
@@ -56,15 +55,26 @@ public class Textures {
             mBonusInvert = TextureLoader.getTexture("PNG", new FileInputStream("textures/bonus3.png"));
             mBonusLife = TextureLoader.getTexture("PNG", new FileInputStream("textures/bonus4.png"));
             mBonusSlowDown = TextureLoader.getTexture("PNG", new FileInputStream("textures/bonus5.png"));
-            mWallSide = TextureLoader.getTexture("PNG",new FileInputStream("textures/wallside.png"));
-            mWallTop = TextureLoader.getTexture("PNG",new FileInputStream("textures/walltop.png"));
+            mWallSide = TextureLoader.getTexture("PNG", new FileInputStream("textures/wallside.png"));
+            mWallTop = TextureLoader.getTexture("PNG", new FileInputStream("textures/walltop.png"));
 
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, ex);
-        }     
-        
+        }
     }
-    
+
+    public static Texture loadTexture(String _texName) {
+
+        try {
+            Texture tmpTex = TextureLoader.getTexture("PNG", new FileInputStream("textures/" + _texName));
+            return tmpTex;
+        } catch (IOException ex) {
+            Logger.getLogger(Textures.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
     public Texture getWallSide() {
         return mWallSide;
     }
@@ -72,7 +82,7 @@ public class Textures {
     public void setmWallSide(Texture _WallSide) {
         this.mWallSide = _WallSide;
     }
-    
+
     public Texture getWallTop() {
         return mWallTop;
     }
@@ -80,7 +90,7 @@ public class Textures {
     public void setmWallTop(Texture _WallTop) {
         this.mWallSide = _WallTop;
     }
-             
+
     public Texture getBlueBrick() {
         return mBlueBrick;
     }
@@ -104,7 +114,7 @@ public class Textures {
     public void setGreenBrickBroken(Texture _GreenBrickBroken) {
         this.mGreenBrickBroken = _GreenBrickBroken;
     }
-    
+
     public Texture getRedBrick() {
         return mRedBrick;
     }
@@ -120,7 +130,6 @@ public class Textures {
     public void setWhiteBrick(Texture _WhiteBrick) {
         this.mWhiteBrick = _WhiteBrick;
     }
-
 
     public Texture getBall() {
         return mBall;
@@ -178,8 +187,6 @@ public class Textures {
         this.mClub = _Club;
     }
 
-
-
     public Texture getInvisibleBrick() {
         return mInvisibleBrick;
     }
@@ -187,8 +194,4 @@ public class Textures {
     public void setInvisibleBrick(Texture _InvisibleBrick) {
         this.mInvisibleBrick = _InvisibleBrick;
     }
-
-
-
-    
 }

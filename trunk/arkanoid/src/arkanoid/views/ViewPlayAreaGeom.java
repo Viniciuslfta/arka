@@ -12,10 +12,8 @@ import arkanoid.models.entities.Bonus.Bonus;
 import arkanoid.models.entities.Bricks.Brick;
 import arkanoid.models.entities.Club;
 import arkanoid.models.entities.Wall;
+
 import java.util.List;
-
-
-
 import java.util.Observable;
 
 import org.lwjgl.opengl.GL11;
@@ -74,21 +72,31 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glLoadIdentity();
         
+        drawBackground();
         drawWalls();
         drawBricks();
         drawClub();
         drawBall();
         drawBonus();
-        
 
         if (GameState.currentState() == GameStateType.GAME_OVER) {
             DrawGameOver();
             mPlayArea.getBonus().clear();
         }
-        
+
         drawHeaderText();
     }
 
+    private void drawBackground()
+    {
+        BoundingBox playAreaBB = new BoundingBox(0,
+                                                    Settings.PLAY_AREA_START_Y,
+                                                    Settings.DISPLAY_WIDTH,
+                                                    Settings.DISPLAY_HEIGHT - Settings.PLAY_AREA_START_Y);
+        
+        
+        drawQuadWithTexture(playAreaBB, null, mPlayArea.getLoadedLevel().getBackgndTexture());
+    }
     /** Desenha ecrã de Game Over.
      */
     private void DrawGameOver() {
@@ -178,8 +186,10 @@ public class ViewPlayAreaGeom extends ArkanoidView {
      * @param _color Cor do poligono
      */
     private void drawQuad(BoundingBox _quad, BaseColor _color) {
+
       //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
       //GL11.glLoadIdentity();
+
 
         // set the color of the quad (R,G,B,A)
         GL11.glColor4f(_color.getR(), _color.getG(), _color.getB(), _color.getA());
@@ -196,12 +206,10 @@ public class ViewPlayAreaGeom extends ArkanoidView {
     
     
     private void drawQuadWithTexture(BoundingBox _quad, BaseColor _color,Texture _texture) {
-
-
-
         _texture.bind();
         // set the color of the quad (R,G,B,A)
-        GL11.glColor4f(_color.getR(), _color.getG(), _color.getB(), _color.getA());
+        if( _color != null)
+            GL11.glColor4f(_color.getR(), _color.getG(), _color.getB(), _color.getA());
 
         // draw quad
         GL11.glBegin(GL11.GL_QUADS);
@@ -226,7 +234,6 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         
         for(Bonus bonus: tmpBonus){
             drawQuadWithTexture(bonus.getBoundingBox(),bonus.getColor(),bonus.getTexture());
-        }
-        
+        } 
     }
 }

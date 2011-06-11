@@ -15,21 +15,31 @@ import org.newdawn.slick.opengl.Texture;
 public class Wall extends Collidable {
 
     public enum WallType {
+
         TOP,
         LEFT,
         RIGHT
     }
     private WallType mType;
     private BaseColor mColor;
-    private Texture mTexture;
+    transient private Texture mTexture = null;
 
     public Texture getTexture() {
+
+        if (mTexture == null) {
+            if (mType == Wall.WallType.LEFT || mType == Wall.WallType.RIGHT) {
+                this.setTexture(Textures.getInstance().getWallSide());
+            } else {
+                this.setTexture(Textures.getInstance().getWallTop());
+            }
+        }
         return mTexture;
     }
-    
+
     public void setTexture(Texture _Texture) {
         this.mTexture = _Texture;
     }
+
     /** Retorna objecto BaseColor que indica cor da parede.
      * 
      * @return objecto BaseColor que indica cor da parede
@@ -49,10 +59,10 @@ public class Wall extends Collidable {
     public Wall(int _x, int _y, int _width, int _height, WallType _type) {
         super(_x, _y, _width, _height);
 
-        if(_type==Wall.WallType.LEFT || _type==Wall.WallType.RIGHT) {            
-           this.setTexture(Textures.getInstance().getWallSide());
-        }else{
-           this.setTexture(Textures.getInstance().getWallTop());
+        if (_type == Wall.WallType.LEFT || _type == Wall.WallType.RIGHT) {
+            this.setTexture(Textures.getInstance().getWallSide());
+        } else {
+            this.setTexture(Textures.getInstance().getWallTop());
         }
         mType = _type;
 
@@ -63,8 +73,7 @@ public class Wall extends Collidable {
      *  Não deixa que raquete sobreponha a parede.
      * @param _club Raquete a afectar
      */
-    public void doEffectOnClub(Club _club)
-    {
+    public void doEffectOnClub(Club _club) {
         switch (mType) {
             case LEFT:
                 _club.setX(getX() + getWidth());
@@ -74,7 +83,7 @@ public class Wall extends Collidable {
                 break;
         }
     }
-    
+
     /** Define efeito sobre a bola quando existe colisão entre estas duas entidades.
      * Não deixa que bola sobreponha parede e altera direcção da bola dependendo
      * do tipo de parede que se trata.

@@ -5,6 +5,7 @@
 package arkanoid.models.entities;
 
 import arkanoid.Settings;
+import arkanoid.Textures;
 import arkanoid.models.entities.Bricks.Brick;
 import arkanoid.models.entities.Bricks.BrickUtils;
 
@@ -17,6 +18,7 @@ import java.util.Scanner;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.newdawn.slick.opengl.Texture;
 
 /** Classe que representa um nível.
  * È composta pelo  numero do nivel e nome nivel,
@@ -45,7 +47,6 @@ public class GameLevel implements Serializable {
     public int getLevelNumber() {
         return mLevelNumber;
     }
-
     private String mName;
 
     /** Devolve nome do nível.
@@ -54,16 +55,14 @@ public class GameLevel implements Serializable {
     public String getName() {
         return mName;
     }
-    
     private String mNextLevelFilename;
-    
+
     /** Devolve nome do ficheiro do nível seguinte.
      * @return nome do ficheiro do nível seguinte 
      */
     public String getNextLevelFilename() {
         return mNextLevelFilename;
     }
-    
     private float mBallVelocity;
 
     /** Devolve velocidade da bola no nível actual.
@@ -72,7 +71,6 @@ public class GameLevel implements Serializable {
     public float getBallVelocity() {
         return mBallVelocity;
     }
-    
     private int mNumberOfBricks;
     private int mNumberDestroyedBricks;
 
@@ -88,8 +86,6 @@ public class GameLevel implements Serializable {
     public boolean isClear() {
         return mNumberDestroyedBricks == mNumberOfBricks;
     }
-
-    
     private Brick[][] mBricks = new Brick[Settings.MAX_BRICK_ROWS][Settings.MAX_BRICK_COLUMNS];
 
     /** Devolve um tijolo que se encontre na posição pretendida.
@@ -109,16 +105,25 @@ public class GameLevel implements Serializable {
 
         return mBricks[_l][_c];
     }
-    
-    
     // Indica se o nível foi carregado para memória ou não
     private boolean mIsLoaded;
-    
+
     /** Devolve boolean que indica se o nível foi carregado para memória ou não.
      * @return  true se nivel foi carregado para memória, false caso contrário
      */
     public boolean isLoaded() {
         return mIsLoaded;
+    }
+    String mBackgroundName;
+    transient Texture mBackgndTexture = null;
+
+    public Texture getBackgndTexture() {
+
+        if (mBackgndTexture == null) {
+            mBackgndTexture = Textures.loadTexture(mBackgroundName);
+        }
+
+        return mBackgndTexture;
     }
 
     /** Constructor da classe.
@@ -135,12 +140,11 @@ public class GameLevel implements Serializable {
             reset(_ball, _player);
         }
     }
-    
+
     public GameLevel(String _filename) {
         mIsLoaded = readLevelFile(_filename);
 
     }
-    
 
     /** Lê ficheiro de nível.
      * 
@@ -177,6 +181,9 @@ public class GameLevel implements Serializable {
             mNextLevelFilename = processInfoLine(scanner.nextLine());
             mInitalLives = Integer.valueOf(processInfoLine(scanner.nextLine()));
             mBallVelocity = Float.valueOf(processInfoLine(scanner.nextLine()));
+
+            mBackgroundName = processInfoLine(scanner.nextLine());
+            mBackgndTexture = Textures.loadTexture(mBackgroundName);
 
             int curBricksLine = 0;
             mNumberOfBricks = 0;

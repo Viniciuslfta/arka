@@ -7,7 +7,6 @@ package arkanoid.models.entities;
 import arkanoid.RegisteredPlayerData;
 import arkanoid.Top10;
 import java.io.Serializable;
-import java.util.Observable;
 
 /** Classe que representa o Jogador
  * É composta pelo seu numero de vidas, pontuação e atributo que indica se o Jogador está loggado
@@ -75,7 +74,7 @@ public class Player implements Serializable {
     public void addScorePoints(int _quant) {
         this.mScore += _quant;
 
-        if (!"".equals(RegisteredPlayerData.getInstance().getUsername())) {
+        if (RegisteredPlayerData.getInstance().isLoggedIn()) {
             Top10.getInstance().update(RegisteredPlayerData.getInstance().getUsername(), mScore);
         }
     }

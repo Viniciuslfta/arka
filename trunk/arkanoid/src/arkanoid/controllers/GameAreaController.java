@@ -8,12 +8,14 @@ import arkanoid.ElapsedTime;
 import arkanoid.GameState;
 import arkanoid.GameState.GameStateType;
 import arkanoid.models.ModelPlayArea;
+import arkanoid.replay.Replay;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.lwjgl.LWJGLException;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-
+import org.lwjgl.opengl.Display;
 
 /**
  *
@@ -41,23 +43,23 @@ public class GameAreaController implements ArkanoidController {
 
     private void processKeyboard() {
 
-
-        Keyboard.poll();
-        
+        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+            Replay.getInstance().Save();
+        }
         if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 
-            GameState.changeState(GameStateType.PAUSED);
-            
             try {
-                Thread.sleep(250);
-            } catch (InterruptedException ex) {
-                   Logger.getLogger(GameAreaController.class.getName()).log(Level.SEVERE, null, ex);
+                Keyboard.destroy();
+                Keyboard.create();
+            } catch (LWJGLException ex) {
+                Logger.getLogger(GameAreaController.class.getName()).log(Level.SEVERE, null, ex);
             }
+            GameState.changeState(GameStateType.PAUSED);
         }
 
 
         // TODO: Apresentar menu de pausa e alterar o estado de jogo
-        if (ElapsedTime.microsecondsSince(mKeyMovementLastUpdate) > 1) {
+        if (ElapsedTime.milisecondsSince(mKeyMovementLastUpdate) > 5) {
             mKeyMovementLastUpdate = System.nanoTime();
 
             if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
@@ -88,6 +90,10 @@ public class GameAreaController implements ArkanoidController {
     @Override
     public void parseInput() {
 
+        if (GameState.currentState() == GameStateType.REPLAYING) {
+            Replay.getInstance().tick(mModel);
+            return;
+        }
 
         if (GameState.currentState() != GameStateType.PLAYING) {
             return;
@@ -99,6 +105,9 @@ public class GameAreaController implements ArkanoidController {
 
     @Override
     public void update() {
+        if (GameState.currentState() == GameStateType.REPLAYING) {
+            return;
+        }
         mModel.update();
     }
 }

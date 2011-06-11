@@ -4,6 +4,7 @@
  */
 package arkanoid;
 
+import arkanoid.replay.Replay;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -23,8 +24,17 @@ import java.util.logging.Logger;
  */
 public class Top10 implements Serializable {
 
-    class Top10Element implements Serializable, Comparable<Top10Element> {
+    public class Top10Element implements Serializable, Comparable<Top10Element> {
 
+        String mReplayName;
+
+        public String getReplayName() {
+            return mReplayName;
+        }
+
+        public void setReplayName(String _newName) {
+            mReplayName = _newName;
+        }
         String mName = "";
 
         public String getName() {
@@ -47,13 +57,13 @@ public class Top10 implements Serializable {
         Top10Element(String _username, long _points) {
             mName = _username;
             mPoints = _points;
+            mReplayName = Replay.getInstance().getUUID();
         }
 
         @Override
         public int compareTo(Top10Element t) {
             return t.getPoints() > mPoints ? 1 : 0;
         }
-
     }
     private static Top10 singletonObj = new Top10();
 
@@ -62,10 +72,14 @@ public class Top10 implements Serializable {
     }
     List<Top10Element> mElements = new ArrayList<Top10Element>();
 
-    Top10Element getElement(int _idx) {
+    public Top10Element getElement(int _idx) {
         return mElements.get(_idx);
     }
     long mLowerLimit;
+
+    public int getNumberElements() {
+        return mElements.size();
+    }
 
     Top10() {
         Load();
@@ -93,8 +107,6 @@ public class Top10 implements Serializable {
         }
 
         Collections.sort(mElements);
-        
-        Save();
     }
 
     public void update(String _username, long _points) {
@@ -102,10 +114,16 @@ public class Top10 implements Serializable {
             return;
         }
 
+
         if (!mElements.isEmpty()) {
             for (Top10Element elem : mElements) {
                 if (elem.getName() == null ? _username == null : elem.getName().equals(_username)) {
+                    
+                    if(elem.getPoints() > _points)
+                        return;
+                    
                     elem.setPoints(_points);
+                    elem.setReplayName(Replay.getInstance().getUUID());
                     UpdateBounds();
                     return;
                 }

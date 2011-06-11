@@ -45,11 +45,18 @@ public abstract class Bonus extends Collidable {
         return mColor;
     }
 
+    public void updatePosition(double _ellapsedTime) {
+        float y = (float) (getY() + (Settings.BONUS_VELOCITY /** _ellapsedTime*/));
+        super.updatePosition(this.getX(), y);
+
+        mLastUpdate = System.nanoTime();
+    }
+
     public void updatePosition() {
 
-        double time = ElapsedTime.microsecondsSince(mLastUpdate);
+        double time = ElapsedTime.milisecondsSince(mLastUpdate);
 
-        float y = (float) (getY() + (Settings.BONUS_VELOCITY * ElapsedTime.microsecondsSince(mLastUpdate)));
+        float y = (float) (getY() + (Settings.BONUS_VELOCITY /** ElapsedTime.milisecondsSince(mLastUpdate)*/));
         super.updatePosition(this.getX(), y);
 
         mLastUpdate = System.nanoTime();

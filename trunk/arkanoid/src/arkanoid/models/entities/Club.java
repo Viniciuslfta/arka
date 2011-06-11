@@ -12,17 +12,20 @@ import org.newdawn.slick.opengl.Texture;
  */
 public class Club extends Collidable {
 
-    private Texture mTexture;
+    transient private Texture mTexture;
 
     public Texture getTexture() {
+        if (mTexture == null) {
+            mTexture = Textures.getInstance().getClub();
+        }
         return mTexture;
     }
-    
+
     public void setTexture(Texture _Texture) {
         this.mTexture = _Texture;
     }
-    
     private BaseColor mColor;
+
     /** Retorna objecto do tipo BaseColor que indica a cor da raquete.
      * 
      * @return BaseColor que indica a cor da raquete
@@ -35,14 +38,13 @@ public class Club extends Collidable {
      * 
      * @param _ball Bola a centrar no taco
      */
-    public void placeBallAtCenter(Ball _ball)
-    {
+    public void placeBallAtCenter(Ball _ball) {
         // Coloca a bola centrada no taco
         float x = getX() + getWidth() / 2 - Settings.BALL_SIZE / 2;
         float y = getY() - Settings.BALL_SIZE;
         _ball.updatePosition(x, y);
     }
-    
+
     /** Constructor da classe.
      * 
      * @param _x valor da posição em X com o qual instanciar objecto
@@ -52,10 +54,8 @@ public class Club extends Collidable {
         super(_x, _y, Settings.CLUB_WIDTH, Settings.CLUB_HEIGHT);
         mTexture = Textures.getInstance().getClub();
         mColor = new BaseColor(0.5f, 0.5f, 0.5f);
-        
 
-                
+
+
     }
-
-    
 }
