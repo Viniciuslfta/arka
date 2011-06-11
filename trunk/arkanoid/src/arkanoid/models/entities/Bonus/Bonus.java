@@ -5,6 +5,7 @@ import arkanoid.Settings;
 import arkanoid.BaseColor;
 import arkanoid.ElapsedTime;
 import arkanoid.models.entities.PlayArea;
+import org.newdawn.slick.opengl.Texture;
 
 /**
  *
@@ -17,10 +18,22 @@ public abstract class Bonus extends Collidable {
     public void setLastUpdate(long _lastUpdate) {
         this.mLastUpdate = _lastUpdate;
     }
+    
+    private Texture mTexture;
+
+    public Texture getTexture() {
+        return mTexture;
+    }
+    
+    public void setTexture(Texture _Texture) {
+        this.mTexture = _Texture;
+    }
+    
     private BaseColor mColor;
 
-    public Bonus(float _x, float _y, BaseColor _color) {
+    public Bonus(float _x, float _y, BaseColor _color,Texture _tex) {
         super(_x, _y, Settings.BONUS_SIZE, Settings.BONUS_SIZE);
+        mTexture = _tex;
         mColor = _color;
         mLastUpdate = System.nanoTime();
     }

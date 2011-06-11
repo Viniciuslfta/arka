@@ -5,9 +5,9 @@
 package arkanoid.models.entities.Bricks;
 
 import arkanoid.BaseColor;
+import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
 import java.awt.Point;
-import java.io.Serializable;
 
 /** Representa um tijolo vermelho ( extensão de Brick )
  *
@@ -15,13 +15,15 @@ import java.io.Serializable;
  */
 public class RedBrick extends Brick {
 
+    
+    
     /** Constructor da classe.
      * 
      * @param _x valor da posição em X com o qual será instanciado o objecto
      * @param _y valor da posição em Y com o qual será instanciado o objecto
      */
     public RedBrick(int _x, int _y) {
-        super(_x, _y, 1, new BaseColor(1.0f, 0.0f, 0.0f));
+        super(_x, _y, 1, new BaseColor(1.0f, 0.0f, 0.0f),Textures.getInstance().getRedBrick());
     }
 
     /** Implementa função que define efeito provocado pela colisão da Bola no Tijolo

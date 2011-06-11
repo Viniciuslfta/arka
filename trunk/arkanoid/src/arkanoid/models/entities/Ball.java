@@ -4,6 +4,8 @@ import arkanoid.Collidable;
 import arkanoid.BaseColor;
 import arkanoid.ElapsedTime;
 import arkanoid.Settings;
+import arkanoid.Textures;
+import org.newdawn.slick.opengl.Texture;
 
 /** Classe que representa bola como extensão de Collidable.
  * È essencialmente composta pela Cor, Velocidade (em X e Y) 
@@ -12,6 +14,19 @@ import arkanoid.Settings;
  * @author sPeC
  */
 public class Ball extends Collidable {
+    
+   private Texture mTexture;
+
+    public Texture getTexture() {
+        return mTexture;
+    }
+    
+    public void setTexture(Texture _Texture) {
+        this.mTexture = _Texture;
+    }
+    
+    
+    
     /**
      * Indica tempo em que foi efectuada a última alteração
      */
@@ -124,10 +139,11 @@ public class Ball extends Collidable {
      */
     public Ball(int _x, int _y) {
         super(_x, _y, Settings.BALL_SIZE, Settings.BALL_SIZE);
-
+        mTexture = Textures.getInstance().getBall();
         mLastUpdate = System.nanoTime();
         mColor = new BaseColor(1.0f, 1.0f, 0.0f);
         mSticky = false;
+                
     }
     
     boolean mSticky;

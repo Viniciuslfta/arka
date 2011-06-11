@@ -6,6 +6,7 @@ package arkanoid.models.entities.Bonus;
 
 import arkanoid.BaseColor;
 import arkanoid.Settings;
+import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
 
 /**
@@ -15,7 +16,7 @@ import arkanoid.models.entities.PlayArea;
 public class BonusExpansion extends Bonus{
 
     public BonusExpansion(float _x, float _y) {
-        super(_x, _y, new BaseColor(1,1,1));
+        super(_x, _y, new BaseColor(1,1,1),Textures.getInstance().getBonusExpansion());
     }
 
     @Override

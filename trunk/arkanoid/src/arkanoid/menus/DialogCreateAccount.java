@@ -45,6 +45,7 @@ public final class DialogCreateAccount extends JFrame {
 
 
         setVisible(true); // torna visivel
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//termina a aplicação quando a frame fechar
         
         validate();// dispoe de novo os seus subcomponentes

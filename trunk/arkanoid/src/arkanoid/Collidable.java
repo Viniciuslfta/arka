@@ -5,6 +5,7 @@
 package arkanoid;
 
 import java.io.Serializable;
+import org.newdawn.slick.opengl.Texture;
 
 /** Classe que representa um elemento com capacidade de colisão.
  *  É composta por duas BoundingBox: uma para a posição actual (mBoundingBox)

@@ -6,6 +6,11 @@ import arkanoid.Settings;
 import arkanoid.models.entities.Ball;
 import arkanoid.models.entities.PlayArea;
 import java.awt.Point;
+import java.io.FileInputStream;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 
 
 /** Classe que representa um Tijolo ( extensão de Collidable ).
@@ -17,6 +22,16 @@ import java.awt.Point;
  */
 public abstract class Brick extends Collidable {
 
+    private Texture mTexture;
+
+    public Texture getTexture() {
+        return mTexture;
+    }
+    
+    public void setTexture(Texture mTexture) {
+        this.mTexture = mTexture;
+    }
+    
     private Point mLocationOnPlayArea;
     
     private int mNumberOfAllowedHits;
@@ -104,11 +119,12 @@ public abstract class Brick extends Collidable {
      * @param _allowedHits  quantidade de impactos necessário para desactivar tijolo
      * @param _color cor do tijolo
      */
-    public Brick(int _x, int _y, int _allowedHits, BaseColor _color) {
+    public Brick(int _x, int _y, int _allowedHits, BaseColor _color,Texture _tex) {
         super(_x, _y, Settings.BRICK_WIDTH, Settings.BRICK_HEIGHT);
-        
+        mTexture = _tex;
         mNumberOfOcurredHits = 0;
         mNumberOfAllowedHits = _allowedHits;
         mColor = _color;
+
     }
 }

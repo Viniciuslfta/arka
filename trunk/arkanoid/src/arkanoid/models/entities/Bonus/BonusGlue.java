@@ -5,6 +5,7 @@
 package arkanoid.models.entities.Bonus;
 
 import arkanoid.BaseColor;
+import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
 
 /**
@@ -14,7 +15,7 @@ import arkanoid.models.entities.PlayArea;
 public class BonusGlue extends Bonus{
 
     public BonusGlue(float _x, float _y) {
-        super(_x, _y, new BaseColor(0,0,1));
+        super(_x, _y, new BaseColor(0,0,1),Textures.getInstance().getBonusGlue());
     }
 
     @Override

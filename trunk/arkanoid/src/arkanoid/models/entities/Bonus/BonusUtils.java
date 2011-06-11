@@ -11,21 +11,21 @@ package arkanoid.models.entities.Bonus;
 public class BonusUtils {
 
     public static Bonus getRandomBonus(float _posX, float _posY) {
-return new BonusSlowDown(_posX, _posY);
-//        // TODO: Adicionar o bonus nosso
-//        int num = (int) (Math.random() * 5);
-//
-//        switch (num) {
-//            case 0:
-//                return new BonusExpansion(_posX, _posY);
-//            case 1:
-//                return new BonusGlue(_posX, _posY);
-//            case 2:
-//                return new BonusLife(_posX, _posY);
-//            case 3:
-//                return new BonusSlowDown(_posX, _posY);
-//            default:
-//                return new BonusInvert(_posX, _posY);
-//        }
+
+        // TODO: Adicionar o bonus nosso
+        int num = (int) (Math.random() * 5);
+
+        switch (num) {
+            case 0:
+                return new BonusExpansion(_posX, _posY);
+            case 1:
+                return new BonusGlue(_posX, _posY);
+            case 2:
+                return new BonusLife(_posX, _posY);
+            case 3:
+                return new BonusSlowDown(_posX, _posY);
+            default:
+                return new BonusInvert(_posX, _posY);
+        }
     }
 }
