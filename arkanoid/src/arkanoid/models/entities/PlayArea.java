@@ -4,6 +4,8 @@ import arkanoid.GameState;
 import arkanoid.GameState.GameStateType;
 import arkanoid.RegisteredPlayerData;
 import arkanoid.Settings;
+import arkanoid.Sounds;
+import arkanoid.Top10;
 import arkanoid.models.entities.Bricks.Brick;
 import arkanoid.models.entities.Wall.WallType;
 
@@ -11,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import arkanoid.models.entities.Bonus.Bonus;
 import arkanoid.models.entities.Bonus.BonusInvert;
+import arkanoid.models.entities.Bonus.BonusUtils;
+import arkanoid.replay.Replay;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,17 +26,19 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 /** Classe que representa Àrea de Jogo.
  * É composta essencialmente pela Bola, Raquete , Paredes e Tijolos
  * @author sPeC
  */
 public class PlayArea implements Serializable {
+
     RegisteredPlayerData mPlayerData = RegisteredPlayerData.getInstance();
-    RegisteredPlayerData getPlayerData(){
+
+    RegisteredPlayerData getPlayerData() {
         return mPlayerData;
     }
-    
     float mClubKeyMoveSpeed = Settings.CLUB_KEY_MOVE_SPEED;
 
     public float getClubKeyMoveSpeed() {
@@ -106,6 +112,7 @@ public class PlayArea implements Serializable {
     public void addBonus(Bonus _bonus) {
         mBonus.add(_bonus);
     }
+    long mKeyboardLastPressTime = System.nanoTime();
 
     /** Constructor da classe
      * Instancia paredes, bola, raquete e tijolos(GameLevel)
@@ -113,6 +120,9 @@ public class PlayArea implements Serializable {
      * @param _firstLevel nome do ficheiro do primeiro nível
      */
     public PlayArea(String _firstLevel) {
+
+        // Força a guarda do event de seed dos bónus
+        BonusUtils.initRandom();
 
         //
         // Cria as paredes
@@ -138,15 +148,20 @@ public class PlayArea implements Serializable {
         // Cria o jogador
         mPlayer = new Player();
 
-        changeLevel(_firstLevel);
+        if (_firstLevel != null) {
+            changeLevel(_firstLevel);
+        }
 
+        /*mBall.setX(540);
+        mBall.setY(380);
+        mBall.setVelocityY(6.0f);
+        mBall.setVelocityX(-6.0f);*/
     }
 
     /** Define comportamento tomado pelo jogo
      * quando detecta que a Bola está fora dos limites do ecrã
      */
     private void handleBallOutOfBounds() {
-
 
         if (mCurrentBonus != null) {
             mCurrentBonus.undoEffect(this);
@@ -156,6 +171,7 @@ public class PlayArea implements Serializable {
         mPlayer.removeLifes(1);
         if (mPlayer.getLifes() == 0) {
             GameState.changeState(GameStateType.GAME_OVER);
+            Replay.getInstance().AddTickEvent(--mNumberOfTicks);
             return;
         }
 
@@ -164,43 +180,44 @@ public class PlayArea implements Serializable {
         mClub.placeBallAtCenter(mBall);
         mCurrentLevel.resetBallSpeed(mBall);
     }
-
     /** Define comportamento tomado pelo Jogo a cada iteração sua
      */
+    private int mNumberOfTicks = 0;
+
     public void tick() {
 
+        if (RegisteredPlayerData.getInstance().isLoggedIn()
+                && GameState.currentState() != GameStateType.REPLAYING) {
+            mNumberOfTicks++;
+        }
+
         if (GameState.currentState() == GameStateType.RESTARTING_LEVEL) {
+            Replay.getInstance().Reset();
+            BonusUtils.initRandom();
+
             resetLevel();
             GameState.changeState(GameStateType.PLAYING);
         }
 
         if (GameState.currentState() == GameStateType.LEVEL_COMPLETE) {
-            
+
             changeLevel(mCurrentLevel.getNextLevelFilename());
+
             GameState.changeState(GameStateType.PLAYING);
-            
-            if(mCurrentBonus!=null) {
-                mCurrentBonus.undoEffect(this);
-            }        
-            
-            mBonus.clear();
-            mCurrentBonus = null;
-            
+
             //se o jogador não é visitante, actualiza o nº de niveis completos
-            if(!"".equals(RegisteredPlayerData.getInstance().getUsername())) {
-               if(mCurrentLevel.getLevelNumber() > RegisteredPlayerData.getInstance().getCompletedLevels()) {
-                  //se o nivel actual é maior que o nº de niveis completos do jogador
-                   
-                   RegisteredPlayerData.getInstance().setCompletedLevels(mCurrentLevel.getLevelNumber());
-                   RegisteredPlayerData toAdd = RegisteredPlayerData.getInstance();
-                   RegisteredPlayerData.getInstance().updatePlayersFile(toAdd.getUsername(),toAdd.getPassword(),toAdd.getCompletedLevels());
-               }
-               
+            if (RegisteredPlayerData.getInstance().isLoggedIn()) {
+                if (mCurrentLevel.getLevelNumber() > RegisteredPlayerData.getInstance().getCompletedLevels()) {
+                    //se o nivel actual é maior que o nº de niveis completos do jogador
+
+                    RegisteredPlayerData.getInstance().setCompletedLevels(mCurrentLevel.getLevelNumber());
+                    RegisteredPlayerData toAdd = RegisteredPlayerData.getInstance();
+                    RegisteredPlayerData.getInstance().updatePlayersFile(toAdd.getUsername(), toAdd.getPassword(), toAdd.getCompletedLevels());
+                }
             }
-            
         }
 
-        if (GameState.currentState() != GameStateType.PLAYING) {
+        if (GameState.currentState() != GameStateType.PLAYING && GameState.currentState() != GameStateType.REPLAYING) {
             return;
         }
 
@@ -213,6 +230,8 @@ public class PlayArea implements Serializable {
 
             } else {
 
+                mBall.updatePosition();
+
                 // A bola bateu no taco?
                 checkBallClubCollision();
 
@@ -221,15 +240,19 @@ public class PlayArea implements Serializable {
 
                 // E num dos blocos
                 checkBallBricksCollisions();
-
-                mBall.updatePosition();
             }
         }
 
         //Bonus
         checkClubBonusCollision();
         checkBonusOutOfBounds();
+    }
 
+    public void SaveTicks() {
+        if (mNumberOfTicks > 0) {
+            Replay.getInstance().AddTickEvent(mNumberOfTicks);
+            mNumberOfTicks = 0;
+        }
     }
 
     /** Verifica colisões entre bola e tijolos e define o comportamento resultant.
@@ -249,13 +272,13 @@ public class PlayArea implements Serializable {
                         break;
                     }
 
-                    if (!tmpBrick.isActive()
-                            || tmpBrick.getX() > mBall.getX()
-                            || (tmpBrick.getX() + tmpBrick.getWidth()) < mBall.getX()) {
+                    if (!tmpBrick.isActive()) {
                         continue;
                     }
 
                     if (mBall.isCollidingWith(tmpBrick)) {
+                        Sounds.getInstance().playBallBump();
+
                         tmpBrick.onBallCollision(this);
 
                         // incrementa o número de blocos destruidos
@@ -264,9 +287,11 @@ public class PlayArea implements Serializable {
                         }
 
                         // Verifica se foi o último
-                        if (mCurrentLevel.isClear()) {
+                        if (mCurrentLevel.isClear() && GameState.currentState() != GameStateType.REPLAYING) {
                             GameState.changeState(GameStateType.LEVEL_COMPLETE);
                         }
+
+                        return true;
                     }
                 }
             }
@@ -306,26 +331,16 @@ public class PlayArea implements Serializable {
     private boolean checkBallClubCollision() {
         // Taco e bola
         if (mClub.isCollidingWith(mBall) && !mBall.isGluedToClub()) {
-
-
-
-            float tmpVel = mBall.getVelocityX() + mClub.getDeltaX() * Settings.CLUB_SPEED_INC;
-
-            if (tmpVel > mBall.getVelocityX()) {
-                mBall.setVelocityX(tmpVel);
-            }
-
-            tmpVel = Math.abs(mBall.getVelocityY()) * -1;
+            float tmpVel = Math.abs(mBall.getVelocityY()) * -1;
             mBall.setVelocityY(tmpVel);
 
             mBall.setY(mClub.getY() - Settings.BALL_SIZE);
-
 
             if (mBall.isSticky()) {
                 mBall.setIsGluedToClub(true);
             }
 
-
+            Sounds.getInstance().playBallBump();
             return true;
         }
 
@@ -333,6 +348,12 @@ public class PlayArea implements Serializable {
     }
 
     public void parseKey(int _key) {
+        if (RegisteredPlayerData.getInstance().isLoggedIn()
+                && GameState.currentState() != GameStateType.REPLAYING) {
+            SaveTicks();
+            Replay.getInstance().AddKeyPressEvent(_key);
+        }
+
         switch (_key) {
             case Keyboard.KEY_LEFT:
             case Keyboard.KEY_RIGHT: {
@@ -363,6 +384,12 @@ public class PlayArea implements Serializable {
      * @param _clicked booleano que indica se o jogador clicou no rato
      */
     public void parseMouse(float _x, boolean _clicked) {
+
+        if (RegisteredPlayerData.getInstance().isLoggedIn()
+                && GameState.currentState() != GameStateType.REPLAYING) {
+            SaveTicks();
+            Replay.getInstance().AddMouseEvent(_x, _clicked);
+        }
 
         if (_clicked && mBall.isGluedToClub()) {
             mBall.setIsGluedToClub(false);
@@ -402,6 +429,10 @@ public class PlayArea implements Serializable {
     public final void changeLevel(String _filename) {
         mCurrentLevel = new GameLevel(_filename, mBall, mPlayer);
 
+        if (RegisteredPlayerData.getInstance().isLoggedIn() && GameState.currentState() != GameStateType.REPLAYING) {
+            Replay.getInstance().AddChangeLevelEvent(_filename, mPlayer.getScore());
+            Top10.getInstance().Save();
+        }
         resetLevel();
     }
 
@@ -410,11 +441,22 @@ public class PlayArea implements Serializable {
      */
     public final void resetLevel() {
 
+        // Reset aos bónus
+        if (mCurrentBonus != null) {
+            mCurrentBonus.undoEffect(this);
+        }
+
+        mBonus.clear();
+        mCurrentBonus = null;
+
         mBall.setIsGluedToClub(true);
 
         // Centra o taco no centro da área de jogo
         float x = getPlayAreaCenterX() - Settings.CLUB_WIDTH / 2;
         updateClubPos(x);
+
+        Mouse.setCursorPosition((int) x, 0);
+
         // Restablece largura 
         mClub.setWidth(Settings.CLUB_WIDTH);
         // Coloca a bola centrada no taco
@@ -431,8 +473,7 @@ public class PlayArea implements Serializable {
             bonus.updatePosition();
             if (bonus.isCollidingWith(mClub)) {
 
-
-
+                Sounds.getInstance().playPowerUp();
                 if (mCurrentBonus != null) {
                     mCurrentBonus.undoEffect(this);
                 }
@@ -472,14 +513,14 @@ public class PlayArea implements Serializable {
         return mActiveBonus;
     }
 
-    public void ResetElapsedTime(){
+    public void ResetElapsedTime() {
         mBall.setLastUpdate(System.nanoTime());
-        
-         for (Bonus bonus : mBonus) {
-             bonus.setLastUpdate(System.nanoTime());
+
+        for (Bonus bonus : mBonus) {
+            bonus.setLastUpdate(System.nanoTime());
         }
     }
-    
+
     public void SaveGame(String _path) {
 
         FileOutputStream fos = null;
@@ -502,22 +543,22 @@ public class PlayArea implements Serializable {
             in = new ObjectInputStream(fis);
             PlayArea tmpArea = (PlayArea) in.readObject();
             in.close();
-            
+
             // Verifica se o savegame pertence ao utilizador que está logado
-            if( !RegisteredPlayerData.getInstance().getUsername().equals(tmpArea.getPlayerData().getUsername()))
-            {
+            if (!RegisteredPlayerData.getInstance().getUsername().equals(tmpArea.getPlayerData().getUsername())) {
                 JOptionPane.showMessageDialog(null, "Não permissões para aceder a este savegame.");
                 return null;
             }
-            
+
+            GameState.setIsLoadedGame(true);
             return tmpArea;
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(PlayArea.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         JOptionPane.showMessageDialog(null, "Não foi possivel ler o ficheiro.");
-       return null;
+        return null;
     }
 }

@@ -37,7 +37,7 @@ public class MenuInicial extends Menu {
         tmpOption.addActionListener(new LoadGameListener());
         this.addOption(tmpOption);
 
-        if ("".equals(RegisteredPlayerData.getInstance().getUsername())) {
+        if (!RegisteredPlayerData.getInstance().isLoggedIn()) {
             tmpOption = new JButton("Criar Registo");
             tmpOption.addActionListener(new CreateAccountListener());
             this.addOption(tmpOption);
@@ -47,7 +47,8 @@ public class MenuInicial extends Menu {
             this.addOption(tmpOption);
         }
 
-        if (!"".equals(RegisteredPlayerData.getInstance().getUsername()) && RegisteredPlayerData.getInstance().getCompletedLevels()>1) {
+
+        if (RegisteredPlayerData.getInstance().isLoggedIn() && RegisteredPlayerData.getInstance().getCompletedLevels()>1) {
             tmpOption = new JButton("Reinicio Rápido");
             tmpOption.addActionListener(new FastRestarListener());
             this.addOption(tmpOption);
@@ -58,7 +59,7 @@ public class MenuInicial extends Menu {
         tmpOption.addActionListener(new ShowScoreListener());
         this.addOption(tmpOption);
 
-        if (!"".equals(RegisteredPlayerData.getInstance().getUsername())) {
+        if (RegisteredPlayerData.getInstance().isLoggedIn()) {
             tmpOption = new JButton("Logout");
             tmpOption.addActionListener(new LogoutListener());
             this.addOption(tmpOption);
@@ -147,7 +148,7 @@ public class MenuInicial extends Menu {
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Sair"
 
-            RegisteredPlayerData.getInstance().setUsername("");
+            RegisteredPlayerData.getInstance().setIsLoggedIn(false);
             GameState.changeState(GameState.GameStateType.MAIN_MENU);
 
         }

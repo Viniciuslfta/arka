@@ -3,6 +3,7 @@ nome=Fuzzy
 next=level1.txt
 vidas=3
 velocidade=0.5f
+background=backgnd4.png
 @@@@@G@@@@@@@
 @@@@@@@@@@@@@
 @@@@@@@@@@@@@

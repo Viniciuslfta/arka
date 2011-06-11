@@ -26,7 +26,7 @@ public class ViewMainMenu extends ArkanoidView {
         try {
             mBigFont = new UnicodeFont("fonts\\JerseyLetters.ttf", 100, false, false);
             mBigFont.addGlyphs("ARKNOID!");
-            mBigFont.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
+            mBigFont.getEffects().add(new ColorEffect(java.awt.Color.RED));
             mBigFont.loadGlyphs();
         } catch (SlickException ex) {
             Logger.getLogger(ViewMainMenu.class.getName()).log(Level.SEVERE, null, ex);
@@ -45,9 +45,9 @@ public class ViewMainMenu extends ArkanoidView {
         float width = Settings.DISPLAY_WIDTH - Settings.PLAY_AREA_START_X * 2;
         float height = Settings.DISPLAY_HEIGHT - Settings.PLAY_AREA_START_Y;
 
-        x += (width / 2) - mBigFont.getWidth("GAME OVER!") / 2;
-        y += (height / 2) - mBigFont.getHeight("GAME OVER!");
-
+        x += (width / 2) - mBigFont.getWidth("ARKNOID!") / 2;
+        y += (height / 2) - mBigFont.getHeight("ARKNOID!");
+GL11.glDisable(GL11.GL_TEXTURE_2D);
         mBigFont.drawString(x, y, "ARKANOID!", Color.red);
     }
 

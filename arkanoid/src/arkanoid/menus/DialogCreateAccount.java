@@ -43,7 +43,8 @@ public final class DialogCreateAccount extends JFrame {
         layView();  // faz a montagem visual dos objectos gráficos deste exemplo
         registerListeners(); // liga os objectos gráficos aos listeners associados
 
-
+        this.setResizable(false);
+        
         setVisible(true); // torna visivel
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//termina a aplicação quando a frame fechar

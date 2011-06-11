@@ -20,6 +20,7 @@ public class RegisteredPlayerData implements Serializable {
     private String mPassword;
     private int mCompletedLevels;
     private String mStartingLevel = "level1.txt";
+    private static RegisteredPlayerData singletonObj = new RegisteredPlayerData("", "");
 
     public String getStartingLevel() {
         return mStartingLevel;
@@ -32,14 +33,24 @@ public class RegisteredPlayerData implements Serializable {
     public void setInstance(RegisteredPlayerData _player) {
         singletonObj = _player;
     }
-    private static RegisteredPlayerData singletonObj = new RegisteredPlayerData("", "");
 
     public static RegisteredPlayerData getInstance() {
         return singletonObj;
     }
+    private boolean mIsLoggedIn = false;
+
+    public boolean isLoggedIn() {
+        return mIsLoggedIn;
+    }
+
+    public void setIsLoggedIn(boolean _isLogged) {
+        mIsLoggedIn = _isLogged;
+    }
 
     private RegisteredPlayerData() {
+        
     }
+
 
     public RegisteredPlayerData(String _user, String _pass, int _completed) {
         mUsername = _user;
@@ -54,6 +65,7 @@ public class RegisteredPlayerData implements Serializable {
     }
 
     public int getCompletedLevels() {
+
         return mCompletedLevels;
     }
 

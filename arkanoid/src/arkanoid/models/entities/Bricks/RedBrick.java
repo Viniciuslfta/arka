@@ -8,6 +8,7 @@ import arkanoid.BaseColor;
 import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
 import java.awt.Point;
+import org.newdawn.slick.opengl.Texture;
 
 /** Representa um tijolo vermelho ( extensão de Brick )
  *
@@ -15,15 +16,21 @@ import java.awt.Point;
  */
 public class RedBrick extends Brick {
 
-    
-    
     /** Constructor da classe.
      * 
      * @param _x valor da posição em X com o qual será instanciado o objecto
      * @param _y valor da posição em Y com o qual será instanciado o objecto
      */
     public RedBrick(int _x, int _y) {
-        super(_x, _y, 1, new BaseColor(1.0f, 0.0f, 0.0f),Textures.getInstance().getRedBrick());
+        super(_x, _y, 1, new BaseColor(1.0f, 0.0f, 0.0f), Textures.getInstance().getRedBrick());
+    }
+
+    @Override
+    public Texture getTexture() {
+        if (mTexture == null) {
+            mTexture = Textures.getInstance().getRedBrick();
+        }
+        return mTexture;
     }
 
     /** Implementa função que define efeito provocado pela colisão da Bola no Tijolo
@@ -33,6 +40,7 @@ public class RedBrick extends Brick {
     @Override
     public void onBallCollision(PlayArea _area) {
         super.onBallCollision(_area.getBall());
+
 
 
         _area.getPlayer().addScorePoints(100);
@@ -52,9 +60,10 @@ public class RedBrick extends Brick {
 
                 if (tempBrick != null && tempBrick.isActive()) {
                     tempBrick.onBallCollision(_area);
-                    
-                if( !tempBrick.isActive())
-                    _area.getCurrentLevel().incNumberOfDestroyedBricks();
+
+                    if (!tempBrick.isActive()) {
+                        _area.getCurrentLevel().incNumberOfDestroyedBricks();
+                    }
                 }
             }
         }

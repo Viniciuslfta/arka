@@ -58,13 +58,12 @@ public class DialogFastRestart extends JFrame{
         // quando a frame fechar
         validate();// dispoe de novo os seus subcomponentes
             
-        
-
+        this.setResizable(false);
     }
 
     /*Faz a montagem visual dos objectos gráficos desta caixa de diálogo
      */
-    protected void layView() {
+    private void layView() {
         
         int height = 250;
         int width = 250;
@@ -86,7 +85,7 @@ public class DialogFastRestart extends JFrame{
     /* Liga os objectos gráficos aos listeners associados permitindo que
      * interajam com o utilizador 
      */
-    protected void registerListeners() {
+    private void registerListeners() {
        startButton.addActionListener(new StartListener());
        cancelButton.addActionListener(new CancelListener());
     }

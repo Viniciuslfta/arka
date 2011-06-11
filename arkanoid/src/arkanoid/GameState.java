@@ -18,6 +18,16 @@ public class GameState extends Observable {
 
     private GameState() {
     }
+    private static boolean mIsLoadedGame = false;
+
+    public static boolean isLoadedGame() {
+        return mIsLoadedGame;
+    }
+
+    public static void setIsLoadedGame(boolean _isLoadedGame) {
+        GameState.mIsLoadedGame = mIsLoadedGame;
+    }
+    
     private static boolean mStateChanged = true;
 
     public static boolean hasStateChanged() {

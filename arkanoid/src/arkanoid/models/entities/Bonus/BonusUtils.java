@@ -4,16 +4,35 @@
  */
 package arkanoid.models.entities.Bonus;
 
+import arkanoid.GameState;
+import arkanoid.RegisteredPlayerData;
+import arkanoid.replay.Replay;
+import java.util.Random;
+
 /**
  *
  * @author sPeC
  */
 public class BonusUtils {
 
-    public static Bonus getRandomBonus(float _posX, float _posY) {
+    private static Random mRandom = null;
 
-        // TODO: Adicionar o bonus nosso
-        int num = (int) (Math.random() * 5);
+    public static void setRandomSeed(long _randomSeed) {
+        mRandom = new Random(_randomSeed);
+    }
+
+    public static void initRandom() {
+        long randomSeed = System.currentTimeMillis();
+        mRandom = new Random(randomSeed);
+
+        if (RegisteredPlayerData.getInstance().isLoggedIn()
+                && GameState.currentState() != GameState.GameStateType.REPLAYING) {
+            Replay.getInstance().AddChangeBonusSeedEvent(randomSeed);
+        }
+    }
+
+    public static Bonus getRandomBonus(float _posX, float _posY) {
+        int num = mRandom.nextInt(5);
 
         switch (num) {
             case 0:

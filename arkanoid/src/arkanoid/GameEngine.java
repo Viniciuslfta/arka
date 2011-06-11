@@ -6,11 +6,13 @@ import arkanoid.controllers.MainMenuController;
 import arkanoid.menus.DialogCreateAccount;
 import arkanoid.menus.DialogFastRestart;
 import arkanoid.menus.DialogLogin;
+import arkanoid.menus.DialogReplay;
 import arkanoid.menus.DialogTop10;
 import arkanoid.menus.MenuInicial;
 import arkanoid.menus.MenuPause;
 import arkanoid.models.ModelPlayArea;
 import arkanoid.models.entities.PlayArea;
+import arkanoid.replay.Replay;
 import arkanoid.views.ArkanoidView;
 import arkanoid.views.ViewMainMenu;
 import arkanoid.views.ViewPlayAreaGeom;
@@ -20,6 +22,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.*;
 
 import java.io.IOException;
+import java.lang.management.ThreadInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,15 +142,18 @@ public class GameEngine implements Runnable {
     @Override
     public void run() {
 
+        Textures.getInstance().load();
+        Sounds.getInstance().load();
         GameState.changeState(GameState.GameStateType.MAIN_MENU);
 
         if (this.mErrorsOnInit) {
             return;
         }
 
+        long ellapsedTime;
         while (!Display.isCloseRequested()) {
+            ellapsedTime = System.currentTimeMillis();
             if (Display.isVisible()) {
-
                 checkGameState();
                 mCurrentController.parseInput();
                 mCurrentController.update();
@@ -157,9 +163,20 @@ public class GameEngine implements Runnable {
                     mCurrentView.render();
                 }
             }
-
             Display.update();
-            //Display.sync(60);
+
+            ellapsedTime = System.currentTimeMillis() - ellapsedTime;
+            try {
+                if (GameState.currentState() != GameState.GameStateType.REPLAYING) {
+                    long timeToSleep = Settings.GAME_DELAY - ellapsedTime;
+                    timeToSleep = timeToSleep > Settings.GAME_DELAY || timeToSleep < 0 ? Settings.GAME_DELAY : timeToSleep;
+                    Thread.sleep(Settings.GAME_DELAY);
+                }
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
 
     } // Run()
@@ -173,18 +190,22 @@ public class GameEngine implements Runnable {
 
         switch (GameState.currentState()) {
             case GAME_OVER:
-                
+                if (RegisteredPlayerData.getInstance().isLoggedIn()) {
+                    Top10.getInstance().Save();
+                    Replay.getInstance().Save();
+                }
+
                 mCurrentMenu = new MenuPause("Game Over!");
                 ((MenuPause) mCurrentMenu).setModelPlayArea(((ViewPlayAreaGeom) mCurrentView).getPlayAreaModel());
                 Mouse.setGrabbed(false);
 
-                //
                 break;
+
             case PAUSED:
                 mCurrentMenu = new MenuPause("Pausa");
                 ((MenuPause) mCurrentMenu).setModelPlayArea(((ViewPlayAreaGeom) mCurrentView).getPlayAreaModel());
                 Mouse.setGrabbed(false);
-                
+
                 //
                 break;
             case RESTARTING_LEVEL:
@@ -205,13 +226,16 @@ public class GameEngine implements Runnable {
                 mCurrentController = new MainMenuController();
                 mCurrentView = new ViewMainMenu();
                 Mouse.setGrabbed(false);
+
                 break;
 
             case LOADED_GAME_FROM_MAIN_MENU: {
+
+                
                 ModelPlayArea mArea = ((MenuInicial) mCurrentMenu).getModelPlayArea();
                 mArea.ResetElapsedTime();
                 mCurrentController = new GameAreaController(mArea);
-                
+
                 try {
                     mCurrentView = new ViewPlayAreaGeom(mArea);
                 } catch (SlickException ex) {
@@ -228,6 +252,7 @@ public class GameEngine implements Runnable {
             break;
 
             case PLAYING:
+                GameState.setIsLoadedGame(false);
 
                 if (mCurrentMenu != null) {
                     mCurrentMenu.dispose();
@@ -275,12 +300,11 @@ public class GameEngine implements Runnable {
                 Mouse.setGrabbed(true);
                 break;
             case FAST_RESTART:
-                
+                GameState.setIsLoadedGame(false);
                 if (mCurrentMenu != null) {
                     mCurrentMenu.dispose();
                     mCurrentMenu = null;
                 }
-
 
                 mCurrentMenu = new DialogFastRestart();
                 break;
@@ -292,7 +316,25 @@ public class GameEngine implements Runnable {
                 }
 
                 mCurrentMenu = new DialogTop10();
+                break;
 
+            case REPLAYING:
+                if (mCurrentMenu != null) {
+                    mCurrentMenu.dispose();
+                    mCurrentMenu = null;
+                }
+
+                Mouse.setGrabbed(false);
+
+                ModelPlayArea mArea = new ModelPlayArea(new PlayArea(RegisteredPlayerData.getInstance().getStartingLevel()));
+                mCurrentController = new GameAreaController(mArea);
+                try {
+                    mCurrentView = new ViewPlayAreaGeom(mArea);
+                } catch (SlickException ex) {
+                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                mCurrentMenu = new DialogReplay(mArea);
+                Replay.getInstance().resetReplay(mArea);
                 break;
 
 

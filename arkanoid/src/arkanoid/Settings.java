@@ -12,6 +12,8 @@ import org.lwjgl.opengl.AWTGLCanvas;
  */
 public abstract class Settings {
 
+    public static final int GAME_DELAY = 25;
+    
     public static final int DISPLAY_WIDTH = 1024;
     public static final int DISPLAY_HEIGHT = 768;
     
@@ -26,20 +28,21 @@ public abstract class Settings {
     public static final int PLAY_AREA_START_Y = 100;
     
     public static final int BALL_SIZE = 15;
-    public static final float BALL_MAX_VEL = 0.5f;
-    public static final float BALL_MIN_VEL = 0.2f;
+    public static final float BALL_MAX_VEL = 12.0f;
+    public static final float BALL_MIN_VEL = 6.5f;
     
     public static final int CLUB_LOC_Y = DISPLAY_HEIGHT - 100;
     public static final int CLUB_WIDTH = 100;
     public static final int CLUB_HEIGHT = 20;
-    public static final float CLUB_KEY_MOVE_SPEED = 1.0f;
-    public static final float CLUB_SPEED_INC = 0.05f;
+    public static final float CLUB_KEY_MOVE_SPEED = 10.0f;
+
     
     public static final int MENU_BTN_WIDTH = 200;
     public static final int MENU_BTN_HEIGHT = 50;
     
     public static final int BONUS_SIZE = 20;
-    public static final float BONUS_VELOCITY = 0.2f;
+    public static final float BONUS_VELOCITY = 5.0f;
     
     public static final String SAVE_PATH = ".\\Saves";
+    public static final String REPLAY_PATH = ".\\Replays\\";
 }
