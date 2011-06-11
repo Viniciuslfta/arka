@@ -22,10 +22,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.*;
 
 import java.io.IOException;
-import java.lang.management.ThreadInfo;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.FileHandler;
 
 import java.util.logging.Level;
@@ -55,7 +52,6 @@ public class GameEngine implements Runnable {
         }
     }
     private boolean mErrorsOnInit;
-    private List<ArkanoidController> mControllersList = new ArrayList<ArkanoidController>(); // Para guardar os controladores não activos
     private ArkanoidController mCurrentController;   // O controlador activo
     private ArkanoidView mCurrentView;
     private JFrame mCurrentMenu;
