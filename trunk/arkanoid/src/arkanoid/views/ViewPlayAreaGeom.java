@@ -33,10 +33,10 @@ public class ViewPlayAreaGeom extends ArkanoidView {
     UnicodeFont mGenericFont;
     UnicodeFont mGameOverFont;
 
-    public ModelPlayArea getPlayAreaModel(){
+    public ModelPlayArea getPlayAreaModel() {
         return mPlayArea;
     }
-    
+
     /** Constructor da classe.
      * 
      * @param _playArea Modelo de Àrea de Jogo
@@ -58,12 +58,11 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         mGameOverFont.loadGlyphs();
     }
 
-
     @Override
     public void update(Observable o, Object o1) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
     /** Renderiza entidades no ecrã.
      */
     @Override
@@ -71,9 +70,8 @@ public class ViewPlayAreaGeom extends ArkanoidView {
 
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glLoadIdentity();
-        
+
         drawBackground();
-        drawWalls();
         drawBricks();
         drawClub();
         drawBall();
@@ -81,33 +79,33 @@ public class ViewPlayAreaGeom extends ArkanoidView {
 
         if (GameState.currentState() == GameStateType.GAME_OVER) {
             DrawGameOver();
-            mPlayArea.getBonus().clear();
         }
+        drawWalls();
 
         drawHeaderText();
     }
 
-    private void drawBackground()
-    {
-        BoundingBox playAreaBB = new BoundingBox(0,
-                                                    Settings.PLAY_AREA_START_Y,
-                                                    Settings.DISPLAY_WIDTH,
-                                                    Settings.DISPLAY_HEIGHT - Settings.PLAY_AREA_START_Y);
-        
-        
+    private void drawBackground() {
+        BoundingBox playAreaBB = new BoundingBox(Settings.PLAY_AREA_START_X - 5,
+                Settings.PLAY_AREA_START_Y-5,
+                Settings.DISPLAY_WIDTH - Settings.PLAY_AREA_START_X,
+                Settings.DISPLAY_HEIGHT - Settings.PLAY_AREA_START_Y+5);
+
+
         drawQuadWithTexture(playAreaBB, null, mPlayArea.getLoadedLevel().getBackgndTexture());
     }
+
     /** Desenha ecrã de Game Over.
      */
     private void DrawGameOver() {
-        float x = Settings.PLAY_AREA_START_X;
-        float y = Settings.PLAY_AREA_START_Y;
+        float x = Settings.PLAY_AREA_START_X - 5;
+        float y = Settings.PLAY_AREA_START_Y - 5;
 
-        float width = Settings.DISPLAY_WIDTH - Settings.PLAY_AREA_START_X * 2;
-        float height = Settings.DISPLAY_HEIGHT - Settings.PLAY_AREA_START_Y;
+        float width = (Settings.DISPLAY_WIDTH - Settings.PLAY_AREA_START_X * 2) + 10;
+        float height = Settings.DISPLAY_HEIGHT - Settings.PLAY_AREA_START_Y + 5;
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        drawQuad(new BoundingBox(x, y, width, height), new BaseColor(0.0f, 0.0f, 0.0f, 0.90f));
+        drawQuad(new BoundingBox(x, y, width, height), new BaseColor(0.0f, 0.0f, 0.0f, 0.0f));
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         x += (width / 2) - mGameOverFont.getWidth("GAME OVER!") / 2;
@@ -143,7 +141,7 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         Wall[] tmpWalls = mPlayArea.getWalls();
 
         for (int i = 0; i < 3; i++) {
-            drawQuadWithTexture(tmpWalls[i].getBoundingBox(), tmpWalls[i].getColor(),tmpWalls[i].getTexture());
+            drawQuadWithTexture(tmpWalls[i].getBoundingBox(), tmpWalls[i].getColor(), tmpWalls[i].getTexture());
         }
     }
 
@@ -158,18 +156,18 @@ public class ViewPlayAreaGeom extends ArkanoidView {
                 if (tmpBrick == null || !tmpBrick.isActive()) {
                     continue;
                 }
-                drawQuadWithTexture(tmpBrick.getBoundingBox(), tmpBrick.getColor(),tmpBrick.getTexture());
+                drawQuadWithTexture(tmpBrick.getBoundingBox(), tmpBrick.getColor(), tmpBrick.getTexture());
             }
         }
     }
-    
+
     /** Desenha Raquete no ecrã.
      */
     private void drawClub() {
 
         Club tmpClub = mPlayArea.getClub();
 
-        drawQuadWithTexture(tmpClub.getBoundingBox(), tmpClub.getColor(),tmpClub.getTexture());
+        drawQuadWithTexture(tmpClub.getBoundingBox(), tmpClub.getColor(), tmpClub.getTexture());
     }
 
     /** Desenha Bola no ecrã.
@@ -177,7 +175,7 @@ public class ViewPlayAreaGeom extends ArkanoidView {
     private void drawBall() {
         Ball tmpBall = mPlayArea.getBall();
 
-        drawQuadWithTexture(tmpBall.getBoundingBox(), tmpBall.getColor(),tmpBall.getTexture());
+        drawQuadWithTexture(tmpBall.getBoundingBox(), tmpBall.getColor(), tmpBall.getTexture());
     }
 
     /**Desenha Poligono no ecrã.
@@ -187,53 +185,49 @@ public class ViewPlayAreaGeom extends ArkanoidView {
      */
     private void drawQuad(BoundingBox _quad, BaseColor _color) {
 
-      //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-      //GL11.glLoadIdentity();
-
-
         // set the color of the quad (R,G,B,A)
         GL11.glColor4f(_color.getR(), _color.getG(), _color.getB(), _color.getA());
 
         // draw quad
         GL11.glBegin(GL11.GL_QUADS);
-            GL11.glVertex2f(_quad.getX(), _quad.getY());
-            GL11.glVertex2f(_quad.getX() + _quad.getWidth(), _quad.getY());
-            GL11.glVertex2f(_quad.getX() + _quad.getWidth(), _quad.getY() + _quad.getHeight());
-            GL11.glVertex2f(_quad.getX(), _quad.getY() + _quad.getHeight());
+        GL11.glVertex2f(_quad.getX(), _quad.getY());
+        GL11.glVertex2f(_quad.getX() + _quad.getWidth(), _quad.getY());
+        GL11.glVertex2f(_quad.getX() + _quad.getWidth(), _quad.getY() + _quad.getHeight());
+        GL11.glVertex2f(_quad.getX(), _quad.getY() + _quad.getHeight());
         GL11.glEnd();
-        
+
     }
-    
-    
-    private void drawQuadWithTexture(BoundingBox _quad, BaseColor _color,Texture _texture) {
+
+    private void drawQuadWithTexture(BoundingBox _quad, BaseColor _color, Texture _texture) {
         _texture.bind();
+
         // set the color of the quad (R,G,B,A)
-        if( _color != null)
+        if (_color != null) {
             GL11.glColor4f(_color.getR(), _color.getG(), _color.getB(), _color.getA());
+        }
 
         // draw quad
         GL11.glBegin(GL11.GL_QUADS);
-            GL11.glTexCoord2f(0.0f, 0.0f);
-            GL11.glVertex2f(_quad.getX(), _quad.getY());
-            
-            GL11.glTexCoord2f(_texture.getWidth(), 0.0f);
-            GL11.glVertex2f(_quad.getX() + _quad.getWidth(), _quad.getY());
-            
-            GL11.glTexCoord2f(_texture.getWidth(), _texture.getHeight());
-            GL11.glVertex2f(_quad.getX() + _quad.getWidth(), _quad.getY() + _quad.getHeight());
-            
-            GL11.glTexCoord2f(0.0f, _texture.getHeight());
-            GL11.glVertex2f(_quad.getX(), _quad.getY() + _quad.getHeight());
+        GL11.glTexCoord2f(0.0f, 0.0f);
+        GL11.glVertex2f(_quad.getX(), _quad.getY());
+
+        GL11.glTexCoord2f(_texture.getWidth(), 0.0f);
+        GL11.glVertex2f(_quad.getX() + _quad.getWidth(), _quad.getY());
+
+        GL11.glTexCoord2f(_texture.getWidth(), _texture.getHeight());
+        GL11.glVertex2f(_quad.getX() + _quad.getWidth(), _quad.getY() + _quad.getHeight());
+
+        GL11.glTexCoord2f(0.0f, _texture.getHeight());
+        GL11.glVertex2f(_quad.getX(), _quad.getY() + _quad.getHeight());
         GL11.glEnd();
-        
+
     }
-        
-        
+
     private void drawBonus() {
         List<Bonus> tmpBonus = mPlayArea.getBonus();
-        
-        for(Bonus bonus: tmpBonus){
-            drawQuadWithTexture(bonus.getBoundingBox(),bonus.getColor(),bonus.getTexture());
-        } 
+
+        for (Bonus bonus : tmpBonus) {
+            drawQuadWithTexture(bonus.getBoundingBox(), bonus.getColor(), bonus.getTexture());
+        }
     }
 }
