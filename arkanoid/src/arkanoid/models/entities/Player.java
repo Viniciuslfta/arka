@@ -13,9 +13,8 @@ import java.util.Observable;
  * É composta pelo seu numero de vidas, pontuação e atributo que indica se o Jogador está loggado
  * @author sPeC
  */
-public class Player extends Observable implements Serializable {
+public class Player implements Serializable {
 
-    private boolean mIsLoggedIn;
     // Vidas
     private int mLifes;
 
@@ -80,5 +79,4 @@ public class Player extends Observable implements Serializable {
             Top10.getInstance().update(RegisteredPlayerData.getInstance().getUsername(), mScore);
         }
     }
-    RegisteredPlayerData mRegData;
 }

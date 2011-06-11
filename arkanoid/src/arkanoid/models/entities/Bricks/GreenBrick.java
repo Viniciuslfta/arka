@@ -5,6 +5,7 @@
 package arkanoid.models.entities.Bricks;
 
 import arkanoid.BaseColor;
+import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
 
 /** Representa um tijolo azul ( extensão de Brick )
@@ -20,7 +21,8 @@ public class GreenBrick extends Brick {
 
      */
     public GreenBrick(int _x, int _y) {
-        super(_x, _y, 2, new BaseColor(0.0f, 1.0f, 0.0f));
+        super(_x, _y, 2, new BaseColor(0.0f, 1.0f, 0.0f),Textures.getInstance().getGreenBrick());
+
     }
 
     /** Implementa função que define efeito provocado pela colisão da Bola no Tijolo
@@ -30,10 +32,21 @@ public class GreenBrick extends Brick {
     @Override
     public void onBallCollision(PlayArea _area) {
         super.onBallCollision(_area.getBall());
+        
+        _area.getPlayer().addScorePoints(50);        
 
-
-        _area.getPlayer().addScorePoints(50);
-
+            this.setTexture(Textures.getInstance().getGreenBrickBroken());
 
     }
+    @Override
+    public void reset(){  
+        super.reset();
+        
+        this.setTexture(Textures.getInstance().getGreenBrick());
+
+         //necessario para que quando seja reiniciado o nivel,
+         //o tijolo volte a apareer com a textura inicial
+    }
+        
+        
 }

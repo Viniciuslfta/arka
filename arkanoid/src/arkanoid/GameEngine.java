@@ -33,6 +33,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+
 import org.newdawn.slick.SlickException;
 
 /** Classe que representa o motor do jogo.
@@ -102,8 +103,8 @@ public class GameEngine implements Runnable {
     private void initGL() {
         // Inicialização 2D
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glDisable(GL_DEPTH_TEST);
-        glDisable(GL_LIGHTING);
+        //glDisable(GL_DEPTH_TEST);
+        //glDisable(GL_LIGHTING);
 
         glEnable(GL_TEXTURE_2D); // exture Mapping, needed for text
         glEnable(GL_BLEND); // Enabled blending for text
@@ -119,6 +120,12 @@ public class GameEngine implements Runnable {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glPushMatrix();
+               
+        
+       glEnable(GL_LIGHTING);         
+       glEnable(GL_LIGHT0);
+
+                    
     }
 
     private void destroy() {

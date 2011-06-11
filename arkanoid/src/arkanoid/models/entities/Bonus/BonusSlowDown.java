@@ -6,6 +6,7 @@ package arkanoid.models.entities.Bonus;
 
 import arkanoid.BaseColor;
 import arkanoid.Settings;
+import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
 
 /**
@@ -18,7 +19,7 @@ public class BonusSlowDown extends Bonus{
     float mOldSpeedY;
     
     public BonusSlowDown(float _x, float _y) {
-        super(_x, _y, new BaseColor(0,1,0));
+        super(_x, _y, new BaseColor(0,1,0),Textures.getInstance().getBonusSlowDown());
     }
 
     @Override

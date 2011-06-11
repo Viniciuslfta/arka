@@ -3,6 +3,8 @@ package arkanoid.models.entities;
 import arkanoid.Collidable;
 import arkanoid.BaseColor;
 import arkanoid.Settings;
+import arkanoid.Textures;
+import org.newdawn.slick.opengl.Texture;
 
 /** Classe que representa a raquete como extensão de Collidable.
  * 
@@ -10,6 +12,16 @@ import arkanoid.Settings;
  */
 public class Club extends Collidable {
 
+    private Texture mTexture;
+
+    public Texture getTexture() {
+        return mTexture;
+    }
+    
+    public void setTexture(Texture _Texture) {
+        this.mTexture = _Texture;
+    }
+    
     private BaseColor mColor;
     /** Retorna objecto do tipo BaseColor que indica a cor da raquete.
      * 
@@ -38,8 +50,11 @@ public class Club extends Collidable {
      */
     public Club(int _x, int _y) {
         super(_x, _y, Settings.CLUB_WIDTH, Settings.CLUB_HEIGHT);
-
+        mTexture = Textures.getInstance().getClub();
         mColor = new BaseColor(0.5f, 0.5f, 0.5f);
+        
+
+                
     }
 
     

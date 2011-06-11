@@ -3,6 +3,8 @@ package arkanoid.models.entities;
 import arkanoid.Collidable;
 import arkanoid.BaseColor;
 import arkanoid.Settings;
+import arkanoid.Textures;
+import org.newdawn.slick.opengl.Texture;
 
 /** Classe que representa uma parede da àrea de jogo (extensão de Collidable).
  * È composta pela sua Cor e Tipo ( esquerda / topo / direita )
@@ -13,14 +15,21 @@ import arkanoid.Settings;
 public class Wall extends Collidable {
 
     public enum WallType {
-
         TOP,
         LEFT,
         RIGHT
     }
     private WallType mType;
     private BaseColor mColor;
+    private Texture mTexture;
 
+    public Texture getTexture() {
+        return mTexture;
+    }
+    
+    public void setTexture(Texture _Texture) {
+        this.mTexture = _Texture;
+    }
     /** Retorna objecto BaseColor que indica cor da parede.
      * 
      * @return objecto BaseColor que indica cor da parede
@@ -40,8 +49,12 @@ public class Wall extends Collidable {
     public Wall(int _x, int _y, int _width, int _height, WallType _type) {
         super(_x, _y, _width, _height);
 
+        if(_type==Wall.WallType.LEFT || _type==Wall.WallType.RIGHT) {            
+           this.setTexture(Textures.getInstance().getWallSide());
+        }else{
+           this.setTexture(Textures.getInstance().getWallTop());
+        }
         mType = _type;
-
 
         mColor = new BaseColor(0.0f, 1.0f, 0.5f);
     }

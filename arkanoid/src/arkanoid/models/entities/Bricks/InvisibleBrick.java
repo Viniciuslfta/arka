@@ -1,5 +1,6 @@
 package arkanoid.models.entities.Bricks;
 import arkanoid.BaseColor;
+import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
 
 
@@ -10,7 +11,7 @@ import arkanoid.models.entities.PlayArea;
 public class InvisibleBrick extends Brick {
 
     public InvisibleBrick(int _x, int _y) {
-        super(_x, _y, 1, new BaseColor(0.0f, 0.0f, 1.0f, 0.0f));
+        super(_x, _y, 1, new BaseColor(0.0f, 0.0f, 1.0f, 1.0f),Textures.getInstance().getInvisibleBrick());
     }
         
     /** Implementa função que define efeito provocado pela colisão da Bola no Tijolo

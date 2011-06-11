@@ -4,6 +4,8 @@
  */
 package arkanoid;
 
+import org.lwjgl.opengl.AWTGLCanvas;
+
 /** Classe onde estão definidos os valores globais das configurações internas
  *  
  * @author sPeC
@@ -23,7 +25,7 @@ public abstract class Settings {
     public static final int PLAY_AREA_START_X = 15;
     public static final int PLAY_AREA_START_Y = 100;
     
-    public static final int BALL_SIZE = 10;
+    public static final int BALL_SIZE = 15;
     public static final float BALL_MAX_VEL = 0.5f;
     public static final float BALL_MIN_VEL = 0.2f;
     

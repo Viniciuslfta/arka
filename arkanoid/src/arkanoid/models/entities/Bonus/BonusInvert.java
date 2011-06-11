@@ -5,6 +5,7 @@
 package arkanoid.models.entities.Bonus;
 import arkanoid.BaseColor;
 import arkanoid.Settings;
+import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
 
 /**
@@ -15,7 +16,7 @@ public class BonusInvert extends Bonus {
  
     
     public BonusInvert(float _x, float _y) {
-        super(_x, _y, new BaseColor(0.5f,0.5f,0.5f));
+        super(_x, _y, new BaseColor(0.5f,0.5f,0.5f),Textures.getInstance().getBonusInvert());
     }
 
     @Override

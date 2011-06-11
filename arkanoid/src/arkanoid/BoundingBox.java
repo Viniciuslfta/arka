@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.io.Serializable;
 
 
+
 /** Classe que representa uma caixa/rectangulo delimitador. 
  *  através da sua posição XY (mX,mY), Largura(mWidth) e Altura(mHeight)
  * 
@@ -95,6 +96,7 @@ public class BoundingBox implements Serializable {
         this.mX = _X;
         this.mY = _Y;
         this.mWidth = _Width;
-        this.mHeight = _Height;
+        this.mHeight = _Height;     
     }
+
 }
