@@ -171,6 +171,7 @@ public class PlayArea implements Serializable {
         mPlayer.removeLifes(1);
         if (mPlayer.getLifes() == 0) {
             GameState.changeState(GameStateType.GAME_OVER);
+            mBonus.clear();
             Replay.getInstance().AddTickEvent(--mNumberOfTicks);
             return;
         }

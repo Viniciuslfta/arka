@@ -183,7 +183,7 @@ public class GameLevel implements Serializable {
             mBallVelocity = Float.valueOf(processInfoLine(scanner.nextLine()));
 
             mBackgroundName = processInfoLine(scanner.nextLine());
-            mBackgndTexture = Textures.loadTexture(mBackgroundName);
+            
 
             int curBricksLine = 0;
             mNumberOfBricks = 0;
