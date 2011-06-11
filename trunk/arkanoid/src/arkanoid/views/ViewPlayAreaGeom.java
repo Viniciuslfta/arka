@@ -71,25 +71,25 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glLoadIdentity();
 
-        drawBackground();
-        drawBricks();
-        drawClub();
-        drawBall();
-        drawBonus();
-
-        if (GameState.currentState() == GameStateType.GAME_OVER) {
+        if (GameState.currentState() != GameStateType.GAME_OVER) {
+            drawBackground();
+            drawBricks();
+            drawClub();
+            drawBall();
+            drawBonus();
+        } else {
             DrawGameOver();
         }
-        drawWalls();
 
+        drawWalls();
         drawHeaderText();
     }
 
     private void drawBackground() {
         BoundingBox playAreaBB = new BoundingBox(Settings.PLAY_AREA_START_X - 5,
-                Settings.PLAY_AREA_START_Y-5,
+                Settings.PLAY_AREA_START_Y - 5,
                 Settings.DISPLAY_WIDTH - Settings.PLAY_AREA_START_X,
-                Settings.DISPLAY_HEIGHT - Settings.PLAY_AREA_START_Y+5);
+                Settings.DISPLAY_HEIGHT - Settings.PLAY_AREA_START_Y + 5);
 
 
         drawQuadWithTexture(playAreaBB, null, mPlayArea.getLoadedLevel().getBackgndTexture());
@@ -105,7 +105,7 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         float height = Settings.DISPLAY_HEIGHT - Settings.PLAY_AREA_START_Y + 5;
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        drawQuad(new BoundingBox(x, y, width, height), new BaseColor(0.0f, 0.0f, 0.0f, 0.0f));
+        //drawQuad(new BoundingBox(x, y, width, height), new BaseColor(0.0f, 0.0f, 0.0f, 0.0f));
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         x += (width / 2) - mGameOverFont.getWidth("GAME OVER!") / 2;
