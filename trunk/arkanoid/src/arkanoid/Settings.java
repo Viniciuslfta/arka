@@ -4,7 +4,6 @@
  */
 package arkanoid;
 
-import org.lwjgl.opengl.AWTGLCanvas;
 
 /** Classe onde estão definidos os valores globais das configurações internas
  *  
