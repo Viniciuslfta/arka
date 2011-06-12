@@ -19,11 +19,9 @@ public abstract class Bonus extends Collidable {
         this.mLastUpdate = _lastUpdate;
     }
     
-    private Texture mTexture;
+    transient protected Texture mTexture=null;
 
-    public Texture getTexture() {
-        return mTexture;
-    }
+    abstract public Texture getTexture();
     
     public void setTexture(Texture _Texture) {
         this.mTexture = _Texture;

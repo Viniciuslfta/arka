@@ -8,6 +8,7 @@ import arkanoid.BaseColor;
 import arkanoid.Settings;
 import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
+import org.newdawn.slick.opengl.Texture;
 
 /**
  *
@@ -19,6 +20,15 @@ public class BonusExpansion extends Bonus{
         super(_x, _y, new BaseColor(1,1,1),Textures.getInstance().getBonusExpansion());
     }
 
+    @Override
+    public Texture getTexture() {
+        if (mTexture == null) {
+            mTexture = Textures.getInstance().getBonusExpansion();
+        }
+        return mTexture;
+    }
+        
+    
     @Override
     public void onClubCollision(PlayArea _area) {
         _area.getClub().setWidth(_area.getClub().getWidth() + 50);

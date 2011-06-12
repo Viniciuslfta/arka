@@ -7,6 +7,7 @@ package arkanoid.models.entities.Bonus;
 import arkanoid.BaseColor;
 import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
+import org.newdawn.slick.opengl.Texture;
 
 /**
  *
@@ -18,6 +19,15 @@ public class BonusLife extends Bonus{
         super(_x, _y, new BaseColor(1,0,0),Textures.getInstance().getBonusLife());
     }
 
+    @Override
+    public Texture getTexture() {
+        if (mTexture == null) {
+            mTexture = Textures.getInstance().getBonusLife();
+        }
+        return mTexture;
+    }
+        
+    
     @Override
     public void onClubCollision(PlayArea _area) {
         _area.getPlayer().addLifes(1);
