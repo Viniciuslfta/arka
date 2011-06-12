@@ -147,9 +147,8 @@ public class GameEngine implements Runnable {
         }
 
         long ellapsedTime;
-        long ellapsedTime1;
         while (!Display.isCloseRequested()) {
-            ellapsedTime1 = ellapsedTime = System.currentTimeMillis();
+            ellapsedTime = System.currentTimeMillis();
             checkGameState();
 
             if (Display.isVisible()) {
@@ -168,8 +167,6 @@ public class GameEngine implements Runnable {
             Display.update();
 
             ellapsedTime = System.currentTimeMillis() - ellapsedTime;
-
-
             if (GameState.currentState() != GameState.GameStateType.REPLAYING) {
                 try {
                     long timeToSleep = Settings.GAME_DELAY - ellapsedTime;
@@ -179,8 +176,7 @@ public class GameEngine implements Runnable {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            ellapsedTime1 = System.currentTimeMillis() - ellapsedTime1;
-            //System.out.println(ellapsedTime1);
+
         }
     } // Run()
 
