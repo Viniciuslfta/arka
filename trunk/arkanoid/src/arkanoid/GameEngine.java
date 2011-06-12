@@ -119,12 +119,12 @@ public class GameEngine implements Runnable {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glPushMatrix();
-               
-        
-       glEnable(GL_LIGHTING);         
-       glEnable(GL_LIGHT0);
 
-                    
+
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+
+
     }
 
     private void destroy() {
@@ -147,14 +147,20 @@ public class GameEngine implements Runnable {
         }
 
         long ellapsedTime;
+        long ellapsedTime1;
         while (!Display.isCloseRequested()) {
-            ellapsedTime = System.currentTimeMillis();
+            ellapsedTime1 = ellapsedTime = System.currentTimeMillis();
+            checkGameState();
+
             if (Display.isVisible()) {
-                checkGameState();
-                mCurrentController.parseInput();
+                if (GameState.currentState() != GameState.GameStateType.REPLAYING) {
+                    mCurrentController.parseInput();
+                }
+
                 mCurrentController.update();
                 mCurrentView.render();
             } else {
+
                 if (Display.isDirty()) {
                     mCurrentView.render();
                 }
@@ -162,19 +168,20 @@ public class GameEngine implements Runnable {
             Display.update();
 
             ellapsedTime = System.currentTimeMillis() - ellapsedTime;
-            try {
-                if (GameState.currentState() != GameState.GameStateType.REPLAYING) {
+
+
+            if (GameState.currentState() != GameState.GameStateType.REPLAYING) {
+                try {
                     long timeToSleep = Settings.GAME_DELAY - ellapsedTime;
                     timeToSleep = timeToSleep > Settings.GAME_DELAY || timeToSleep < 0 ? Settings.GAME_DELAY : timeToSleep;
-                    Thread.sleep(Settings.GAME_DELAY);
+                    Thread.sleep(timeToSleep);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-            } catch (InterruptedException ex) {
-                Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            ellapsedTime1 = System.currentTimeMillis() - ellapsedTime1;
+            //System.out.println(ellapsedTime1);
         }
-
     } // Run()
 
     /** Verifica estado do jogo e aplica configurações necessárias específicas a certos estados.
@@ -227,13 +234,15 @@ public class GameEngine implements Runnable {
 
             case LOADED_GAME_FROM_MAIN_MENU: {
 
-                
+
                 ModelPlayArea mArea = ((MenuInicial) mCurrentMenu).getModelPlayArea();
                 mArea.ResetElapsedTime();
                 mCurrentController = new GameAreaController(mArea);
 
                 try {
                     mCurrentView = new ViewPlayAreaGeom(mArea);
+
+
                 } catch (SlickException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -259,6 +268,8 @@ public class GameEngine implements Runnable {
                     mCurrentController = new GameAreaController(mArea);
                     try {
                         mCurrentView = new ViewPlayAreaGeom(mArea);
+
+
                     } catch (SlickException ex) {
                         Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -326,6 +337,8 @@ public class GameEngine implements Runnable {
                 mCurrentController = new GameAreaController(mArea);
                 try {
                     mCurrentView = new ViewPlayAreaGeom(mArea);
+
+
                 } catch (SlickException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }

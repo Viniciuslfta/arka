@@ -15,7 +15,7 @@ import org.lwjgl.LWJGLException;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
+
 
 /**
  *
@@ -90,11 +90,6 @@ public class GameAreaController implements ArkanoidController {
     @Override
     public void parseInput() {
 
-        if (GameState.currentState() == GameStateType.REPLAYING) {
-            Replay.getInstance().tick(mModel);
-            return;
-        }
-
         if (GameState.currentState() != GameStateType.PLAYING) {
             return;
         }
@@ -106,6 +101,7 @@ public class GameAreaController implements ArkanoidController {
     @Override
     public void update() {
         if (GameState.currentState() == GameStateType.REPLAYING) {
+            Replay.getInstance().tick(mModel);
             return;
         }
         mModel.update();

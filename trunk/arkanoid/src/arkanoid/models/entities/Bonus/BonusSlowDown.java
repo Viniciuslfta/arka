@@ -51,10 +51,6 @@ public class BonusSlowDown extends Bonus {
         float currSpeedX = _area.getBall().getVelocityX();
         float currSpeedY = _area.getBall().getVelocityY();
 
-        if (currSpeedX != mOldSpeedX) {
-            mOldSpeedX = mOldSpeedX;
-        }
-
         // Temos que nos certificar que as direcções são consistentes
 
         // Direcçao X
