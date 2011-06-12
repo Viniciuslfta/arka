@@ -72,7 +72,7 @@ public class DialogReplay extends JFrame {
         int width = 550;
         this.setSize(width, height);
         this.setLocation(Display.getDesktopDisplayMode().getWidth() / 2 - width / 2,
-                Display.getDesktopDisplayMode().getHeight() / 2 + Settings.DISPLAY_HEIGHT / 2);
+                Display.getDesktopDisplayMode().getHeight() / 2 + Settings.DISPLAY_HEIGHT / 2 - height);
         
         setResizable(false);
         setAlwaysOnTop(true);
