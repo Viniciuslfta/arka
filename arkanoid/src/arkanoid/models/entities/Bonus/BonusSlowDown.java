@@ -8,6 +8,7 @@ import arkanoid.BaseColor;
 import arkanoid.Settings;
 import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
+import org.newdawn.slick.opengl.Texture;
 
 /**
  *
@@ -18,6 +19,16 @@ public class BonusSlowDown extends Bonus {
     float mOldSpeedX;
     float mOldSpeedY;
 
+    
+    @Override
+    public Texture getTexture() {
+        if (mTexture == null) {
+            mTexture = Textures.getInstance().getBonusSlowDown();
+        }
+        return mTexture;
+    }
+        
+    
     public BonusSlowDown(float _x, float _y) {
         super(_x, _y, new BaseColor(0, 1, 0), Textures.getInstance().getBonusSlowDown());
     }

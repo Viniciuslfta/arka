@@ -7,6 +7,7 @@ import arkanoid.BaseColor;
 import arkanoid.Settings;
 import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
+import org.newdawn.slick.opengl.Texture;
 
 /**
  *
@@ -19,6 +20,16 @@ public class BonusInvert extends Bonus {
         super(_x, _y, new BaseColor(0.5f,0.5f,0.5f),Textures.getInstance().getBonusInvert());
     }
 
+    
+    @Override
+    public Texture getTexture() {
+        if (mTexture == null) {
+            mTexture = Textures.getInstance().getBonusInvert();
+        }
+        return mTexture;
+    }
+        
+    
     @Override
     public void onClubCollision(PlayArea _area) {
         _area.setClubKeyMoveSpeed(Settings.CLUB_KEY_MOVE_SPEED*(-1));
