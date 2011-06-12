@@ -172,7 +172,7 @@ public class PlayArea implements Serializable {
         if (mPlayer.getLifes() == 0) {
             GameState.changeState(GameStateType.GAME_OVER);
             mBonus.clear();
-            Replay.getInstance().AddTickEvent(--mNumberOfTicks);
+            Replay.getInstance().AddTickEvent(mNumberOfTicks-5);
             return;
         }
 
@@ -184,9 +184,7 @@ public class PlayArea implements Serializable {
     /** Define comportamento tomado pelo Jogo a cada iteração sua
      */
     private int mNumberOfTicks = 0;
-
     public void tick() {
-
         if (RegisteredPlayerData.getInstance().isLoggedIn()
                 && GameState.currentState() != GameStateType.REPLAYING) {
             mNumberOfTicks++;
@@ -289,6 +287,7 @@ public class PlayArea implements Serializable {
 
                         // Verifica se foi o último
                         if (mCurrentLevel.isClear() && GameState.currentState() != GameStateType.REPLAYING) {
+                            SaveTicks();
                             GameState.changeState(GameStateType.LEVEL_COMPLETE);
                         }
 

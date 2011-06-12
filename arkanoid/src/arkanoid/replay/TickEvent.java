@@ -15,8 +15,8 @@ public class TickEvent extends GameEvent {
     public int mOriginalQuantity;
     public int mQuantity;
 
-    public TickEvent(int _quantity) {
-        super(0);
+    public TickEvent(int _quantity, long _timeStamp) {
+        super(_timeStamp);
         mOriginalQuantity = _quantity;
         mQuantity = _quantity;
     }

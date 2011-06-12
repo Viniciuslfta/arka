@@ -68,7 +68,7 @@ public class Replay implements Serializable {
     }
 
     public void AddTickEvent(int _quantity) {
-        mEvents.push(new TickEvent(_quantity));
+        mEvents.push(new TickEvent(_quantity, getTimeStamp()));
     }
 
     public final void Reset() {
@@ -93,12 +93,15 @@ public class Replay implements Serializable {
         mCurrEvent = mReplayingEvents.pollLast();
 
         mStartTime = 0;
+        mSpeed = 1;
     }
 
     public void play() {
         mIsReplaying = true;
+        mLastTime = System.currentTimeMillis();
     }
 
+    transient private long mLastTime;
     public void tick(ModelPlayArea _areaModel) {
         if (!mIsReplaying) {
             return;
@@ -108,9 +111,8 @@ public class Replay implements Serializable {
             resetReplay(_areaModel);
         }
 
-        if (mCurrEvent.getTimeStamp() > (mStartTime + Settings.GAME_DELAY)) {
-            mStartTime += Settings.GAME_DELAY;
-        } else {
+        mStartTime += Settings.GAME_DELAY;
+        if (mCurrEvent.getTimeStamp() <= mStartTime) {
             if (mCurrEvent instanceof TickEvent) {
                 mCurrEvent.execute(_areaModel);
                 ((TickEvent) mCurrEvent).mQuantity--;
@@ -122,7 +124,6 @@ public class Replay implements Serializable {
                     if (mCurrEvent == null) {
                         resetReplay(_areaModel);
                     }
-                    mStartTime = mCurrEvent.getTimeStamp();
                 }
             } else {
                 mCurrEvent.execute(_areaModel);
@@ -131,14 +132,23 @@ public class Replay implements Serializable {
                 if (mCurrEvent == null) {
                     resetReplay(_areaModel);
                 }
+                
+                mLastTime = System.currentTimeMillis();
+                return;
             }
         }
 
+        int timeToSleep = (int)(System.currentTimeMillis() - mLastTime);
+        timeToSleep = Settings.GAME_DELAY - timeToSleep;
+        timeToSleep = timeToSleep > Settings.GAME_DELAY || timeToSleep < 0 ? Settings.GAME_DELAY : timeToSleep;
+
         try {
-            Thread.sleep((int) Math.ceil(Settings.GAME_DELAY / mSpeed));
+            Thread.sleep((int) Math.ceil(timeToSleep / mSpeed));
         } catch (InterruptedException ex) {
             Logger.getLogger(Replay.class.getName()).log(Level.SEVERE, null, ex);
         }
+        mLastTime = System.currentTimeMillis();
+        
     }
 
     public void nextLevel(ModelPlayArea _area) {

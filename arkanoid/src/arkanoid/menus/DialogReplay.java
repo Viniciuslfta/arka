@@ -39,21 +39,31 @@ public class DialogReplay extends JFrame {
     ModelPlayArea mArea;
 
     public DialogReplay(ModelPlayArea _area) {
-        
+
         super("Controlo de Replay");
-        
+
         mArea = _area;
 
         btnBack.addActionListener(new EventBack());
+        btnBack.setToolTipText("Volta ao início do Replay");
         btnNextLevel.addActionListener(new EventNextLevel());
+        btnNextLevel.setToolTipText("Próximo nível do Replay");
         btnPause.addActionListener(new EventPause());
+        btnPause.setToolTipText("Pausa o Replay");
         btnPlay.addActionListener(new EventPlay());
+        btnPlay.setToolTipText("Inicia o Replay");
         btnStop.addActionListener(new EventStop());
+        btnStop.setToolTipText("Pára o Replay");
         btn1X.addActionListener(new Event1X());
+        btn1X.setToolTipText("Velocidade Real");
         btn2X.addActionListener(new Event2X());
+        btn2X.setToolTipText("Aumenta a velocidade em 2 vezes");
         btn4X.addActionListener(new Event4X());
+        btn4X.setToolTipText("Aumenta a velocidade em 4 vezes");
         btn8X.addActionListener(new Event8X());
+        btn8X.setToolTipText("Aumenta a velocidade em 8 vezes");
         btn10X.addActionListener(new Event10X());
+        btn10X.setToolTipText("Aumenta a velocidade em 10 vezes");
 
         cp.setLayout(new FlowLayout());
 
@@ -73,7 +83,7 @@ public class DialogReplay extends JFrame {
         this.setSize(width, height);
         this.setLocation(Display.getDesktopDisplayMode().getWidth() / 2 - width / 2,
                 Display.getDesktopDisplayMode().getHeight() / 2 + Settings.DISPLAY_HEIGHT / 2 - height);
-        
+
         setResizable(false);
         setAlwaysOnTop(true);
         setVisible(true);
