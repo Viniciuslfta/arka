@@ -2,7 +2,7 @@ numero=1
 nome=ISEC
 next=level2.txt
 vidas=3
-velocidade=0.5f
+velocidade=8.0f
 background=backgnd5.png
 @@@@@@@@@@@@@
 WWWWWWWWWWWWW
@@ -13,6 +13,6 @@ G@GGG@GGG@G@@
 B@@@B@B@@@B@@
 W@WWW@WWW@WWW
 @@@@@@@@@@@@@
-RRRRRRRRRRRRR
+BBBBBBBBBBBBB
 @@@@@@@@@@@@@
 @@@@@@@@@@@@@
