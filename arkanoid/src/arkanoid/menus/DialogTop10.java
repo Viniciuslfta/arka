@@ -105,7 +105,6 @@ public class DialogTop10 extends JFrame {
             } else {
                 Top10.Top10Element tmpElement = Top10.getInstance().getElement(idx);
                 Replay.getInstance().Load(tmpElement.getReplayName());
-                mTable.getSelectionModel().setSelectionInterval(0, 0);
                 mReplay.setEnabled(true);
             }
         }

@@ -19,7 +19,7 @@ public class BonusSlowDown extends Bonus {
     float mOldSpeedY;
 
     public BonusSlowDown(float _x, float _y) {
-        super(_x, _y, new BaseColor(0,1,0),Textures.getInstance().getBonusSlowDown());
+        super(_x, _y, new BaseColor(0, 1, 0), Textures.getInstance().getBonusSlowDown());
     }
 
     @Override
@@ -27,8 +27,8 @@ public class BonusSlowDown extends Bonus {
         mOldSpeedX = _area.getBall().getVelocityX();
         mOldSpeedY = _area.getBall().getVelocityY();
 
-        float speedX = mOldSpeedX > 0 ? Settings.BALL_MIN_VEL : -Settings.BALL_MIN_VEL;
-        float speedY = mOldSpeedY > 0 ? Settings.BALL_MIN_VEL : -Settings.BALL_MIN_VEL;
+        float speedX = mOldSpeedX > 0 ? Settings.BALL_MIN_VEL : Settings.BALL_MIN_VEL * -1;
+        float speedY = mOldSpeedY > 0 ? Settings.BALL_MIN_VEL : Settings.BALL_MIN_VEL * -1;
 
         _area.getBall().setVelocityX(speedX);
         _area.getBall().setVelocityY(speedY);
@@ -40,20 +40,24 @@ public class BonusSlowDown extends Bonus {
         float currSpeedX = _area.getBall().getVelocityX();
         float currSpeedY = _area.getBall().getVelocityY();
 
+        if (currSpeedX != mOldSpeedX) {
+            mOldSpeedX = mOldSpeedX;
+        }
+
         // Temos que nos certificar que as direcções são consistentes
-        
+
         // Direcçao X
         if (currSpeedX > 0) {
             if (mOldSpeedX > 0) {
                 currSpeedX = mOldSpeedX;
             } else {
-                currSpeedX = -mOldSpeedX;
+                currSpeedX = mOldSpeedX * -1;
             }
         } else {
             if (mOldSpeedX < 0) {
                 currSpeedX = mOldSpeedX;
             } else {
-                currSpeedX = -mOldSpeedX;
+                currSpeedX = mOldSpeedX * -1;
             }
         }
 
@@ -62,18 +66,18 @@ public class BonusSlowDown extends Bonus {
             if (mOldSpeedY > 0) {
                 currSpeedY = mOldSpeedY;
             } else {
-                currSpeedY = -mOldSpeedY;
+                currSpeedY = mOldSpeedY * -1;
             }
         } else {
             if (mOldSpeedY < 0) {
                 currSpeedY = mOldSpeedY;
             } else {
-                currSpeedY = -mOldSpeedY;
+                currSpeedY = mOldSpeedY * -1;
             }
         }
-        
+
         // Finalmente aplica as novas velocidades à bola
         _area.getBall().setVelocityX(currSpeedX);
-        _area.getBall().setVelocityX(currSpeedY);
+        _area.getBall().setVelocityY(currSpeedY);
     }
 }

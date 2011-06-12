@@ -32,6 +32,7 @@ public class BonusUtils {
     }
 
     public static Bonus getRandomBonus(float _posX, float _posY) {
+        
         int num = mRandom.nextInt(5);
 
         switch (num) {
