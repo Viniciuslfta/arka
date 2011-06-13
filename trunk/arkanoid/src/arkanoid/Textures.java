@@ -49,7 +49,7 @@ public class Textures {
             mWhiteBrick = TextureLoader.getTexture("PNG", new FileInputStream("textures/whitebrick.png"));
             mInvisibleBrick = TextureLoader.getTexture("PNG", new FileInputStream("textures/invisiblebrick.png"));
             mClub = TextureLoader.getTexture("PNG", new FileInputStream("textures/arka2.png"));
-            mBall = TextureLoader.getTexture("PNG", new FileInputStream("textures/ball.png"));
+            mBall = TextureLoader.getTexture("PNG", new FileInputStream("textures/ball2.png"));
             mBonusExpansion = TextureLoader.getTexture("PNG", new FileInputStream("textures/bonus.png"));
             mBonusGlue = TextureLoader.getTexture("PNG", new FileInputStream("textures/bonus2.png"));
             mBonusInvert = TextureLoader.getTexture("PNG", new FileInputStream("textures/bonus3.png"));

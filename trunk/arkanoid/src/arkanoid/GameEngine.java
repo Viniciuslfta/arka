@@ -16,6 +16,7 @@ import arkanoid.replay.Replay;
 import arkanoid.views.ArkanoidView;
 import arkanoid.views.ViewMainMenu;
 import arkanoid.views.ViewPlayAreaGeom;
+import arkanoid.views.ViewPlayAreaGeom23;
 
 
 import static org.lwjgl.opengl.GL11.*;
@@ -133,13 +134,13 @@ public class GameEngine implements Runnable {
         Display.destroy();
     }
 
-    /** Instancia Area de Jogo e corre o jogo.
+    /** Corre o jogo.
      */
     @Override
     public void run() {
 
         Textures.getInstance().load();
-        Sounds.getInstance().load();
+//        Sounds.getInstance().load();
         GameState.changeState(GameState.GameStateType.MAIN_MENU);
 
         if (this.mErrorsOnInit) {
@@ -195,7 +196,7 @@ public class GameEngine implements Runnable {
                 }
 
                 mCurrentMenu = new MenuPause("Game Over!");
-                ((MenuPause) mCurrentMenu).setModelPlayArea(((ViewPlayAreaGeom) mCurrentView).getPlayAreaModel());
+                ((MenuPause) mCurrentMenu).setModelPlayArea(((ViewPlayAreaGeom23) mCurrentView).getPlayAreaModel());
                 Mouse.setGrabbed(false);
 
                 break;
@@ -236,7 +237,7 @@ public class GameEngine implements Runnable {
                 mCurrentController = new GameAreaController(mArea);
 
                 try {
-                    mCurrentView = new ViewPlayAreaGeom(mArea);
+                    mCurrentView = new ViewPlayAreaGeom23(mArea);
 
 
                 } catch (SlickException ex) {
@@ -332,7 +333,7 @@ public class GameEngine implements Runnable {
                 ModelPlayArea mArea = new ModelPlayArea(new PlayArea(RegisteredPlayerData.getInstance().getStartingLevel()));
                 mCurrentController = new GameAreaController(mArea);
                 try {
-                    mCurrentView = new ViewPlayAreaGeom(mArea);
+                    mCurrentView = new ViewPlayAreaGeom23(mArea);
 
 
                 } catch (SlickException ex) {
