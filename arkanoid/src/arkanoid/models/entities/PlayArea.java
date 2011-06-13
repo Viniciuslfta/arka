@@ -473,7 +473,7 @@ public class PlayArea implements Serializable {
             bonus.updatePosition();
             if (bonus.isCollidingWith(mClub)) {
 
-                Sounds.getInstance().playPowerUp();
+               // Sounds.getInstance().playPowerUp();
                 if (mCurrentBonus != null) {
                     mCurrentBonus.undoEffect(this);
                 }
