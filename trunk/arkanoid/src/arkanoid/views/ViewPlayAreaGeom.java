@@ -4,6 +4,7 @@ import arkanoid.BoundingBox;
 import arkanoid.BaseColor;
 import arkanoid.GameState;
 import arkanoid.GameState.GameStateType;
+import arkanoid.RegisteredPlayerData;
 import arkanoid.Settings;
 
 import arkanoid.models.ModelPlayArea;
@@ -141,8 +142,9 @@ public class ViewPlayAreaGeom extends ArkanoidView {
                 Settings.DISPLAY_WIDTH - Settings.PLAY_AREA_START_X,
                 Settings.DISPLAY_HEIGHT - Settings.PLAY_AREA_START_Y + 5);
 
-
-        drawQuadWithTexture(playAreaBB, null, mPlayArea.getLoadedLevel().getBackgndTexture());
+        if (RegisteredPlayerData.getInstance().drawTextures()) {
+            drawQuadWithTexture(playAreaBB, mPlayArea.getLoadedLevel().getBackgndTexture());
+        }
     }
 
     /** Desenha ecrã de Game Over.
@@ -191,7 +193,12 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         Wall[] tmpWalls = mPlayArea.getWalls();
 
         for (int i = 0; i < 3; i++) {
-            drawQuadWithTexture(tmpWalls[i].getBoundingBox(), tmpWalls[i].getColor(), tmpWalls[i].getTexture());
+
+            if (RegisteredPlayerData.getInstance().drawTextures()) {
+                drawQuadWithTexture(tmpWalls[i].getBoundingBox(), tmpWalls[i].getTexture());
+            } else {
+                drawQuad(tmpWalls[i].getBoundingBox(), tmpWalls[i].getColor());
+            }
         }
     }
 
@@ -206,7 +213,12 @@ public class ViewPlayAreaGeom extends ArkanoidView {
                 if (tmpBrick == null || !tmpBrick.isActive()) {
                     continue;
                 }
-                drawQuadWithTexture(tmpBrick.getBoundingBox(), tmpBrick.getColor(), tmpBrick.getTexture());
+
+                if (RegisteredPlayerData.getInstance().drawTextures()) {
+                    drawQuadWithTexture(tmpBrick.getBoundingBox(), tmpBrick.getTexture());
+                } else {
+                    drawQuad(tmpBrick.getBoundingBox(), tmpBrick.getColor());
+                }
             }
         }
     }
@@ -216,16 +228,22 @@ public class ViewPlayAreaGeom extends ArkanoidView {
     private void drawClub() {
 
         Club tmpClub = mPlayArea.getClub();
-
-        drawQuadWithTexture(tmpClub.getBoundingBox(), tmpClub.getColor(), tmpClub.getTexture());
+        if (RegisteredPlayerData.getInstance().drawTextures()) {
+            drawQuadWithTexture(tmpClub.getBoundingBox(), tmpClub.getTexture());
+        } else {
+            drawQuad(tmpClub.getBoundingBox(), tmpClub.getColor());
+        }
     }
 
     /** Desenha Bola no ecrã.
      */
     private void drawBall() {
         Ball tmpBall = mPlayArea.getBall();
-
-        drawQuadWithTexture(tmpBall.getBoundingBox(), tmpBall.getColor(), tmpBall.getTexture());
+        if (RegisteredPlayerData.getInstance().drawTextures()) {
+            drawQuadWithTexture(tmpBall.getBoundingBox(), tmpBall.getTexture());
+        } else {
+            drawQuad(tmpBall.getBoundingBox(), tmpBall.getColor());
+        }
     }
 
     /**Desenha Poligono no ecrã.
@@ -234,7 +252,7 @@ public class ViewPlayAreaGeom extends ArkanoidView {
      * @param _color Cor do poligono
      */
     private void drawQuad(BoundingBox _quad, BaseColor _color) {
-
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
         // set the color of the quad (R,G,B,A)
         GL11.glColor4f(_color.getR(), _color.getG(), _color.getB(), _color.getA());
 
@@ -245,16 +263,12 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         GL11.glVertex2f(_quad.getX() + _quad.getWidth(), _quad.getY() + _quad.getHeight());
         GL11.glVertex2f(_quad.getX(), _quad.getY() + _quad.getHeight());
         GL11.glEnd();
-
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
 
-    private void drawQuadWithTexture(BoundingBox _quad, BaseColor _color, Texture _texture) {
+    private void drawQuadWithTexture(BoundingBox _quad, Texture _texture) {
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
         _texture.bind();
-
-        // set the color of the quad (R,G,B,A)
-        if (_color != null) {
-            GL11.glColor4f(_color.getR(), _color.getG(), _color.getB(), _color.getA());
-        }
 
         // draw quad
         GL11.glBegin(GL11.GL_QUADS);
@@ -271,13 +285,18 @@ public class ViewPlayAreaGeom extends ArkanoidView {
         GL11.glVertex2f(_quad.getX(), _quad.getY() + _quad.getHeight());
         GL11.glEnd();
 
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
     }
 
     private void drawBonus() {
         List<Bonus> tmpBonus = mPlayArea.getBonus();
 
         for (Bonus bonus : tmpBonus) {
-            drawQuadWithTexture(bonus.getBoundingBox(), bonus.getColor(), bonus.getTexture());
+            if (RegisteredPlayerData.getInstance().drawTextures()) {
+                drawQuadWithTexture(bonus.getBoundingBox(), bonus.getTexture());
+            } else {
+                drawQuad(bonus.getBoundingBox(), bonus.getColor());
+            }
         }
     }
 

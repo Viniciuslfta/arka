@@ -7,6 +7,7 @@ package arkanoid.controllers;
 import arkanoid.ElapsedTime;
 import arkanoid.GameState;
 import arkanoid.GameState.GameStateType;
+import arkanoid.RegisteredPlayerData;
 import arkanoid.models.ModelPlayArea;
 import arkanoid.replay.Replay;
 import java.util.logging.Level;
@@ -15,7 +16,7 @@ import org.lwjgl.LWJGLException;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-
+import org.lwjgl.opengl.GL11;
 
 /**
  *
@@ -40,12 +41,28 @@ public class GameAreaController implements ArkanoidController {
         // initialise instance variables
         mModel = _m;
     }
+    private long mLastViewChangeKeyTime = System.currentTimeMillis();
 
     private void processKeyboard() {
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-            Replay.getInstance().Save();
+        long timeEllapsed = System.currentTimeMillis() - mLastViewChangeKeyTime;
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_V) && timeEllapsed > 500) {
+            mLastViewChangeKeyTime = System.currentTimeMillis();
+
+            if (RegisteredPlayerData.getInstance().drawTextures()) {
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11.glDisable(GL11.GL_LIGHTING);
+                GL11.glDisable(GL11.GL_LIGHT0);
+                RegisteredPlayerData.getInstance().drawTextures(false);
+            } else {
+                // Passa a desenhar texturas
+                GL11.glEnable(GL11.GL_LIGHTING);
+                GL11.glEnable(GL11.GL_LIGHT0);
+                RegisteredPlayerData.getInstance().drawTextures(true);
+            }
         }
+
         if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 
             try {
