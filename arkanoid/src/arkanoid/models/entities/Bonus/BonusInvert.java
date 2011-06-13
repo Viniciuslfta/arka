@@ -33,11 +33,14 @@ public class BonusInvert extends Bonus {
     @Override
     public void onClubCollision(PlayArea _area) {
         _area.setClubKeyMoveSpeed(Settings.CLUB_KEY_MOVE_SPEED*(-1));
+                _area.getClub().setTexture(Textures.getInstance().getClubInvert());
+
     }
     
     
     @Override
     public void undoEffect(PlayArea _area) {
+        _area.getClub().setTexture(Textures.getInstance().getClub());
         _area.setClubKeyMoveSpeed(Settings.CLUB_KEY_MOVE_SPEED);
     }
 }
