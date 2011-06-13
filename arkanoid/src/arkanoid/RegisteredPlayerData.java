@@ -51,7 +51,16 @@ public class RegisteredPlayerData implements Serializable {
         
     }
 
+    transient boolean mDrawTextures = false;
 
+    public boolean drawTextures() {
+        return mDrawTextures;
+    }
+
+    public void drawTextures(boolean _drawText) {
+        this.mDrawTextures = _drawText;
+    }
+    
     public RegisteredPlayerData(String _user, String _pass, int _completed) {
         mUsername = _user;
         mPassword = _pass;
