@@ -43,11 +43,16 @@ public class BonusSlowDown extends Bonus {
 
         _area.getBall().setVelocityX(speedX);
         _area.getBall().setVelocityY(speedY);
+        
+                _area.getClub().setTexture(Textures.getInstance().getClubSlowDown());
+
     }
 
     @Override
     public void undoEffect(PlayArea _area) {
 
+        _area.getClub().setTexture(Textures.getInstance().getClub());
+                
         float currSpeedX = _area.getBall().getVelocityX();
         float currSpeedY = _area.getBall().getVelocityY();
 

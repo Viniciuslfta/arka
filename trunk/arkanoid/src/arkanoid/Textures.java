@@ -25,6 +25,9 @@ public class Textures {
     Texture mGreenBrickBroken;
     Texture mInvisibleBrick;
     Texture mClub;
+    Texture mClubSlowDown;
+    Texture mClubInvert;
+    Texture mClubGlue;
     Texture mBall;
     Texture mBonusExpansion;
     Texture mBonusGlue;
@@ -47,7 +50,10 @@ public class Textures {
             mGreenBrickBroken = TextureLoader.getTexture("PNG", new FileInputStream("textures/greenbrickbroken.png"));
             mWhiteBrick = TextureLoader.getTexture("PNG", new FileInputStream("textures/whitebrick.png"));
             mInvisibleBrick = TextureLoader.getTexture("PNG", new FileInputStream("textures/invisiblebrick.png"));
-            mClub = TextureLoader.getTexture("PNG", new FileInputStream("textures/arka2.png"));
+            mClub = TextureLoader.getTexture("PNG", new FileInputStream("textures/club.png"));
+            mClubSlowDown = TextureLoader.getTexture("PNG", new FileInputStream("textures/clubslowdown.png"));
+            mClubInvert = TextureLoader.getTexture("PNG", new FileInputStream("textures/clubinvert.png"));
+            mClubGlue = TextureLoader.getTexture("PNG", new FileInputStream("textures/clubglue.png"));         
             mBall = TextureLoader.getTexture("PNG", new FileInputStream("textures/ball2.png"));
             mBonusExpansion = TextureLoader.getTexture("PNG", new FileInputStream("textures/bonus.png"));
             mBonusGlue = TextureLoader.getTexture("PNG", new FileInputStream("textures/bonus2.png"));
@@ -193,4 +199,29 @@ public class Textures {
     public void setInvisibleBrick(Texture _InvisibleBrick) {
         this.mInvisibleBrick = _InvisibleBrick;
     }
+
+    public Texture getClubSlowDown() {
+        return mClubSlowDown;
+    }
+
+    public void setClubSlowDown(Texture _ClubSlowDown) {
+        this.mClubSlowDown = _ClubSlowDown;
+    }
+
+    public Texture getClubInvert() {
+        return mClubInvert;
+    }
+
+    public void setClubInvert(Texture _ClubInvert) {
+        this.mClubInvert = _ClubInvert;
+    }
+
+    public Texture getClubGlue() {
+        return mClubGlue;
+    }
+
+    public void setClubGlue(Texture _ClubGlue) {
+        this.mClubGlue = _ClubGlue;
+    }
+
 }

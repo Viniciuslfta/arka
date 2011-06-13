@@ -5,6 +5,7 @@ import arkanoid.GameState.GameStateType;
 import arkanoid.RegisteredPlayerData;
 import arkanoid.Settings;
 import arkanoid.Sounds;
+import arkanoid.Textures;
 import arkanoid.Top10;
 import arkanoid.models.entities.Bricks.Brick;
 import arkanoid.models.entities.Wall.WallType;
@@ -461,7 +462,6 @@ public class PlayArea implements Serializable {
         mClub.setWidth(Settings.CLUB_WIDTH);
         // Coloca a bola centrada no taco
         mClub.placeBallAtCenter(mBall);
-
         // Reinicia o nível
         mCurrentLevel.reset(mBall, mPlayer);
     }

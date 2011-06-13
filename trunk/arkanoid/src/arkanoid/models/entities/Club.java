@@ -33,6 +33,7 @@ public class Club extends Collidable {
     public BaseColor getColor() {
         return mColor;
     }
+    
 
     /** Coloca bola centrada no taco.
      * 
