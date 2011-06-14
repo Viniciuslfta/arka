@@ -5,6 +5,7 @@
 package arkanoid.models.entities.Bricks;
 
 import arkanoid.BaseColor;
+import arkanoid.Sounds;
 import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
 import org.newdawn.slick.opengl.Texture;
@@ -41,10 +42,12 @@ public class GreenBrick extends Brick {
     @Override
     public void onBallCollision(PlayArea _area) {
         super.onBallCollision(_area.getBall());
-
         _area.getPlayer().addScorePoints(50);
-
+        if(this.getNumberOfOcurredHits()==1) {
+                Sounds.getInstance().playGreenBrick();
+        }
         this.setTexture(Textures.getInstance().getGreenBrickBroken());
+        
 
     }
 
