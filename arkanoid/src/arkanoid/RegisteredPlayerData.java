@@ -47,10 +47,13 @@ public class RegisteredPlayerData implements Serializable {
         mIsLoggedIn = _isLogged;
     }
 
-    private RegisteredPlayerData() {
-        
+    public void reset() {
+        mUsername = "";
+        mIsLoggedIn = false;
     }
 
+    private RegisteredPlayerData() {
+    }
     transient boolean mDrawTextures = false;
 
     public boolean drawTextures() {
@@ -60,7 +63,7 @@ public class RegisteredPlayerData implements Serializable {
     public void drawTextures(boolean _drawText) {
         this.mDrawTextures = _drawText;
     }
-    
+
     public RegisteredPlayerData(String _user, String _pass, int _completed) {
         mUsername = _user;
         mPassword = _pass;
@@ -98,7 +101,6 @@ public class RegisteredPlayerData implements Serializable {
         this.mUsername = mUsername;
     }
 
-    
     public List<RegisteredPlayerData> readPlayersFile() {
         List<RegisteredPlayerData> readPlayers = null;
         ObjectInputStream in = null;
@@ -128,46 +130,44 @@ public class RegisteredPlayerData implements Serializable {
         }
         return readPlayers;
     }
-    
+
     public void writePlayersFile(List<RegisteredPlayerData> _newPlayers) {
         ObjectOutputStream out = null;
         File file = new File("players.ark");
-            try {//abre outputstream
-                out = new ObjectOutputStream(new FileOutputStream(file, false));
-                out.writeObject(_newPlayers);
+        try {//abre outputstream
+            out = new ObjectOutputStream(new FileOutputStream(file, false));
+            out.writeObject(_newPlayers);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        } finally {
+            //Close the ObjectInputStream
+            try {
+                if (out != null) {
+                    out.close();
+                }
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex);
-            } finally {
-                //Close the ObjectInputStream
-                try {
-                    if (out != null) {
-                        out.close();
-                    }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex);
-                }
-
             }
-            
+
+        }
+
     }
-    
+
     public void updatePlayersFile(String _user, String _pass, int _completed) {
-        RegisteredPlayerData toAdd = new RegisteredPlayerData(_user,_pass,_completed);
-        
+        RegisteredPlayerData toAdd = new RegisteredPlayerData(_user, _pass, _completed);
+
         List<RegisteredPlayerData> playersList = readPlayersFile();
-        
+
         //se encontrar na lista o jogador a actualizar, nao o volta a adicionar:  
         int found = 0;
-        for(int i=0;i<playersList.size();i++) {
-            if(playersList.get(i).getUsername().equals(_user)) {
+        for (int i = 0; i < playersList.size(); i++) {
+            if (playersList.get(i).getUsername().equals(_user)) {
                 playersList.get(i).setCompletedLevels(_completed);
             }
         }
-        if(found==0) {
+        if (found == 0) {
             playersList.add(toAdd);
         }
         writePlayersFile(playersList);
     }
-    
-    
 }

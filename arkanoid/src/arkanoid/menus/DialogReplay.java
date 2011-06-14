@@ -32,10 +32,8 @@ public class DialogReplay extends JFrame {
     JButton btnStop = new JButton("#");
     JButton btnNextLevel = new JButton("|>>");
     JButton btn1X = new JButton("1x");
-    JButton btn2X = new JButton("2x");
-    JButton btn4X = new JButton("4x");
-    JButton btn8X = new JButton("8x");
-    JButton btn10X = new JButton("10x");
+    JButton btnAddSpeed = new JButton("Vel x2");
+    JButton btnRemoveSpeed = new JButton("Vel /2");
     ModelPlayArea mArea;
 
     public DialogReplay(ModelPlayArea _area) {
@@ -56,14 +54,11 @@ public class DialogReplay extends JFrame {
         btnStop.setToolTipText("Pára o Replay");
         btn1X.addActionListener(new Event1X());
         btn1X.setToolTipText("Velocidade Real");
-        btn2X.addActionListener(new Event2X());
-        btn2X.setToolTipText("Aumenta a velocidade em 2 vezes");
-        btn4X.addActionListener(new Event4X());
-        btn4X.setToolTipText("Aumenta a velocidade em 4 vezes");
-        btn8X.addActionListener(new Event8X());
-        btn8X.setToolTipText("Aumenta a velocidade em 8 vezes");
-        btn10X.addActionListener(new Event10X());
-        btn10X.setToolTipText("Aumenta a velocidade em 10 vezes");
+        btnRemoveSpeed.addActionListener(new EventRemoveSpeed());
+        btnRemoveSpeed.setToolTipText("Aumenta a velocidade em 2 vezes");
+        btnAddSpeed.addActionListener(new EventAddSpeed());
+        btnAddSpeed.setToolTipText("Diminui a velocidade em 2 vezes");
+
 
         cp.setLayout(new FlowLayout());
 
@@ -73,13 +68,11 @@ public class DialogReplay extends JFrame {
         cp.add(btnStop);
         cp.add(btnNextLevel);
         cp.add(btn1X);
-        cp.add(btn2X);
-        cp.add(btn4X);
-        cp.add(btn8X);
-        cp.add(btn10X);
+        cp.add(btnRemoveSpeed);
+        cp.add(btnAddSpeed);
 
         int height = 70;
-        int width = 550;
+        int width = 500;
         this.setSize(width, height);
         this.setLocation(Display.getDesktopDisplayMode().getWidth() / 2 - width / 2,
                 Display.getDesktopDisplayMode().getHeight() / 2 + Settings.DISPLAY_HEIGHT / 2 - height);
@@ -90,6 +83,7 @@ public class DialogReplay extends JFrame {
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
+
             @Override
             public void windowClosing(WindowEvent e) {
                 GameState.changeState(GameStateType.MAIN_MENU);
@@ -147,35 +141,21 @@ public class DialogReplay extends JFrame {
         }
     }
 
-    class Event2X implements ActionListener {
+    class EventAddSpeed implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            Replay.getInstance().setSpeed(2);
+            float tmpSpeed = Replay.getInstance().getSpeed() * 2;
+            Replay.getInstance().setSpeed(tmpSpeed);
         }
     }
 
-    class Event4X implements ActionListener {
+    class EventRemoveSpeed implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            Replay.getInstance().setSpeed(4);
-        }
-    }
-
-    class Event8X implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent ae) {
-            Replay.getInstance().setSpeed(8);
-        }
-    }
-
-    class Event10X implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent ae) {
-            Replay.getInstance().setSpeed(10);
+            float tmpSpeed = Replay.getInstance().getSpeed() / 2;
+            Replay.getInstance().setSpeed(tmpSpeed);
         }
     }
 }
