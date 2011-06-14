@@ -24,11 +24,20 @@ import java.util.logging.Logger;
 public class Replay implements Serializable {
 
     LinkedList<GameEvent> mEvents = new LinkedList<GameEvent>();
-    private static Replay singletonObj = new Replay();
+    private static Replay singletonObj = null;
     private GameEvent mCurrEvent = null;
 
     public static Replay getInstance() {
+        if (singletonObj == null) {
+            singletonObj = new Replay();
+            singletonObj.Reset();
+        }
+
         return singletonObj;
+    }
+
+    public void resetInstance() {
+        singletonObj = null;
     }
     private long mStartTime = System.currentTimeMillis();
     String mUUID;
@@ -40,6 +49,7 @@ public class Replay implements Serializable {
     public void setSpeed(float _newSpeed) {
         mSpeed = _newSpeed;
     }
+
     public float getSpeed() {
         return mSpeed;
     }
@@ -52,6 +62,10 @@ public class Replay implements Serializable {
 
     public boolean isReplaying() {
         return mIsReplaying;
+    }
+
+    public void AddChangeViewEvent(boolean _useTex) {
+        mEvents.push(new ChangeViewEvent(_useTex, getTimeStamp()));
     }
 
     public void AddKeyPressEvent(int _key) {
@@ -103,8 +117,8 @@ public class Replay implements Serializable {
         mIsReplaying = true;
         mLastTime = System.currentTimeMillis();
     }
-
     transient private long mLastTime;
+
     public void tick(ModelPlayArea _areaModel) {
         if (!mIsReplaying) {
             return;
@@ -135,13 +149,13 @@ public class Replay implements Serializable {
                 if (mCurrEvent == null) {
                     resetReplay(_areaModel);
                 }
-                
+
                 mLastTime = System.currentTimeMillis();
                 return;
             }
         }
 
-        int timeToSleep = (int)(System.currentTimeMillis() - mLastTime);
+        int timeToSleep = (int) (System.currentTimeMillis() - mLastTime);
         timeToSleep = Settings.GAME_DELAY - timeToSleep;
         timeToSleep = timeToSleep > Settings.GAME_DELAY || timeToSleep < 0 ? Settings.GAME_DELAY : timeToSleep;
 
@@ -151,7 +165,7 @@ public class Replay implements Serializable {
             Logger.getLogger(Replay.class.getName()).log(Level.SEVERE, null, ex);
         }
         mLastTime = System.currentTimeMillis();
-        
+
     }
 
     public void nextLevel(ModelPlayArea _area) {
