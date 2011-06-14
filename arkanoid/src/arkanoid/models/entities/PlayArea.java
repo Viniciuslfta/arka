@@ -121,6 +121,9 @@ public class PlayArea implements Serializable {
      */
     public PlayArea(String _firstLevel) {
 
+        if (GameState.currentState() != GameStateType.REPLAYING) {
+            Replay.getInstance().Reset();
+        }
         // Força a guarda do event de seed dos bónus
         BonusUtils.initRandom();
 
@@ -340,7 +343,6 @@ public class PlayArea implements Serializable {
             // Altera a direcção da bola horizontalmente
             // consoante o lado em que bate no taco
             float tmpVelX = mBall.getVelocityX();
-            float tmpVelY = mBall.getVelocityY();
             float distFromCenter = mBall.getX() - (mClub.getX() + mClub.getWidth() / 2);
             distFromCenter *= .1;
 

@@ -7,6 +7,8 @@ package arkanoid.menus;
 import arkanoid.GameState;
 import arkanoid.GameState.GameStateType;
 import arkanoid.Settings;
+import arkanoid.Top10;
+import arkanoid.replay.Replay;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -118,6 +120,7 @@ public class MenuPause extends Menu {
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Resumir"
             GameState.changeState(GameStateType.MAIN_MENU);
+            Replay.getInstance().Save();
         }
     }
 
