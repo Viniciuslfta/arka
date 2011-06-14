@@ -30,6 +30,10 @@ public abstract class Brick extends Collidable {
     private Point mLocationOnPlayArea;
     private int mNumberOfAllowedHits;
     private int mNumberOfOcurredHits;
+
+    public int getNumberOfOcurredHits() {
+        return mNumberOfOcurredHits;
+    }
     private BaseColor mColor;
 
     /** Retorna objecto BaseColor que indica cor do tijolo

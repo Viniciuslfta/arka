@@ -137,7 +137,7 @@ public class GameEngine implements Runnable {
     public void run() {
 
         Textures.getInstance().load();
-//        Sounds.getInstance().load();
+        Sounds.getInstance().load();
         GameState.changeState(GameState.GameStateType.MAIN_MENU);
 
         if (this.mErrorsOnInit) {

@@ -56,7 +56,5 @@ public class Club extends Collidable {
         mTexture = Textures.getInstance().getClub();
         mColor = new BaseColor(0.5f, 0.5f, 0.5f);
 
-
-
     }
 }

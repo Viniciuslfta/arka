@@ -5,7 +5,6 @@ import arkanoid.GameState.GameStateType;
 import arkanoid.RegisteredPlayerData;
 import arkanoid.Settings;
 import arkanoid.Sounds;
-import arkanoid.Textures;
 import arkanoid.Top10;
 import arkanoid.models.entities.Bricks.Brick;
 import arkanoid.models.entities.Wall.WallType;
@@ -171,6 +170,7 @@ public class PlayArea implements Serializable {
 
         mPlayer.removeLifes(1);
         if (mPlayer.getLifes() == 0) {
+            Sounds.getInstance().playGameOver();
             GameState.changeState(GameStateType.GAME_OVER);
             mBonus.clear();
             Replay.getInstance().AddTickEvent(mNumberOfTicks - 5);
@@ -201,7 +201,7 @@ public class PlayArea implements Serializable {
         }
 
         if (GameState.currentState() == GameStateType.LEVEL_COMPLETE) {
-
+            Sounds.getInstance().playLevelComplete();;
             changeLevel(mCurrentLevel.getNextLevelFilename());
 
             GameState.changeState(GameStateType.PLAYING);
@@ -278,7 +278,7 @@ public class PlayArea implements Serializable {
                     }
 
                     if (mBall.isCollidingWith(tmpBrick)) {
-                        Sounds.getInstance().playBallBump();
+                        Sounds.getInstance().playBallBrick();
 
                         tmpBrick.onBallCollision(this);
 
@@ -320,6 +320,7 @@ public class PlayArea implements Serializable {
     private void checkBallWallsCollisions() {
         for (Wall w : mWalls) {
             if (w.isCollidingWith(mBall)) {
+                Sounds.getInstance().playBallBump();
                 w.doEffectOnBall(mBall);
                 break;
             }
@@ -470,7 +471,9 @@ public class PlayArea implements Serializable {
             Replay.getInstance().AddChangeLevelEvent(_filename, mPlayer.getScore());
             Top10.getInstance().Save();
         }
-        resetLevel();
+        
+        resetLevel();        
+        Sounds.getInstance().playMusic();
     }
 
     /** Restablece nível.
@@ -509,7 +512,8 @@ public class PlayArea implements Serializable {
             bonus.updatePosition();
             if (bonus.isCollidingWith(mClub)) {
 
-                // Sounds.getInstance().playPowerUp();
+                Sounds.getInstance().playPowerUp();
+
                 if (mCurrentBonus != null) {
                     mCurrentBonus.undoEffect(this);
                 }

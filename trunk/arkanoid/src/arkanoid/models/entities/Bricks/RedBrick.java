@@ -5,6 +5,7 @@
 package arkanoid.models.entities.Bricks;
 
 import arkanoid.BaseColor;
+import arkanoid.Sounds;
 import arkanoid.Textures;
 import arkanoid.models.entities.PlayArea;
 import java.awt.Point;
@@ -40,7 +41,8 @@ public class RedBrick extends Brick {
     @Override
     public void onBallCollision(PlayArea _area) {
         super.onBallCollision(_area.getBall());
-
+        
+        Sounds.getInstance().playRedBrick();
 
 
         _area.getPlayer().addScorePoints(100);
