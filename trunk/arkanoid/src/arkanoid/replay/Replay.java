@@ -37,10 +37,13 @@ public class Replay implements Serializable {
         return mUUID.substring(0, 5);
     }
 
-    public void setSpeed(int _newSpeed) {
+    public void setSpeed(float _newSpeed) {
         mSpeed = _newSpeed;
     }
-    int mSpeed = 1;
+    public float getSpeed() {
+        return mSpeed;
+    }
+    float mSpeed = 1;
 
     public Replay() {
         Reset();

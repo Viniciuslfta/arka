@@ -148,7 +148,7 @@ public class MenuInicial extends Menu {
         public void actionPerformed(ActionEvent e) {
             // reacção associada ao botão "Sair"
 
-            RegisteredPlayerData.getInstance().setIsLoggedIn(false);
+            RegisteredPlayerData.getInstance().reset();
             GameState.changeState(GameState.GameStateType.MAIN_MENU);
 
         }

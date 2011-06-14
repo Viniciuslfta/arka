@@ -28,7 +28,7 @@ public abstract class Settings {
     
     public static final int BALL_SIZE = 15;
     public static final float BALL_MAX_VEL = 12.0f;
-    public static final float BALL_MIN_VEL = 6.5f;
+    public static final float BALL_MIN_VEL = 2.5f;
     
     public static final int CLUB_LOC_Y = DISPLAY_HEIGHT - 100;
     public static final int CLUB_WIDTH = 100;

@@ -173,7 +173,7 @@ public class PlayArea implements Serializable {
         if (mPlayer.getLifes() == 0) {
             GameState.changeState(GameStateType.GAME_OVER);
             mBonus.clear();
-            Replay.getInstance().AddTickEvent(mNumberOfTicks-5);
+            Replay.getInstance().AddTickEvent(mNumberOfTicks - 5);
             return;
         }
 
@@ -185,6 +185,7 @@ public class PlayArea implements Serializable {
     /** Define comportamento tomado pelo Jogo a cada iteração sua
      */
     private int mNumberOfTicks = 0;
+
     public void tick() {
         if (RegisteredPlayerData.getInstance().isLoggedIn()
                 && GameState.currentState() != GameStateType.REPLAYING) {
@@ -335,6 +336,41 @@ public class PlayArea implements Serializable {
             float tmpVel = Math.abs(mBall.getVelocityY()) * -1;
             mBall.setVelocityY(tmpVel);
 
+            // Altera a direcção da bola horizontalmente
+            // consoante o lado em que bate no taco
+            float tmpVelX = mBall.getVelocityX();
+            float tmpVelY = mBall.getVelocityY();
+            float distFromCenter = mBall.getX() - (mClub.getX() + mClub.getWidth() / 2);
+            distFromCenter *= .1;
+
+            if (tmpVelX > 0) {
+                if (distFromCenter > 0) {
+                    tmpVelX += distFromCenter;
+                    if (tmpVelX > Settings.BALL_MAX_VEL) {
+                        tmpVelX = Settings.BALL_MAX_VEL;
+                    }
+                } else {
+                    tmpVelX += distFromCenter;
+                    if (tmpVelX < Settings.BALL_MIN_VEL) {
+                        tmpVelX = Settings.BALL_MIN_VEL;
+                    }
+                }
+            } else {
+                if (distFromCenter > 0) {
+                    tmpVelX += distFromCenter;
+                    if (tmpVelX > -Settings.BALL_MIN_VEL) {
+                        tmpVelX = -Settings.BALL_MIN_VEL;
+                    }
+                } else {
+                    tmpVelX += distFromCenter;
+                    if (tmpVelX < -Settings.BALL_MAX_VEL) {
+                        tmpVelX = -Settings.BALL_MAX_VEL;
+                    }
+                }
+            }
+            mBall.setVelocityX(tmpVelX);
+
+            //
             mBall.setY(mClub.getY() - Settings.BALL_SIZE);
 
             if (mBall.isSticky()) {
@@ -473,7 +509,7 @@ public class PlayArea implements Serializable {
             bonus.updatePosition();
             if (bonus.isCollidingWith(mClub)) {
 
-               // Sounds.getInstance().playPowerUp();
+                // Sounds.getInstance().playPowerUp();
                 if (mCurrentBonus != null) {
                     mCurrentBonus.undoEffect(this);
                 }
