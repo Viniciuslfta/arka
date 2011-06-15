@@ -24,7 +24,7 @@ public class ChangeViewEvent extends GameEvent{
     @Override
     public void execute(ModelPlayArea _model) {
 
-            if (!mUseTex) {
+            if (!mUseTex ) {
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_LIGHT0);

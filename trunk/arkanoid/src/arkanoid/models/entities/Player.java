@@ -73,9 +73,5 @@ public class Player implements Serializable {
      */
     public void addScorePoints(int _quant) {
         this.mScore += _quant;
-
-        if (RegisteredPlayerData.getInstance().isLoggedIn()) {
-            Top10.getInstance().update(RegisteredPlayerData.getInstance().getUsername(), mScore);
-        }
     }
 }
