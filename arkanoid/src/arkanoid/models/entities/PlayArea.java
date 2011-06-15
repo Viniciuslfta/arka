@@ -123,9 +123,9 @@ public class PlayArea implements Serializable {
 
         if (GameState.currentState() != GameStateType.REPLAYING) {
             Replay.getInstance().Reset();
+            // Força a guarda do event de seed dos bónus
+            BonusUtils.initRandom();
         }
-        // Força a guarda do event de seed dos bónus
-        BonusUtils.initRandom();
 
         //
         // Cria as paredes
@@ -176,7 +176,7 @@ public class PlayArea implements Serializable {
             Sounds.getInstance().playGameOver();
             GameState.changeState(GameStateType.GAME_OVER);
             mBonus.clear();
-            Replay.getInstance().AddTickEvent(mNumberOfTicks - 5);
+            saveLastTicks();
             return;
         }
 
@@ -185,13 +185,19 @@ public class PlayArea implements Serializable {
         mClub.placeBallAtCenter(mBall);
         mCurrentLevel.resetBallSpeed(mBall);
     }
+
+    public void saveLastTicks() {
+        if (RegisteredPlayerData.getInstance().isLoggedIn()) {
+            Replay.getInstance().AddTickEvent(mNumberOfTicks - 5);
+        }
+    }
     /** Define comportamento tomado pelo Jogo a cada iteração sua
      */
     private int mNumberOfTicks = 0;
 
     public void tick() {
         if (RegisteredPlayerData.getInstance().isLoggedIn()
-                && GameState.currentState() != GameStateType.REPLAYING) {
+                && GameState.currentState() == GameStateType.PLAYING) {
             mNumberOfTicks++;
         }
 
@@ -471,10 +477,9 @@ public class PlayArea implements Serializable {
 
         if (RegisteredPlayerData.getInstance().isLoggedIn() && GameState.currentState() != GameStateType.REPLAYING) {
             Replay.getInstance().AddChangeLevelEvent(_filename, mPlayer.getScore());
-            Top10.getInstance().Save();
         }
-        
-        resetLevel();        
+
+        resetLevel();
         Sounds.getInstance().playMusic();
     }
 

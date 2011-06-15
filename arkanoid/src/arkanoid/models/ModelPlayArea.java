@@ -87,4 +87,9 @@ public class ModelPlayArea {
     public void changeLevel(String _lvlName) {
         mArea.changeLevel(_lvlName);
     }
+    
+    public void saveLastTicks()
+    {
+        mArea.saveLastTicks();
+    }
 }

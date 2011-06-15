@@ -188,7 +188,8 @@ public class GameEngine implements Runnable {
         switch (GameState.currentState()) {
             case GAME_OVER:
                 if (RegisteredPlayerData.getInstance().isLoggedIn()) {
-                    Top10.getInstance().Save();
+                     ModelPlayArea tmpModel = ((GameAreaController) mCurrentController).getModelPlayArea();
+                    Top10.getInstance().Save(tmpModel.getPlayer().getScore());
                     Replay.getInstance().Save();
                 }
 
