@@ -12,7 +12,7 @@ import org.newdawn.slick.opengl.Texture;
 public class InvisibleBrick extends Brick {
 
     public InvisibleBrick(int _x, int _y) {
-        super(_x, _y, 1, new BaseColor(0.0f, 0.0f, 1.0f, 1.0f), Textures.getInstance().getInvisibleBrick());
+        super(_x, _y, 1, new BaseColor(0.0f, 0.0f, 1.0f, 0.0f), Textures.getInstance().getInvisibleBrick());
     }
 
     @Override
